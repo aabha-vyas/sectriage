@@ -1,0 +1,29 @@
+[project]
+name = "sectriage"
+version = "0.1.0"
+description = "Sandboxed multi-agent security triage with an eval harness"
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic",
+    "pydantic>=2",
+    "docker",
+    "opentelemetry-api",
+    "opentelemetry-sdk",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "ruff",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["docker: needs a running Docker daemon"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

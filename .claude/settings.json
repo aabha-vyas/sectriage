@@ -1,0 +1,24 @@
+{
+  "model": "sonnet",
+  "effortLevel": "high",
+  "fastModePerSessionOptIn": true,
+  "autoCompactEnabled": true,
+  "precomputeCompactionEnabled": true,
+  "autoCompactWindow": 200000,
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(uv run pytest *)",
+      "Bash(uv run ruff *)",
+      "Bash(scripts/verify.sh *)",
+      "Bash(scripts/verify.sh)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Bash(rm -rf *)",
+      "Bash(git push --force *)"
+    ]
+  }
+}
