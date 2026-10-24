@@ -16,9 +16,16 @@ dev = [
     "pytest",
     "ruff",
 ]
+targets = [
+    "flask",
+]
+
+[tool.uv]
+default-groups = ["dev", "targets"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 markers = ["docker: needs a running Docker daemon"]
 
 [tool.ruff]

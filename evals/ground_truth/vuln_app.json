@@ -1,0 +1,55 @@
+{
+  "target": "vuln_app",
+  "findings": [
+    {
+      "id": "vuln_app-secret",
+      "file": "evals/targets/vuln_app/app.py",
+      "line_start": 11,
+      "line_end": 11,
+      "vuln_class": "hardcoded_secret",
+      "severity": "high",
+      "description": "Flask SECRET_KEY is a hardcoded literal committed to source.",
+      "snippet": "insecure-demo-secret-do-not-use"
+    },
+    {
+      "id": "vuln_app-sqli",
+      "file": "evals/targets/vuln_app/app.py",
+      "line_start": 30,
+      "line_end": 31,
+      "vuln_class": "sqli",
+      "severity": "critical",
+      "description": "User-controlled name is interpolated into the SQL string and executed.",
+      "snippet": "WHERE name = '{name}'"
+    },
+    {
+      "id": "vuln_app-xss",
+      "file": "evals/targets/vuln_app/app.py",
+      "line_start": 44,
+      "line_end": 45,
+      "vuln_class": "xss",
+      "severity": "high",
+      "description": "Request parameter is concatenated into an HTML response without escaping.",
+      "snippet": "+ name"
+    },
+    {
+      "id": "vuln_app-path-traversal",
+      "file": "evals/targets/vuln_app/app.py",
+      "line_start": 57,
+      "line_end": 60,
+      "vuln_class": "path_traversal",
+      "severity": "high",
+      "description": "User-supplied filename is joined to DOCS_DIR and served with no containment check.",
+      "snippet": "DOCS_DIR / filename"
+    },
+    {
+      "id": "vuln_app-command-injection",
+      "file": "evals/targets/vuln_app/app.py",
+      "line_start": 66,
+      "line_end": 72,
+      "vuln_class": "command_injection",
+      "severity": "critical",
+      "description": "User-supplied host is concatenated into a shell command run with shell=True.",
+      "snippet": "shell=True"
+    }
+  ]
+}
