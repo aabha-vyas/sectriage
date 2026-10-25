@@ -14,6 +14,7 @@
     "search_code"
   ],
   "max_cost_usd": 0.5,
+  "max_steps": 30,
   "n_runs": 5,
   "runs": [
     {
