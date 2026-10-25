@@ -1,0 +1,266 @@
+{
+  "schema_version": 2,
+  "created_at": "2026-10-25T17:12:45Z",
+  "git_sha": "33d5482",
+  "target": "notes_portal",
+  "n_truth": 5,
+  "tuned": false,
+  "model": "claude-haiku-5-5",
+  "prompt_version": "v1",
+  "price_verified_on": "2026-10-24",
+  "sandbox": "none",
+  "tools": [
+    "read_file",
+    "search_code"
+  ],
+  "max_cost_usd": 0.5,
+  "max_steps": 30,
+  "n_runs": 5,
+  "runs": [
+    {
+      "task_id": "notes_portal-c78dff84",
+      "stop_reason": "finish",
+      "steps": 17,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "xss": 1.0
+      },
+      "cost_usd": 0.004224,
+      "cost_per_finding_usd": 0.0008448,
+      "tokens": {
+        "input": null,
+        "output": 4614,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "latency_s": {
+        "wall": 27.039565,
+        "call_p50": 1.154,
+        "call_p95": 3.440199999999998
+      },
+      "error": null
+    },
+    {
+      "task_id": "notes_portal-4c8dcfd4",
+      "stop_reason": "finish",
+      "steps": 19,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "xss": 1.0
+      },
+      "cost_usd": 0.004675,
+      "cost_per_finding_usd": 0.0009350000000000001,
+      "tokens": {
+        "input": null,
+        "output": 5130,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "latency_s": {
+        "wall": 32.137456,
+        "call_p50": 1.38,
+        "call_p95": 3.2874000000000048
+      },
+      "error": null
+    },
+    {
+      "task_id": "notes_portal-77179a0e",
+      "stop_reason": "finish",
+      "steps": 18,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "xss": 1.0
+      },
+      "cost_usd": 0.005069,
+      "cost_per_finding_usd": 0.0010138,
+      "tokens": {
+        "input": null,
+        "output": 5732,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "latency_s": {
+        "wall": 34.143916,
+        "call_p50": 1.498,
+        "call_p95": 3.8877999999999973
+      },
+      "error": null
+    },
+    {
+      "task_id": "notes_portal-f2652df4",
+      "stop_reason": "finish",
+      "steps": 7,
+      "tp": 3,
+      "fp": 0,
+      "fn": 2,
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1": 0.7499999999999999,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 0.0,
+        "xss": 0.5
+      },
+      "cost_usd": 0.00292,
+      "cost_per_finding_usd": 0.0009733333333333333,
+      "tokens": {
+        "input": null,
+        "output": 3217,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "latency_s": {
+        "wall": 16.219525,
+        "call_p50": 2.374,
+        "call_p95": 3.5967000000000002
+      },
+      "error": null
+    },
+    {
+      "task_id": "notes_portal-1686f194",
+      "stop_reason": "finish",
+      "steps": 20,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "xss": 1.0
+      },
+      "cost_usd": 0.004451,
+      "cost_per_finding_usd": 0.0008902000000000001,
+      "tokens": {
+        "input": null,
+        "output": 4814,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "latency_s": {
+        "wall": 30.648743,
+        "call_p50": 1.0259999999999998,
+        "call_p95": 3.2984500000000025
+      },
+      "error": null
+    }
+  ],
+  "aggregate": {
+    "precision": {
+      "mean": 1.0,
+      "stdev": 0.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "recall": {
+      "mean": 0.9199999999999999,
+      "stdev": 0.17888543819998318,
+      "min": 0.6,
+      "max": 1.0
+    },
+    "f1": {
+      "mean": 0.95,
+      "stdev": 0.11180339887498954,
+      "min": 0.7499999999999999,
+      "max": 1.0
+    },
+    "fp": {
+      "mean": 0.0,
+      "stdev": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "cost_usd": {
+      "mean": 0.0042678,
+      "stdev": 0.0008154414142046013,
+      "min": 0.00292,
+      "max": 0.005069
+    },
+    "cost_per_finding_usd": {
+      "mean": 0.0009314266666666668,
+      "stdev": 6.662979980625951e-05,
+      "min": 0.0008448,
+      "max": 0.0010138
+    },
+    "latency_call_p50_s": {
+      "mean": 1.4864,
+      "stdev": 0.5295628385753669,
+      "min": 1.0259999999999998,
+      "max": 2.374
+    },
+    "latency_call_p95_s": {
+      "mean": 3.5021100000000005,
+      "stdev": 0.24955694340169896,
+      "min": 3.2874000000000048,
+      "max": 3.8877999999999973
+    },
+    "latency_wall_s": {
+      "mean": 28.037840999999997,
+      "stdev": 7.098889919478361,
+      "min": 16.219525,
+      "max": 34.143916
+    },
+    "steps": {
+      "mean": 16.2,
+      "stdev": 5.263078946776307,
+      "min": 7.0,
+      "max": 20.0
+    },
+    "recall_by_class": {
+      "command_injection": {
+        "mean": 1.0,
+        "min": 1.0
+      },
+      "hardcoded_secret": {
+        "mean": 1.0,
+        "min": 1.0
+      },
+      "path_traversal": {
+        "mean": 0.8,
+        "min": 0.0
+      },
+      "xss": {
+        "mean": 0.9,
+        "min": 0.5
+      }
+    },
+    "patch_pass_rate": null,
+    "clean_runs": 5,
+    "fp_free_runs": 5
+  },
+  "tolerances": {
+    "precision": 0.1,
+    "recall": 0.15,
+    "recall_by_class": 0.1,
+    "cost_rel": 0.25,
+    "cost_per_finding_rel": 0.25
+  }
+}
