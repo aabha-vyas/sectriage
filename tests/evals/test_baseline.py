@@ -21,6 +21,15 @@ def test_drop_within_tolerance_passes():
     assert not c.regressions and not c.warnings
 
 
+def test_recall_tolerance_is_wider_than_precision():
+    base = make_baseline(make_summary(_runs(precision=1.0, recall=1.0)))
+    assert not compare(make_summary(_runs(precision=1.0, recall=0.87)), base).regressions
+    c = compare(make_summary(_runs(precision=0.87, recall=1.0)), base)
+    assert len(c.regressions) == 1 and "precision" in c.regressions[0]
+    c = compare(make_summary(_runs(precision=1.0, recall=0.83)), base)
+    assert len(c.regressions) == 1 and "recall:" in c.regressions[0]
+
+
 @pytest.mark.parametrize(
     ("kw", "needle"),
     [

@@ -178,7 +178,11 @@ def test_update_baseline_promotes_summary_to_default_path(tmp_path, capsys):
     save(make_summary(target="vuln_app"), s)
     assert main(["--summary-file", str(s), "--update-baseline"], **dirs) == 0
     base = load_baseline(dirs["baselines_dir"] / "vuln_app.json")
-    assert base.target == "vuln_app" and base.tolerances.recall == 0.10
+    assert (
+        base.target == "vuln_app"
+        and base.tolerances.recall == 0.15
+        and base.tolerances.precision == 0.10
+    )
     assert "baseline written" in capsys.readouterr().out
 
 

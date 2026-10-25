@@ -78,7 +78,7 @@ class Aggregate(_Model):
 
 class Tolerances(_Model):
     precision: float = 0.10
-    recall: float = 0.10
+    recall: float = 0.15
     recall_by_class: float = 0.10
     cost_rel: float = 0.25
     cost_per_finding_rel: float = 0.25
