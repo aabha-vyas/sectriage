@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from evals.scorer import GroundTruth, Location, TruthItem, score
+from evals.scorer import GroundTruth, Location, TruthItem, false_positives, score
 from tests.evals.test_scorer import finding
 
 
@@ -102,3 +102,27 @@ def test_empty_truth_any_finding_is_a_false_positive():
     s = score([finding(1, 1, file="x.py"), finding(9, 9, file="y.py", fid="g")], truth())
     assert (s.tp, s.fp, s.fn) == (0, 2, 0)
     assert s.precision == 0.0 and s.recall is None and s.f1 is None
+
+
+def test_false_positives_excludes_matches_on_primary_and_alternates():
+    hits = [finding(10, 10, file="sink.py"), finding(5, 5, file="route.py")]
+    other = finding(50, 50, file="sink.py")
+    fps = false_positives([*hits, other], truth(CROSS))
+    # one bug reported twice: one TP, the second report is a false positive, plus the stray one
+    assert len(fps) == 2 and other in fps
+
+
+def test_false_positives_agrees_with_score():
+    findings = [finding(10, 10, file="sink.py"), finding(50, 50, file="sink.py")]
+    assert len(false_positives(findings, truth(CROSS))) == score(findings, truth(CROSS)).fp
+
+
+def test_false_positives_on_empty_truth_is_every_prediction():
+    findings = [finding(10, 10, file="sink.py")]
+    assert false_positives(findings, truth()) == findings
+    assert false_positives([], truth()) == []
+
+
+def test_false_positives_counts_wide_spans():
+    wide = finding(1, 40, file="sink.py")
+    assert false_positives([wide], truth(CROSS)) == [wide]

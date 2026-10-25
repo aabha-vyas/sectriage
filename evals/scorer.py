@@ -85,8 +85,8 @@ def _ratio(num: int, den: int) -> float | None:
     return num / den if den else None
 
 
-def score(findings: list[Finding], truth: GroundTruth) -> Score:
-    predictions = dedupe(findings)
+def _match(predictions: list[Finding], truth: GroundTruth) -> dict[int, int]:
+    """Maximum bipartite matching of truth items to predictions: truth index -> prediction index."""
     overlaps = [
         [j for j, t in enumerate(truth.findings) if _overlaps(p, t)]
         if p.line_end - p.line_start + 1 <= MAX_SPAN_LINES
@@ -105,7 +105,22 @@ def score(findings: list[Finding], truth: GroundTruth) -> Score:
                 return True
         return False
 
-    tp = sum(augment(i, set()) for i in range(len(predictions)))
+    for i in range(len(predictions)):
+        augment(i, set())
+    return match_of_truth
+
+
+def false_positives(findings: list[Finding], truth: GroundTruth) -> list[Finding]:
+    """The deduplicated predictions that are not matched to any truth item."""
+    predictions = dedupe(findings)
+    matched = set(_match(predictions, truth).values())
+    return [p for i, p in enumerate(predictions) if i not in matched]
+
+
+def score(findings: list[Finding], truth: GroundTruth) -> Score:
+    predictions = dedupe(findings)
+    match_of_truth = _match(predictions, truth)
+    tp = len(match_of_truth)
     claimed = {truth.findings[j].id for j in match_of_truth}
     fp = len(predictions) - tp
     fn = len(truth.findings) - tp

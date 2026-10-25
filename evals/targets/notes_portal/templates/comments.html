@@ -1,0 +1,8 @@
+<!doctype html>
+<title>{{ note.title }}</title>
+<h1>{{ note.title }}</h1>
+<ul>
+{% for c in comments %}
+  <li><strong>{{ c.author }}</strong>: {{ c.body|safe }}</li>
+{% endfor %}
+</ul>

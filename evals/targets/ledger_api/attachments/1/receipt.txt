@@ -1,0 +1,1 @@
+Invoice 1: consulting, 12000 cents, paid.

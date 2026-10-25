@@ -1,0 +1,100 @@
+{
+  "target": "notes_portal",
+  "findings": [
+    {
+      "id": "notes-xss-stored",
+      "file": "evals/targets/notes_portal/templates/comments.html",
+      "line_start": 6,
+      "line_end": 6,
+      "vuln_class": "xss",
+      "severity": "high",
+      "description": "Comment bodies are stored as submitted and rendered with the |safe filter, so stored markup executes for every viewer.",
+      "snippet": "c.body|safe",
+      "also_accept": [
+        {
+          "file": "evals/targets/notes_portal/views/comments.py",
+          "line_start": 15,
+          "line_end": 16,
+          "snippet": "render_template(\"comments.html\""
+        },
+        {
+          "file": "evals/targets/notes_portal/views/comments.py",
+          "line_start": 23,
+          "line_end": 23,
+          "snippet": "storage.add_comment(note_id, author, body)"
+        }
+      ]
+    },
+    {
+      "id": "notes-path-prefix",
+      "file": "evals/targets/notes_portal/storage.py",
+      "line_start": 21,
+      "line_end": 22,
+      "vuln_class": "path_traversal",
+      "severity": "high",
+      "description": "The containment check compares string prefixes, so a sibling directory sharing the uploads directory name as a prefix passes the check.",
+      "snippet": "startswith(str(base))",
+      "also_accept": [
+        {
+          "file": "evals/targets/notes_portal/views/files.py",
+          "line_start": 17,
+          "line_end": 17,
+          "snippet": "storage.resolve_upload(name)"
+        }
+      ]
+    },
+    {
+      "id": "notes-secret-default",
+      "file": "evals/targets/notes_portal/settings.py",
+      "line_start": 12,
+      "line_end": 12,
+      "vuln_class": "hardcoded_secret",
+      "severity": "high",
+      "description": "The mail API key falls back to a literal committed to source when the environment variable is unset.",
+      "snippet": "mp_Zr8Qk1VnT5yXb3LdG7sHw2CfJ9aEu4Po",
+      "also_accept": []
+    },
+    {
+      "id": "notes-cmdi-mailer",
+      "file": "evals/targets/notes_portal/integrations/mailer.py",
+      "line_start": 20,
+      "line_end": 22,
+      "vuln_class": "command_injection",
+      "severity": "critical",
+      "description": "The recipient is placed in a mail command line that runs with shell=True. The domain check in the view only covers the part after the last @.",
+      "snippet": "shell=True",
+      "also_accept": [
+        {
+          "file": "evals/targets/notes_portal/views/profile.py",
+          "line_start": 24,
+          "line_end": 28,
+          "snippet": "mailer.send_test_message(email)"
+        }
+      ]
+    },
+    {
+      "id": "notes-xss-reflected",
+      "file": "evals/targets/notes_portal/views/errors.py",
+      "line_start": 8,
+      "line_end": 8,
+      "vuln_class": "xss",
+      "severity": "high",
+      "description": "render_error embeds the message into HTML unescaped, and the file download view passes the request's name into it.",
+      "snippet": "<p>{message}</p>",
+      "also_accept": [
+        {
+          "file": "evals/targets/notes_portal/views/files.py",
+          "line_start": 19,
+          "line_end": 19,
+          "snippet": "{name}"
+        },
+        {
+          "file": "evals/targets/notes_portal/views/files.py",
+          "line_start": 21,
+          "line_end": 21,
+          "snippet": "{name}"
+        }
+      ]
+    }
+  ]
+}
