@@ -98,8 +98,10 @@ fi
 # Only reports whether a key is set; the value is never printed.
 if [ -n "${ANTHROPIC_API_KEY:-}" ]; then
   pass "ANTHROPIC_API_KEY is set"
+elif [ -f .env ] && grep -qE '^ANTHROPIC_API_KEY=.+' .env; then
+  pass "ANTHROPIC_API_KEY is set in .env"
 else
-  fail "ANTHROPIC_API_KEY not set" "copy .env.example to .env, add your key, then: set -a; . ./.env; set +a"
+  fail "ANTHROPIC_API_KEY not set" "export it, or put ANTHROPIC_API_KEY=... in .env (copy .env.example); live commands: uv run --env-file .env ..."
 fi
 
 if [ -f .gitignore ] && grep -qE '^\.env$' .gitignore; then
