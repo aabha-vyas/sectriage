@@ -1,0 +1,74 @@
+[
+  {
+    "finding_id": "f_447e4c9d2e",
+    "file": "evals/targets/ledger_api/services/shell.py",
+    "line_start": 12,
+    "line_end": 12,
+    "vuln_class": "command_injection",
+    "severity": "high",
+    "title": "subprocess-shell-true",
+    "explanation": "Found 'subprocess' function 'run' with 'shell=True'. This is dangerous because this call will spawn the command using a shell process. Doing so propagates current shell settings and variables, which makes it much easier for a malicious actor to execute commands. Use 'shell=False' instead.",
+    "confidence": 0.6,
+    "patch": null
+  },
+  {
+    "finding_id": "f_b2888a808e",
+    "file": "evals/targets/notes_portal/integrations/mailer.py",
+    "line_start": 22,
+    "line_end": 22,
+    "vuln_class": "command_injection",
+    "severity": "high",
+    "title": "subprocess-shell-true",
+    "explanation": "Found 'subprocess' function 'run' with 'shell=True'. This is dangerous because this call will spawn the command using a shell process. Doing so propagates current shell settings and variables, which makes it much easier for a malicious actor to execute commands. Use 'shell=False' instead.",
+    "confidence": 0.6,
+    "patch": null
+  },
+  {
+    "finding_id": "f_3c193ac3c4",
+    "file": "evals/targets/notes_portal/templates/comments.html",
+    "line_start": 6,
+    "line_end": 6,
+    "vuln_class": "xss",
+    "severity": "medium",
+    "title": "template-unescaped-with-safe",
+    "explanation": "Detected a segment of a Flask template where autoescaping is explicitly disabled with '| safe' filter. This allows rendering of raw HTML in this segment. Ensure no user data is rendered here, otherwise this is a cross-site scripting (XSS) vulnerability.",
+    "confidence": 0.3,
+    "patch": null
+  },
+  {
+    "finding_id": "f_7ecde6f497",
+    "file": "evals/targets/notes_portal/views/profile.py",
+    "line_start": 19,
+    "line_end": 19,
+    "vuln_class": "xss",
+    "severity": "medium",
+    "title": "directly-returned-format-string",
+    "explanation": "Detected Flask route directly returning a formatted string. This is subject to cross-site scripting if user input can reach the string. Consider using the template engine instead and rendering pages with 'render_template()'.",
+    "confidence": 0.6,
+    "patch": null
+  },
+  {
+    "finding_id": "f_7ecde6f497",
+    "file": "evals/targets/notes_portal/views/profile.py",
+    "line_start": 19,
+    "line_end": 19,
+    "vuln_class": "xss",
+    "severity": "medium",
+    "title": "raw-html-format",
+    "explanation": "Detected user input flowing into a manually constructed HTML string. You may be accidentally bypassing secure methods of rendering HTML by manually constructing HTML and this could create a cross-site scripting vulnerability, which could let attackers steal sensitive user data. To be sure this is sa",
+    "confidence": 0.6,
+    "patch": null
+  },
+  {
+    "finding_id": "f_7ecde6f497",
+    "file": "evals/targets/notes_portal/views/profile.py",
+    "line_start": 19,
+    "line_end": 19,
+    "vuln_class": "xss",
+    "severity": "medium",
+    "title": "raw-html-format",
+    "explanation": "Detected user input flowing into a manually constructed HTML string. You may be accidentally bypassing secure methods of rendering HTML by manually constructing HTML and this could create a cross-site scripting vulnerability, which could let attackers steal sensitive user data. To be sure this is sa",
+    "confidence": 0.6,
+    "patch": null
+  }
+]
