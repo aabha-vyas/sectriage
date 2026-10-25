@@ -150,12 +150,13 @@ def _load_findings(path: Path) -> list[Finding]:
     return [Finding.model_validate(f) for f in raw]
 
 
-def _default_runner() -> Runner | None:
-    try:
-        from evals.live import agent_runner  # the spend-capped runner; not built yet
-    except ImportError:
-        return None
-    return agent_runner
+def _default_runner(args: argparse.Namespace, runs_dir: Path) -> Runner:
+    """The live runner: preflight now, spend ledger under `runs_dir` for every run."""
+    from evals import live  # lazy: pulls in the agent and the Anthropic SDK
+
+    return live.make_runner(
+        budget_usd=args.budget_usd, max_cost_usd=args.max_cost_usd, root=runs_dir
+    )
 
 
 def _repeat(
@@ -199,6 +200,18 @@ def main(
     )
     parser.add_argument(
         "--repeat", type=int, metavar="N", help=f"run the agent N times (1-{MAX_REPEAT})"
+    )
+    parser.add_argument(
+        "--budget-usd",
+        type=float,
+        default=2.00,
+        help="--repeat: total spend cap across all runs in the runs dir (default: 2.00)",
+    )
+    parser.add_argument(
+        "--max-cost-usd",
+        type=float,
+        default=0.50,
+        help="--repeat: cap per run (default: 0.50)",
     )
     parser.add_argument(
         "--update-baseline",
@@ -254,9 +267,11 @@ def _run_to_summary(
     if args.repeat is not None:
         if not 1 <= args.repeat <= MAX_REPEAT:
             return _fail(f"--repeat must be between 1 and {MAX_REPEAT}")
-        runner = runner or _default_runner()
         if runner is None:
-            return _fail("no live runner available: evals/live.py is not built yet")
+            try:
+                runner = _default_runner(args, runs_dir)
+            except (RuntimeError, ValueError) as e:  # PreflightError or a bad cap
+                return _fail(str(e))
         paths, code = _repeat(args.target, args.repeat, runner, runs_dir, now)
         if code != EXIT_OK:
             return code

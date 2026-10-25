@@ -16,3 +16,10 @@
 ## Frozen targets
 
 - `evals/targets/{ledger_api,notes_portal,static_builder}` are frozen (`evals/targets.lock.json`, checked by `tests/evals/test_targets_frozen.py`). Do not change a file there without telling the user first; after an approved change run `python -m evals.frozen --update` and say so in the commit. Scored runs on a changed target are not comparable with earlier ones.
+
+## Live runs
+
+- `uv run --env-file .env python -m evals.run --target <t> --repeat N --save` runs the agent N times through `evals/live.py`. Never export the key.
+- Preflight (before any run): targets match `targets.lock.json`, `git status` is clean for `evals/targets`, and the key is defined in `.env` and loaded into the environment.
+- Spend ledger: `logs/evals/spend.json`, summed from every run's `cost_usd`. A run is refused if spent + the per-run cap (`--max-cost-usd`, 0.50) would pass `--budget-usd` (2.00). A run killed before writing its meta counts at the cap.
+- Error stops (`model_error`, `internal_error`, `interrupted`) or a nonzero CLI exit stop the batch and keep the earlier runs' artifacts; capped or refused runs (`budget`, `timeout`, `refusal`, ...) are results and show up as stop reasons.

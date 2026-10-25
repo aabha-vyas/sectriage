@@ -117,9 +117,13 @@ def test_repeat_out_of_range_exits_2(tmp_path, capsys, n):
     assert runner.calls == [] and capsys.readouterr().err.startswith("error:")
 
 
-def test_repeat_without_live_runner_exits_2_and_spends_nothing(tmp_path, capsys):
+def test_repeat_without_a_runner_goes_through_preflight_and_spends_nothing(
+    tmp_path, capsys, monkeypatch
+):
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)  # preflight must fail on the key
     assert main(["--repeat", "2"], **_dirs(tmp_path)) == 2
-    assert "no live runner" in capsys.readouterr().err
+    assert "ANTHROPIC_API_KEY" in capsys.readouterr().err
+    assert not (tmp_path / "runs").exists()  # no run dir, no ledger
 
 
 def test_repeat_and_findings_are_exclusive(tmp_path, capsys):
