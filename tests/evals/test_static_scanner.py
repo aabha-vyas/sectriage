@@ -1,4 +1,5 @@
 import json
+from collections import Counter
 
 import pytest
 
@@ -101,3 +102,47 @@ def test_committed_false_positive_is_the_escaped_greeting_decoy():
     report = json.loads((BASE.parent / f"{BASE.name}.decoys.json").read_text())["decoys"]
     assert report == decoy_report(_committed_findings()).model_dump()
     assert report["fp_total"] == 1 and report["by_decoy"] == {"notes-dec-greeting": 1}
+
+
+def _class_counts(findings, truth):
+    """(hits, truth) per class, recovered from the recall ratios the Score reports."""
+    n = Counter(t.vuln_class.value for t in truth.findings)
+    s = score(findings, truth)
+    return {c: (round(s.recall_by_class[c] * k), k) for c, k in n.items()}, s
+
+
+def test_per_class_counts_sum_to_the_totals_on_the_committed_findings():
+    truth = combined_truth(TARGETS)
+    counts, s = _class_counts(_committed_findings(), truth)
+    assert sum(h for h, _ in counts.values()) == s.tp == 3
+    assert sum(k for _, k in counts.values()) == len(truth.findings) == s.tp + s.fn == 10
+    assert counts == {
+        "command_injection": (2, 2),
+        "xss": (1, 2),
+        "sqli": (0, 2),
+        "path_traversal": (0, 2),
+        "hardcoded_secret": (0, 2),
+    }
+
+
+def test_per_class_counts_sum_to_the_totals_for_any_subset_of_hits():
+    truth = combined_truth(TARGETS)
+    items = truth.findings
+    for take in (0, 1, 4, 7, 10):
+        hits = [
+            Finding(
+                finding_id=f"f{i}",
+                file=t.file,
+                line_start=t.line_start,
+                line_end=t.line_end,
+                vuln_class=t.vuln_class,
+                severity=t.severity,
+                title="t",
+                explanation="e",
+                confidence=0.5,
+            )
+            for i, t in enumerate(items[:take])
+        ]
+        counts, s = _class_counts(hits, truth)
+        assert sum(h for h, _ in counts.values()) == s.tp == take
+        assert sum(k for _, k in counts.values()) == s.tp + s.fn == 10
