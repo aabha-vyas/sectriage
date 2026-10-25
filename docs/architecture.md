@@ -10,6 +10,13 @@ Notes that don't fit in a `CLAUDE.md`. Keep it short.
 - Without a sandbox the CLI uses `UnavailableSandbox`, which refuses every exec.
 - The semgrep and git argv shapes are unverified until the sandbox lane runs them for real.
 
+## Prep commit on main (before lane/sandbox and lane/swarm branch)
+
+Three small changes, one commit, so replay and the evals summary have what they need:
+- `Event.stop_reason: str | None = None` in `src/contracts.py` (additive). The loop sets it from `ModelResponse.stop_reason` on every Event written after a model call. It is the model API's value (`tool_use`, `end_turn`, `max_tokens`, `refusal`), not the loop's `StopReason`. Replay uses it and infers only for old logs.
+- `findings.meta.json` gains a `tokens` object (input, output, cache_read, cache_write) so evals can report token totals.
+- `_check_target` in `src/agent/run.py` becomes public `check_target`; swarm and evals import it.
+
 ## TODO: report findings through the contract
 
 The agent emits findings with agent-local control tools (`report_finding`, `finish`). Their Events
