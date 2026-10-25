@@ -1,0 +1,92 @@
+{
+  "target": "ledger_api",
+  "findings": [
+    {
+      "id": "ledger-sqli-order",
+      "file": "evals/targets/ledger_api/services/queries.py",
+      "line_start": 8,
+      "line_end": 8,
+      "vuln_class": "sqli",
+      "severity": "high",
+      "description": "The sort query parameter flows from the invoices route through db.list_invoices into build_order_clause, which interpolates it into ORDER BY unvalidated.",
+      "snippet": "ORDER BY {sort}",
+      "test": "test_bug_sqli_order_clause_takes_an_expression",
+      "also_accept": [
+        {
+          "file": "evals/targets/ledger_api/routes/invoices.py",
+          "line_start": 12,
+          "line_end": 14,
+          "snippet": "db.list_invoices(sort, status)"
+        },
+        {
+          "file": "evals/targets/ledger_api/services/db.py",
+          "line_start": 57,
+          "line_end": 57,
+          "snippet": "queries.build_order_clause(sort)"
+        }
+      ]
+    },
+    {
+      "id": "ledger-sqli-second-order",
+      "file": "evals/targets/ledger_api/routes/reports.py",
+      "line_start": 15,
+      "line_end": 15,
+      "vuln_class": "sqli",
+      "severity": "high",
+      "description": "A username stored through a parameterized insert is later read back and interpolated into a WHERE clause in the customer report (second-order SQL injection).",
+      "snippet": "WHERE customer = '{user['username']}'",
+      "test": "test_bug_sqli_second_order_stored_name_changes_a_later_query",
+      "also_accept": []
+    },
+    {
+      "id": "ledger-cmdi-archive",
+      "file": "evals/targets/ledger_api/services/shell.py",
+      "line_start": 11,
+      "line_end": 12,
+      "vuln_class": "command_injection",
+      "severity": "critical",
+      "description": "The archive name from the request is placed in a tar command line that runs with shell=True.",
+      "snippet": "shell=True",
+      "test": "test_bug_command_line_is_built_from_the_name_and_run_in_a_shell",
+      "also_accept": [
+        {
+          "file": "evals/targets/ledger_api/routes/archive.py",
+          "line_start": 12,
+          "line_end": 13,
+          "snippet": "shell.make_archive(name)"
+        }
+      ]
+    },
+    {
+      "id": "ledger-path-attachment",
+      "file": "evals/targets/ledger_api/services/storage.py",
+      "line_start": 9,
+      "line_end": 9,
+      "vuln_class": "path_traversal",
+      "severity": "high",
+      "description": "The attachment name from the query string is joined to the attachments directory with no containment check, then served.",
+      "snippet": "config.ATTACHMENTS_DIR / str(invoice_id) / name",
+      "test": "test_bug_attachment_name_can_leave_the_attachments_directory",
+      "also_accept": [
+        {
+          "file": "evals/targets/ledger_api/routes/attachments.py",
+          "line_start": 12,
+          "line_end": 16,
+          "snippet": "storage.attachment_path(invoice_id, name)"
+        }
+      ]
+    },
+    {
+      "id": "ledger-secret-webhook",
+      "file": "evals/targets/ledger_api/config.py",
+      "line_start": 11,
+      "line_end": 11,
+      "vuln_class": "hardcoded_secret",
+      "severity": "high",
+      "description": "The webhook signing key is a literal committed to source.",
+      "snippet": "wh_Qm4Zr7xT2vBn9LkD5sHc8YfJ3aWe6UpG",
+      "test": "test_bug_signing_key_is_a_source_literal_that_forges_requests",
+      "also_accept": []
+    }
+  ]
+}

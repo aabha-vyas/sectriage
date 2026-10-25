@@ -1,0 +1,26 @@
+{
+  "row": {
+    "scanner": "semgrep",
+    "version": "1.182.1",
+    "packs": [
+      "p/python",
+      "p/flask",
+      "p/security-audit",
+      "p/secrets"
+    ],
+    "raw_results": 6,
+    "dropped_out_of_scope": 0
+  },
+  "decoys": {
+    "fp_total": 1,
+    "on_decoy": 1,
+    "wide": 0,
+    "elsewhere": 0,
+    "by_kind": {
+      "escaped_output": 1
+    },
+    "by_decoy": {
+      "notes-dec-greeting": 1
+    }
+  }
+}

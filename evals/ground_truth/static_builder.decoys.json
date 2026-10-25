@@ -1,0 +1,125 @@
+{
+  "target": "static_builder",
+  "decoys": [
+    {
+      "id": "static-dec-output-path",
+      "file": "evals/targets/static_builder/build.py",
+      "line_start": 15,
+      "line_end": 19,
+      "kind": "contained_path",
+      "description": "Resolved path must stay inside the output directory; every caller goes through it.",
+      "snippet": "is_relative_to(base)",
+      "test": "test_dec_output_path_stays_inside_output_dir"
+    },
+    {
+      "id": "static-dec-asset-tool",
+      "file": "evals/targets/static_builder/build.py",
+      "line_start": 23,
+      "line_end": 29,
+      "kind": "allowlist",
+      "description": "Tool name is looked up in a fixed table; arguments are resolved inside the output directory; no shell.",
+      "snippet": "shell=False",
+      "test": "test_dec_asset_tool_is_allowlisted_and_runs_without_a_shell"
+    },
+    {
+      "id": "static-dec-page-lookup",
+      "file": "evals/targets/static_builder/build.py",
+      "line_start": 32,
+      "line_end": 35,
+      "kind": "parameterized_query",
+      "description": "The slug is bound.",
+      "snippet": "WHERE slug = ?",
+      "test": "test_dec_page_lookup_binds_the_slug"
+    },
+    {
+      "id": "static-dec-page-count",
+      "file": "evals/targets/static_builder/build.py",
+      "line_start": 38,
+      "line_end": 39,
+      "kind": "constant_interpolation",
+      "description": "The interpolated table name is a string literal in config; no input reaches the query.",
+      "snippet": "{config.PAGES_TABLE}",
+      "test": "test_dec_page_count_interpolates_a_constant_table_name"
+    },
+    {
+      "id": "static-dec-render",
+      "file": "evals/targets/static_builder/render.py",
+      "line_start": 6,
+      "line_end": 10,
+      "kind": "escaped_output",
+      "description": "Title and every paragraph are escaped.",
+      "snippet": "html.escape(title, quote=True)",
+      "test": "test_dec_render_escapes_title_and_body"
+    },
+    {
+      "id": "static-dec-token-check",
+      "file": "evals/targets/static_builder/build.py",
+      "line_start": 53,
+      "line_end": 57,
+      "kind": "env_secret",
+      "description": "An unset token denies; a set token is compared in constant time.",
+      "snippet": "hmac.compare_digest",
+      "test": "test_dec_deploy_token_comes_from_the_environment_and_unset_denies"
+    },
+    {
+      "id": "static-dec-config-credentials",
+      "file": "evals/targets/static_builder/config.py",
+      "line_start": 15,
+      "line_end": 16,
+      "kind": "env_secret",
+      "description": "Token and password are read from the environment with no fallback values.",
+      "snippet": "os.environ.get(\"BUILDER_DEPLOY_PASSWORD\")",
+      "test": "test_dec_deploy_token_comes_from_the_environment_and_unset_denies"
+    },
+    {
+      "id": "static-dec-password-required",
+      "file": "evals/targets/static_builder/build.py",
+      "line_start": 60,
+      "line_end": 63,
+      "kind": "env_secret",
+      "description": "Missing password raises instead of falling back to a value.",
+      "snippet": "is not set",
+      "test": "test_dec_deploy_password_must_be_configured"
+    },
+    {
+      "id": "static-dec-publish",
+      "file": "evals/targets/static_builder/build.py",
+      "line_start": 67,
+      "line_end": 74,
+      "kind": "shell_false",
+      "description": "Host must match a strict pattern, sits after a fixed user@ prefix, and the command is an argument vector with an option terminator.",
+      "snippet": "shell=False",
+      "test": "test_dec_publish_runs_rsync_with_an_argument_vector"
+    },
+    {
+      "id": "static-dec-plugin-lookup",
+      "file": "evals/targets/static_builder/plugins.py",
+      "line_start": 13,
+      "line_end": 14,
+      "kind": "allowlist",
+      "description": "Plugin names are dictionary keys; unknown names raise.",
+      "snippet": "REGISTRY[name](text)",
+      "test": "test_dec_plugin_names_are_dictionary_lookups"
+    },
+    {
+      "id": "static-dec-cache-key",
+      "file": "evals/targets/static_builder/cache.py",
+      "line_start": 10,
+      "line_end": 11,
+      "kind": "contained_path",
+      "description": "Cache file names are hashes, so a key cannot name a path.",
+      "snippet": "hashlib.sha256(key.encode()).hexdigest()",
+      "test": "test_dec_cache_keys_are_hashed_so_they_cannot_name_paths"
+    },
+    {
+      "id": "static-dec-build-record",
+      "file": "evals/targets/static_builder/cache.py",
+      "line_start": 26,
+      "line_end": 27,
+      "kind": "parameterized_query",
+      "description": "Both values are bound.",
+      "snippet": "VALUES (?, ?)",
+      "test": "test_dec_build_record_binds_values"
+    }
+  ]
+}

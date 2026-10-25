@@ -9,6 +9,10 @@ Notes that don't fit in a `CLAUDE.md`. Keep it short.
   `Sandbox` Protocol in `src/agent/sandbox_protocol.py`. The sandbox lane implements it.
 - Without a sandbox the CLI uses `UnavailableSandbox`, which refuses every exec.
 - The semgrep and git argv shapes are unverified until the sandbox lane runs them for real.
+- TODO: `findings.meta.json` needs a `"tokens"` object with integer keys `input`, `output`,
+  `cache_read` and `cache_write`, because `evals/metrics.py` reads those names. This is a small
+  separate commit on main in `src/agent/` (`RunResult` usage totals plus `_write_outputs`). Until
+  then evals records null for the cache fields.
 
 ## Prep commit on main (before lane/sandbox and lane/swarm branch)
 

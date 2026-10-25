@@ -1,0 +1,85 @@
+{
+  "target": "ledger_api",
+  "decoys": [
+    {
+      "id": "ledger-dec-like-search",
+      "file": "evals/targets/ledger_api/services/db.py",
+      "line_start": 66,
+      "line_end": 68,
+      "kind": "parameterized_query",
+      "description": "The search term is bound as a LIKE parameter; the f-string only adds wildcards to the bound value.",
+      "snippet": "(f\"%{term}%\",)",
+      "test": "test_dec_like_search_binds_the_term"
+    },
+    {
+      "id": "ledger-dec-status-filter",
+      "file": "evals/targets/ledger_api/services/db.py",
+      "line_start": 55,
+      "line_end": 56,
+      "kind": "parameterized_query",
+      "description": "The status filter is bound, in the same function as the interpolated ORDER BY.",
+      "snippet": "WHERE status = ?",
+      "test": "test_dec_status_filter_binds_the_value"
+    },
+    {
+      "id": "ledger-dec-user-insert",
+      "file": "evals/targets/ledger_api/services/db.py",
+      "line_start": 41,
+      "line_end": 41,
+      "kind": "parameterized_query",
+      "description": "User registration binds both values; the stored value is only dangerous where it is read back.",
+      "snippet": "VALUES (?, ?)",
+      "test": "test_dec_user_insert_binds_values"
+    },
+    {
+      "id": "ledger-dec-checked-sort",
+      "file": "evals/targets/ledger_api/services/queries.py",
+      "line_start": 11,
+      "line_end": 14,
+      "kind": "allowlist",
+      "description": "Sort columns are checked against an allowlist before reaching the shared clause builder.",
+      "snippet": "sort not in SORTABLE_COLUMNS",
+      "test": "test_dec_checked_sort_rejects_an_expression"
+    },
+    {
+      "id": "ledger-dec-clause-concat",
+      "file": "evals/targets/ledger_api/services/db.py",
+      "line_start": 63,
+      "line_end": 63,
+      "kind": "allowlist",
+      "description": "list_for_customer concatenates order_clause into the SQL and does not check it itself; it is safe only because its one caller (for_customer) passes the output of checked_order_clause. A new caller handing it unchecked input would be injectable.",
+      "snippet": "sql + order_clause",
+      "test": "test_dec_clause_concat_is_safe_only_because_the_caller_checks"
+    },
+    {
+      "id": "ledger-dec-checksum-argv",
+      "file": "evals/targets/ledger_api/services/shell.py",
+      "line_start": 18,
+      "line_end": 20,
+      "kind": "shell_false",
+      "description": "Argument vector, shell=False, and an option terminator before the path.",
+      "snippet": "shell=False",
+      "test": "test_dec_checksum_runs_without_a_shell_and_after_option_terminator"
+    },
+    {
+      "id": "ledger-dec-export-path",
+      "file": "evals/targets/ledger_api/services/storage.py",
+      "line_start": 12,
+      "line_end": 16,
+      "kind": "contained_path",
+      "description": "The resolved path must stay inside the archive directory.",
+      "snippet": "is_relative_to(base)",
+      "test": "test_dec_export_path_stays_inside_archive_dir"
+    },
+    {
+      "id": "ledger-dec-session-key",
+      "file": "evals/targets/ledger_api/config.py",
+      "line_start": 10,
+      "line_end": 10,
+      "kind": "env_secret",
+      "description": "Read from the environment with no fallback value.",
+      "snippet": "os.environ.get(\"LEDGER_SESSION_KEY\")",
+      "test": "test_dec_session_key_comes_from_the_environment"
+    }
+  ]
+}

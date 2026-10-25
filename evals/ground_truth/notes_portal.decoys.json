@@ -1,0 +1,85 @@
+{
+  "target": "notes_portal",
+  "decoys": [
+    {
+      "id": "notes-dec-profile-template",
+      "file": "evals/targets/notes_portal/templates/profile.html",
+      "line_start": 3,
+      "line_end": 4,
+      "kind": "escaped_output",
+      "description": "Autoescaped name and explicitly escaped bio.",
+      "snippet": "{{ bio|e }}",
+      "test": "test_dec_profile_template_escapes_name_and_bio"
+    },
+    {
+      "id": "notes-dec-greeting",
+      "file": "evals/targets/notes_portal/views/profile.py",
+      "line_start": 19,
+      "line_end": 19,
+      "kind": "escaped_output",
+      "description": "The name is escaped before it is placed in the HTML string.",
+      "snippet": "escape(name)",
+      "test": "test_dec_greeting_escapes_the_name"
+    },
+    {
+      "id": "notes-dec-not-found",
+      "file": "evals/targets/notes_portal/views/errors.py",
+      "line_start": 15,
+      "line_end": 15,
+      "kind": "escaped_output",
+      "description": "The only caller that passes request data to render_error escapes it first.",
+      "snippet": "escape(request.path)",
+      "test": "test_dec_not_found_page_escapes_the_path"
+    },
+    {
+      "id": "notes-dec-export-path",
+      "file": "evals/targets/notes_portal/storage.py",
+      "line_start": 27,
+      "line_end": 31,
+      "kind": "contained_path",
+      "description": "Containment is checked with a path-aware comparison, so siblings sharing a prefix are refused.",
+      "snippet": "is_relative_to(base)",
+      "test": "test_dec_export_path_check_refuses_siblings_and_escapes"
+    },
+    {
+      "id": "notes-dec-export-errors",
+      "file": "evals/targets/notes_portal/views/files.py",
+      "line_start": 31,
+      "line_end": 33,
+      "kind": "escaped_output",
+      "description": "Export error pages use fixed messages and carry no request data.",
+      "snippet": "Export not found",
+      "test": "test_dec_export_error_pages_carry_no_request_data"
+    },
+    {
+      "id": "notes-dec-admin-token-env",
+      "file": "evals/targets/notes_portal/settings.py",
+      "line_start": 13,
+      "line_end": 13,
+      "kind": "env_secret",
+      "description": "Read from the environment with no fallback value.",
+      "snippet": "os.environ.get(\"PORTAL_ADMIN_TOKEN\")",
+      "test": "test_dec_admin_token_comes_from_the_environment_and_unset_denies"
+    },
+    {
+      "id": "notes-dec-admin-token-check",
+      "file": "evals/targets/notes_portal/views/files.py",
+      "line_start": 40,
+      "line_end": 42,
+      "kind": "env_secret",
+      "description": "An unset token denies every request; a set token is compared in constant time.",
+      "snippet": "hmac.compare_digest",
+      "test": "test_dec_admin_token_comes_from_the_environment_and_unset_denies"
+    },
+    {
+      "id": "notes-dec-domain-check",
+      "file": "evals/targets/notes_portal/integrations/mailer.py",
+      "line_start": 12,
+      "line_end": 16,
+      "kind": "shell_false",
+      "description": "The domain is validated against a strict pattern and run as an argument vector without a shell.",
+      "snippet": "shell=False",
+      "test": "test_dec_domain_check_runs_without_a_shell"
+    }
+  ]
+}

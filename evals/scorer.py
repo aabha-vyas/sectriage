@@ -12,23 +12,38 @@ GROUND_TRUTH_DIR = Path(__file__).parent / "ground_truth"
 MAX_SPAN_LINES = 25  # wider predictions never match; they count as false positives
 
 
-class TruthItem(BaseModel):
+class Span(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    id: str
     file: str
     line_start: int = Field(ge=1)
     line_end: int = Field(ge=1)
+
+    @model_validator(mode="after")
+    def _range_ordered(self) -> "Span":
+        if self.line_end < self.line_start:
+            raise ValueError("line_end must be >= line_start")
+        return self
+
+
+class Location(Span):
+    """An alternate place a correct report may cite, such as the entry point of a taint path."""
+
+    snippet: str
+
+
+class TruthItem(Span):
+    id: str
     vuln_class: VulnClass
     severity: Severity
     description: str
     snippet: str
+    test: str | None = None  # behavioral test showing the bug is real
+    also_accept: list[Location] = Field(default_factory=list)
 
-    @model_validator(mode="after")
-    def _range_ordered(self) -> "TruthItem":
-        if self.line_end < self.line_start:
-            raise ValueError("line_end must be >= line_start")
-        return self
+    @property
+    def spans(self) -> list[Span]:
+        return [self, *self.also_accept]
 
 
 class GroundTruth(BaseModel):
@@ -60,15 +75,19 @@ def dedupe(findings: list[Finding]) -> list[Finding]:
 
 
 def _overlaps(a: Finding, t: TruthItem) -> bool:
-    return a.file == t.file and a.line_start <= t.line_end and t.line_start <= a.line_end
+    """True if the prediction overlaps the primary location or any also_accept location."""
+    return any(
+        a.file == s.file and a.line_start <= s.line_end and s.line_start <= a.line_end
+        for s in t.spans
+    )
 
 
 def _ratio(num: int, den: int) -> float | None:
     return num / den if den else None
 
 
-def score(findings: list[Finding], truth: GroundTruth) -> Score:
-    predictions = dedupe(findings)
+def _match(predictions: list[Finding], truth: GroundTruth) -> dict[int, int]:
+    """Maximum bipartite matching of truth items to predictions: truth index -> prediction index."""
     overlaps = [
         [j for j, t in enumerate(truth.findings) if _overlaps(p, t)]
         if p.line_end - p.line_start + 1 <= MAX_SPAN_LINES
@@ -87,7 +106,22 @@ def score(findings: list[Finding], truth: GroundTruth) -> Score:
                 return True
         return False
 
-    tp = sum(augment(i, set()) for i in range(len(predictions)))
+    for i in range(len(predictions)):
+        augment(i, set())
+    return match_of_truth
+
+
+def false_positives(findings: list[Finding], truth: GroundTruth) -> list[Finding]:
+    """The deduplicated predictions that are not matched to any truth item."""
+    predictions = dedupe(findings)
+    matched = set(_match(predictions, truth).values())
+    return [p for i, p in enumerate(predictions) if i not in matched]
+
+
+def score(findings: list[Finding], truth: GroundTruth) -> Score:
+    predictions = dedupe(findings)
+    match_of_truth = _match(predictions, truth)
+    tp = len(match_of_truth)
     claimed = {truth.findings[j].id for j in match_of_truth}
     fp = len(predictions) - tp
     fn = len(truth.findings) - tp
