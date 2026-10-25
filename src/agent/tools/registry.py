@@ -39,7 +39,7 @@ DESCRIPTIONS: dict[ToolName, str] = {
 }
 
 
-def _validation_message(e: ValidationError) -> str:
+def validation_message(e: ValidationError) -> str:
     """Field paths and messages only; never the model-supplied values."""
     parts = [
         f"{'.'.join(str(p) for p in err['loc']) or 'args'}: {err['msg']}" for err in e.errors()
@@ -94,7 +94,7 @@ class ToolRegistry:
         try:
             args = TOOL_ARGS[tool].model_validate(raw_args)
         except ValidationError as e:
-            return fail(_validation_message(e))
+            return fail(validation_message(e))
 
         try:
             return result(self._dispatch(tool, args, timeout_s))
