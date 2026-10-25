@@ -47,9 +47,9 @@
       "line_start": 63,
       "line_end": 63,
       "kind": "allowlist",
-      "description": "The concatenated clause comes only from checked_order_clause; the customer is bound.",
+      "description": "list_for_customer concatenates order_clause into the SQL and does not check it itself; it is safe only because its one caller (for_customer) passes the output of checked_order_clause. A new caller handing it unchecked input would be injectable.",
       "snippet": "sql + order_clause",
-      "test": "test_dec_checked_sort_rejects_an_expression"
+      "test": "test_dec_clause_concat_is_safe_only_because_the_caller_checks"
     },
     {
       "id": "ledger-dec-checksum-argv",

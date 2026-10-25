@@ -161,3 +161,13 @@ def test_allowed_hint_tokens_are_the_only_exceptions():
             text = path.read_text()
             found |= {t for t in ALLOWED_TOKENS if t in text}
     assert found == set(ALLOWED_TOKENS)
+
+
+@pytest.mark.parametrize("target", NEW)
+def test_every_bug_links_to_exactly_one_behavioral_test(target):
+    source = (ROOT / f"tests/evals/test_target_{target}.py").read_text()
+    defined = set(re.findall(r"^def (test_bug_\w+)", source, re.M))
+    linked = [t.test for t in TRUTH[target].findings]
+    assert all(linked), [t.id for t in TRUTH[target].findings if not t.test]
+    assert len(set(linked)) == len(linked), "two bugs share a test"
+    assert set(linked) == defined, "a bug test is unlinked or a link names a missing test"

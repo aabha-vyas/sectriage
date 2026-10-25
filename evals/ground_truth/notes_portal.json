@@ -10,6 +10,7 @@
       "severity": "high",
       "description": "Comment bodies are stored as submitted and rendered with the |safe filter, so stored markup executes for every viewer.",
       "snippet": "c.body|safe",
+      "test": "test_bug_stored_comment_body_renders_unescaped",
       "also_accept": [
         {
           "file": "evals/targets/notes_portal/views/comments.py",
@@ -34,6 +35,7 @@
       "severity": "high",
       "description": "The containment check compares string prefixes, so a sibling directory sharing the uploads directory name as a prefix passes the check.",
       "snippet": "startswith(str(base))",
+      "test": "test_bug_prefix_check_admits_a_sibling_directory",
       "also_accept": [
         {
           "file": "evals/targets/notes_portal/views/files.py",
@@ -52,6 +54,7 @@
       "severity": "high",
       "description": "The mail API key falls back to a literal committed to source when the environment variable is unset.",
       "snippet": "mp_Zr8Qk1VnT5yXb3LdG7sHw2CfJ9aEu4Po",
+      "test": "test_bug_mail_key_falls_back_to_a_literal",
       "also_accept": []
     },
     {
@@ -63,6 +66,7 @@
       "severity": "critical",
       "description": "The recipient is placed in a mail command line that runs with shell=True. The domain check in the view only covers the part after the last @.",
       "snippet": "shell=True",
+      "test": "test_bug_recipient_local_part_reaches_a_shell_command",
       "also_accept": [
         {
           "file": "evals/targets/notes_portal/views/profile.py",
@@ -81,6 +85,7 @@
       "severity": "high",
       "description": "render_error embeds the message into HTML unescaped, and the file download view passes the request's name into it.",
       "snippet": "<p>{message}</p>",
+      "test": "test_bug_error_page_reflects_the_requested_name_raw",
       "also_accept": [
         {
           "file": "evals/targets/notes_portal/views/files.py",

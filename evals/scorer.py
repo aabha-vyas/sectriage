@@ -38,6 +38,7 @@ class TruthItem(Span):
     severity: Severity
     description: str
     snippet: str
+    test: str | None = None  # behavioral test showing the bug is real
     also_accept: list[Location] = Field(default_factory=list)
 
     @property

@@ -10,6 +10,7 @@
       "severity": "high",
       "description": "The sort query parameter flows from the invoices route through db.list_invoices into build_order_clause, which interpolates it into ORDER BY unvalidated.",
       "snippet": "ORDER BY {sort}",
+      "test": "test_bug_sqli_order_clause_takes_an_expression",
       "also_accept": [
         {
           "file": "evals/targets/ledger_api/routes/invoices.py",
@@ -34,6 +35,7 @@
       "severity": "high",
       "description": "A username stored through a parameterized insert is later read back and interpolated into a WHERE clause in the customer report (second-order SQL injection).",
       "snippet": "WHERE customer = '{user['username']}'",
+      "test": "test_bug_sqli_second_order_stored_name_changes_a_later_query",
       "also_accept": []
     },
     {
@@ -45,6 +47,7 @@
       "severity": "critical",
       "description": "The archive name from the request is placed in a tar command line that runs with shell=True.",
       "snippet": "shell=True",
+      "test": "test_bug_command_line_is_built_from_the_name_and_run_in_a_shell",
       "also_accept": [
         {
           "file": "evals/targets/ledger_api/routes/archive.py",
@@ -63,6 +66,7 @@
       "severity": "high",
       "description": "The attachment name from the query string is joined to the attachments directory with no containment check, then served.",
       "snippet": "config.ATTACHMENTS_DIR / str(invoice_id) / name",
+      "test": "test_bug_attachment_name_can_leave_the_attachments_directory",
       "also_accept": [
         {
           "file": "evals/targets/ledger_api/routes/attachments.py",
@@ -81,6 +85,7 @@
       "severity": "high",
       "description": "The webhook signing key is a literal committed to source.",
       "snippet": "wh_Qm4Zr7xT2vBn9LkD5sHc8YfJ3aWe6UpG",
+      "test": "test_bug_signing_key_is_a_source_literal_that_forges_requests",
       "also_accept": []
     }
   ]

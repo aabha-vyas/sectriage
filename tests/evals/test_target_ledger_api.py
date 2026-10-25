@@ -134,6 +134,25 @@ def test_dec_checked_sort_rejects_an_expression(client, sql_log):
     assert r.status_code == 200 and ids(r) == [2, 1]
 
 
+def test_dec_clause_concat_is_safe_only_because_the_caller_checks(client):
+    root = Path(db.__file__).parents[1]
+    calls = []
+    for path in root.rglob("*.py"):
+        for node in ast.walk(ast.parse(path.read_text())):
+            if (
+                isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Attribute)
+                and node.func.attr == "list_for_customer"
+            ):
+                calls.append(path.name)
+    assert calls == ["invoices.py"]  # one caller, and it validates (next assertion)
+    r = client.get("/customers/acme/invoices", query_string={"sort": PAYLOAD_ORDER})
+    assert r.status_code == 400
+    # the helper itself does no checking: this is why the caller's check matters
+    rows = db.list_for_customer("acme", f" ORDER BY {PAYLOAD_ORDER}")
+    assert [row["id"] for row in rows] == [1, 2]
+
+
 def test_dec_customer_name_in_path_is_bound(client, sql_log):
     r = client.get("/customers/" + PAYLOAD_QUOTE.replace("/", "") + "/invoices")
     assert ids(r) == []
