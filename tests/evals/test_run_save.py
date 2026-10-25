@@ -225,3 +225,30 @@ def test_deliberate_regression_after_update_baseline_exits_nonzero(tmp_path):
     assert main(["--findings", str(good), "--baseline", str(b)]) == 0
     assert main(["--findings", str(bad), "--baseline", str(b)]) == 1
     json.loads(b.read_text())
+
+
+def test_summary_records_max_steps_from_the_run_metas(tmp_path):
+    out = tmp_path / "f.json"
+    write_run(out, [], max_steps=12)
+    dest = tmp_path / "s.json"
+    assert main(["--findings", str(out), "--save", str(dest)]) == 0
+    assert load_summary(dest).max_steps == 12
+
+
+def test_repeat_rejects_runs_that_disagree_on_max_steps(tmp_path, capsys):
+    count = {"n": 0}
+
+    def runner(target, out):
+        count["n"] += 1
+        write_run(out, [], max_steps=10 * count["n"])
+
+    assert main(["--repeat", "2"], runner=runner, **_dirs(tmp_path)) == 2
+    assert "disagree on max_steps" in capsys.readouterr().err
+
+
+def test_gate_says_not_comparable_for_a_different_step_budget(tmp_path, capsys):
+    base, cur = tmp_path / "base.json", tmp_path / "cur.json"
+    save(make_baseline(make_summary(target="vuln_app", max_steps=30)), base)
+    save(make_summary(target="vuln_app", max_steps=15), cur)
+    assert main(["--summary-file", str(cur), "--baseline", str(base)]) == 3
+    assert "max_steps" in capsys.readouterr().out

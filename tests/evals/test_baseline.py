@@ -129,6 +129,8 @@ def test_latency_is_not_gated():
         ("sandbox", "docker"),
         ("tools", ["read_file", "search_code", "run_command"]),
         ("target", "other_target"),
+        ("max_steps", 15),
+        ("max_steps", None),
     ],
 )
 def test_setup_mismatch_is_not_comparable_and_skips_metric_checks(field, value):

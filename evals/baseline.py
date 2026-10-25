@@ -19,6 +19,7 @@ _SETUP_FIELDS = (
     "prompt_version",
     "sandbox",
     "tools",
+    "max_steps",
 )
 _EPS = 1e-9
 

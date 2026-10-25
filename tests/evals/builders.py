@@ -46,6 +46,7 @@ def make_summary(runs: list[RunSummary] | None = None, **overrides) -> Summary:
         "sandbox": "none",
         "tools": ["read_file", "search_code"],
         "max_cost_usd": 0.5,
+        "max_steps": 30,
         "n_runs": len(runs),
         "runs": runs,
         "aggregate": aggregate(runs, CLEAN),
@@ -79,6 +80,7 @@ def write_run(
     model: str = "m",
     prompt_version: str = "p1",
     seconds: int = 10,
+    max_steps: int = 30,
 ) -> None:
     """Write findings.json plus the .meta.json and .events.jsonl that src.agent.run writes."""
     import json
@@ -94,6 +96,7 @@ def write_run(
         "stop_reason": stop,
         "steps": 8,
         "cost_usd": cost,
+        "max_steps": max_steps,
         "max_cost_usd": 0.5,
         "error": None,
     }

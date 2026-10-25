@@ -97,6 +97,7 @@ class Summary(_Model):
     sandbox: str
     tools: list[str]
     max_cost_usd: float
+    max_steps: int | None = None  # step budget per run; None = not recorded
     n_runs: int
     runs: list[RunSummary]
     aggregate: Aggregate

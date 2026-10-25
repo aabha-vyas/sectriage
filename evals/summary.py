@@ -20,7 +20,13 @@ TUNED_TARGETS = {"vuln_app"}
 BASELINES_DIR = Path(__file__).parent / "baselines"
 
 # Fields that must agree across the runs of one summary.
-_SAME_ACROSS_RUNS = ("model", "prompt_version", "price_verified_on", "max_cost_usd")
+_SAME_ACROSS_RUNS = (
+    "model",
+    "prompt_version",
+    "price_verified_on",
+    "max_cost_usd",
+    "max_steps",
+)
 
 
 def sidecar(findings_path: Path, suffix: str) -> Path:
@@ -87,6 +93,7 @@ def build_summary(
         sandbox=SANDBOX,
         tools=TOOLS,
         max_cost_usd=float(meta["max_cost_usd"]),
+        max_steps=meta.get("max_steps"),
         n_runs=len(runs),
         runs=runs,
         aggregate=aggregate(runs, CLEAN_STOPS),
