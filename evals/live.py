@@ -29,6 +29,7 @@ from src.agent.sandbox_protocol import SandboxFactory
 
 MODEL = "claude-haiku-5-5"  # pinned; not the CLI default, so a changed default cannot slip in
 PER_RUN_CAP_USD = DEFAULT_MAX_COST_USD
+DEFAULT_MAX_STEPS = 30  # the agent CLI's own default; it is a setup field of every summary
 DEFAULT_BUDGET_USD = 2.00
 SPEND_FILE = "spend.json"
 KEY_NAME = "ANTHROPIC_API_KEY"
@@ -172,6 +173,7 @@ def make_runner(
     *,
     budget_usd: float = DEFAULT_BUDGET_USD,
     max_cost_usd: float = PER_RUN_CAP_USD,
+    max_steps: int = DEFAULT_MAX_STEPS,
     root: Path = DEFAULT_RUNS_DIR,
     preflight_check: Callable[[], None] = preflight,
     model_factory: Callable[[], ModelClient] | None = None,
@@ -183,8 +185,8 @@ def make_runner(
     `model_factory`, `sandbox_factory` and `agent_main` are injection points for tests; by
     default the CLI builds the Anthropic client itself and the sandbox is the CLI default.
     """
-    if budget_usd <= 0 or max_cost_usd <= 0:
-        raise ValueError("--budget-usd and the per-run cap must be positive")
+    if budget_usd <= 0 or max_cost_usd <= 0 or max_steps < 1:
+        raise ValueError("--budget-usd, --max-cost-usd and --max-steps must be positive")
     preflight_check()
     if agent_main is None:
         from src.agent.run import main as agent_main
@@ -209,6 +211,8 @@ def make_runner(
             MODEL,
             "--max-cost-usd",
             str(max_cost_usd),
+            "--max-steps",
+            str(max_steps),
         ]
         kwargs: dict = {}
         if model_factory:

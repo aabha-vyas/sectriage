@@ -310,3 +310,55 @@ def test_key_problems_names_what_is_missing_without_printing_a_value(tmp_path):
 def test_non_positive_caps_exit_2(tmp_path, capsys, flag):
     assert main(["--repeat", "1", flag, "0"], **dirs(tmp_path)) == 2
     assert "positive" in capsys.readouterr().err
+
+
+def test_agent_gets_the_step_budget(tmp_path):
+    seen = []
+    runner = live.make_runner(
+        root=tmp_path / "runs",
+        max_steps=12,
+        preflight_check=lambda: None,
+        agent_main=lambda argv, **kw: seen.append(argv) or 0,
+    )
+    runner("vuln_app", tmp_path / "runs" / "r" / "findings.json")
+    assert seen[0][seen[0].index("--max-steps") + 1] == "12"
+
+
+def test_the_step_budget_defaults_to_the_agent_default(tmp_path):
+    seen = []
+    runner = live.make_runner(
+        root=tmp_path / "runs",
+        preflight_check=lambda: None,
+        agent_main=lambda argv, **kw: seen.append(argv) or 0,
+    )
+    runner("vuln_app", tmp_path / "runs" / "r" / "findings.json")
+    assert seen[0][seen[0].index("--max-steps") + 1] == "30"
+
+
+def test_evals_run_flags_reach_the_live_runner_and_the_summary_records_the_steps(
+    tmp_path, monkeypatch
+):
+    made = {}
+    real_make_runner = live.make_runner
+
+    def fake_make_runner(**kw):
+        made.update(kw)
+        return real_make_runner(
+            root=kw["root"],
+            max_steps=kw["max_steps"],
+            preflight_check=lambda: None,
+            model_factory=scripted(ok_run()),
+            sandbox_factory=lambda task: FakeSandbox(),
+        )
+
+    monkeypatch.setattr(live, "make_runner", fake_make_runner)
+    dest = tmp_path / "s.json"
+    argv = ["--repeat", "1", "--max-steps", "7", "--budget-usd", "1.5", "--max-cost-usd", "0.25"]
+    assert main([*argv, "--save", str(dest)], **dirs(tmp_path)) == 0
+    assert (made["max_steps"], made["budget_usd"], made["max_cost_usd"]) == (7, 1.5, 0.25)
+    assert load_summary(dest).max_steps == 7
+
+
+def test_non_positive_max_steps_exits_2(tmp_path, capsys):
+    assert main(["--repeat", "1", "--max-steps", "0"], **dirs(tmp_path)) == 2
+    assert "positive" in capsys.readouterr().err

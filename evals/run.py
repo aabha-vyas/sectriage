@@ -155,7 +155,10 @@ def _default_runner(args: argparse.Namespace, runs_dir: Path) -> Runner:
     from evals import live  # lazy: pulls in the agent and the Anthropic SDK
 
     return live.make_runner(
-        budget_usd=args.budget_usd, max_cost_usd=args.max_cost_usd, root=runs_dir
+        budget_usd=args.budget_usd,
+        max_cost_usd=args.max_cost_usd,
+        max_steps=args.max_steps,
+        root=runs_dir,
     )
 
 
@@ -212,6 +215,13 @@ def main(
         type=float,
         default=0.50,
         help="--repeat: cap per run (default: 0.50)",
+    )
+    parser.add_argument(
+        "--max-steps",
+        type=int,
+        default=30,
+        help="--repeat: step budget per run (default: 30); a setup field, so summaries with "
+        "different values are not comparable",
     )
     parser.add_argument(
         "--update-baseline",
