@@ -8,7 +8,7 @@ from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 RESULTS_DIR = Path(__file__).parent / "results"
 
 
@@ -63,6 +63,7 @@ class Aggregate(_Model):
     precision: Stat | None
     recall: Stat | None
     f1: Stat | None
+    fp: Stat | None
     cost_usd: Stat | None
     cost_per_finding_usd: Stat | None
     latency_call_p50_s: Stat | None
@@ -71,7 +72,8 @@ class Aggregate(_Model):
     steps: Stat | None
     recall_by_class: dict[str, ClassStat]
     patch_pass_rate: None = None  # not measured in this lane; always null
-    clean_runs: int
+    clean_runs: int  # runs whose stop reason is clean (finish / max_steps)
+    fp_free_runs: int  # runs with zero false positives
 
 
 class Tolerances(_Model):
@@ -87,6 +89,7 @@ class Summary(_Model):
     created_at: str
     git_sha: str | None = None
     target: str
+    n_truth: int | None = None  # ground-truth finding count when scored; 0 = clean target
     tuned: bool = False
     model: str
     prompt_version: str
@@ -127,6 +130,7 @@ def aggregate(runs: list[RunSummary], clean_stops: set[str]) -> Aggregate:
         precision=stat([r.precision for r in runs]),
         recall=stat([r.recall for r in runs]),
         f1=stat([r.f1 for r in runs]),
+        fp=stat([float(r.fp) for r in runs]),
         cost_usd=stat([r.cost_usd for r in runs]),
         cost_per_finding_usd=stat([r.cost_per_finding_usd for r in runs]),
         latency_call_p50_s=stat([r.latency_s.call_p50 for r in runs]),
@@ -135,6 +139,7 @@ def aggregate(runs: list[RunSummary], clean_stops: set[str]) -> Aggregate:
         steps=stat([float(r.steps) for r in runs]),
         recall_by_class=by_class,
         clean_runs=sum(r.stop_reason in clean_stops for r in runs),
+        fp_free_runs=sum(r.fp == 0 for r in runs),
     )
 
 

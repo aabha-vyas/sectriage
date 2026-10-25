@@ -12,23 +12,37 @@ GROUND_TRUTH_DIR = Path(__file__).parent / "ground_truth"
 MAX_SPAN_LINES = 25  # wider predictions never match; they count as false positives
 
 
-class TruthItem(BaseModel):
+class Span(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    id: str
     file: str
     line_start: int = Field(ge=1)
     line_end: int = Field(ge=1)
+
+    @model_validator(mode="after")
+    def _range_ordered(self) -> "Span":
+        if self.line_end < self.line_start:
+            raise ValueError("line_end must be >= line_start")
+        return self
+
+
+class Location(Span):
+    """An alternate place a correct report may cite, such as the entry point of a taint path."""
+
+    snippet: str
+
+
+class TruthItem(Span):
+    id: str
     vuln_class: VulnClass
     severity: Severity
     description: str
     snippet: str
+    also_accept: list[Location] = Field(default_factory=list)
 
-    @model_validator(mode="after")
-    def _range_ordered(self) -> "TruthItem":
-        if self.line_end < self.line_start:
-            raise ValueError("line_end must be >= line_start")
-        return self
+    @property
+    def spans(self) -> list[Span]:
+        return [self, *self.also_accept]
 
 
 class GroundTruth(BaseModel):
@@ -60,7 +74,11 @@ def dedupe(findings: list[Finding]) -> list[Finding]:
 
 
 def _overlaps(a: Finding, t: TruthItem) -> bool:
-    return a.file == t.file and a.line_start <= t.line_end and t.line_start <= a.line_end
+    """True if the prediction overlaps the primary location or any also_accept location."""
+    return any(
+        a.file == s.file and a.line_start <= s.line_end and s.line_start <= a.line_end
+        for s in t.spans
+    )
 
 
 def _ratio(num: int, den: int) -> float | None:

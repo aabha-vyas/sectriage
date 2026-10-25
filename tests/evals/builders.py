@@ -16,13 +16,14 @@ def make_run(
     by_class: dict[str, float | None] | None = None,
     stop: str = "finish",
     wall: float = 5.0,
+    fp: int = 0,
 ) -> RunSummary:
     return RunSummary(
         task_id="t-1",
         stop_reason=stop,
         steps=8,
         tp=5,
-        fp=0,
+        fp=fp,
         fn=0,
         precision=precision,
         recall=recall,
@@ -66,4 +67,39 @@ def make_event(*, model_output: str | None = "[]", latency_ms: int = 0, tokens_o
         model_output=model_output,
         latency_ms=latency_ms,
         tokens_out=tokens_out,
+    )
+
+
+def write_run(
+    out,
+    findings,
+    *,
+    stop: str = "finish",
+    cost: float = 0.01,
+    model: str = "m",
+    prompt_version: str = "p1",
+    seconds: int = 10,
+) -> None:
+    """Write findings.json plus the .meta.json and .events.jsonl that src.agent.run writes."""
+    import json
+    from datetime import timedelta
+
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps([f.model_dump(mode="json") for f in findings]))
+    meta = {
+        "task_id": "t-1",
+        "model": model,
+        "prompt_version": prompt_version,
+        "price_verified_on": "2026-10-24",
+        "stop_reason": stop,
+        "steps": 8,
+        "cost_usd": cost,
+        "max_cost_usd": 0.5,
+        "error": None,
+    }
+    out.with_name(f"{out.stem}.meta.json").write_text(json.dumps(meta))
+    first = make_event(latency_ms=1000, tokens_out=50)
+    last = first.model_copy(update={"step": 2, "ts": first.ts + timedelta(seconds=seconds)})
+    out.with_name(f"{out.stem}.events.jsonl").write_text(
+        first.to_jsonl() + "\n" + last.to_jsonl() + "\n"
     )
