@@ -7,7 +7,7 @@ from .. import config
 
 
 def make_archive(name: str) -> Path:
-    target = config.ARCHIVE_DIR / f"{name}.tgz"
+    target = config.ARCHIVE_DIR / f"{Path(name).name}.tgz"
     cmd = f"tar czf {target} -C {config.ATTACHMENTS_DIR} ."
     subprocess.run(cmd, shell=True, check=True)
     return target

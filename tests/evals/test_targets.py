@@ -99,7 +99,6 @@ def test_per_target_sizes_and_clean_target_is_empty():
 def test_every_cross_file_finding_has_alternates_in_another_file():
     cross = {
         "ledger-sqli-order",
-        "ledger-sqli-second-order",
         "ledger-cmdi-archive",
         "ledger-path-attachment",
         "notes-xss-stored",
@@ -112,6 +111,8 @@ def test_every_cross_file_finding_has_alternates_in_another_file():
         t = by_id[item_id]
         assert t.also_accept, item_id
         assert any(a.file != t.file for a in t.also_accept), item_id
+    # single-location findings carry no alternates; ledger-sqli-second-order is one on purpose:
+    # a report at the storage site (users.py) is a false positive, the injection is in reports.py
     for item_id in set(by_id) - cross:  # single-file findings carry no alternates
         assert by_id[item_id].also_accept == [], item_id
 

@@ -34,14 +34,7 @@
       "severity": "high",
       "description": "A username stored through a parameterized insert is later read back and interpolated into a WHERE clause in the customer report (second-order SQL injection).",
       "snippet": "WHERE customer = '{user['username']}'",
-      "also_accept": [
-        {
-          "file": "evals/targets/ledger_api/routes/users.py",
-          "line_start": 13,
-          "line_end": 13,
-          "snippet": "db.add_user(payload[\"username\"]"
-        }
-      ]
+      "also_accept": []
     },
     {
       "id": "ledger-cmdi-archive",

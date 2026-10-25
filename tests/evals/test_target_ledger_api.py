@@ -76,6 +76,16 @@ def test_bug_command_line_is_built_from_the_name_and_run_in_a_shell(client, monk
     assert seen["shell"] is True and isinstance(seen["cmd"], str) and "x; id" in seen["cmd"]
 
 
+@pytest.mark.parametrize("name", ["../../outside", "/tmp/outside", "a/b/outside", "../outside"])
+def test_archive_name_is_reduced_to_its_last_component(name, monkeypatch):
+    from evals.targets.ledger_api.services import shell
+
+    monkeypatch.setattr(subprocess, "run", lambda *a, **k: subprocess.CompletedProcess(a, 0))
+    target = shell.make_archive(name)
+    assert target == config.ARCHIVE_DIR / "outside.tgz"
+    assert target.resolve().is_relative_to(config.ARCHIVE_DIR.resolve())
+
+
 def test_bug_attachment_name_can_leave_the_attachments_directory(client, tmp_path, monkeypatch):
     (tmp_path / "attachments" / "1").mkdir(parents=True)
     (tmp_path / "outside.txt").write_text("outside")
