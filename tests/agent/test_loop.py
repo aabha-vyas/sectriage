@@ -206,6 +206,17 @@ def test_events_carry_tokens_cost_and_tool(target: Path, tmp_path: Path):
     assert json.loads(first.model_output or "")[0]["name"] == "read_file"
 
 
+def test_events_after_a_model_call_carry_its_stop_reason(target: Path, tmp_path: Path):
+    run = go(target, tmp_path, [say(), refusal()])
+    assert [e.stop_reason for e in run.events] == ["end_turn", "refusal"]
+    assert all(e.model_output is not None for e in run.events)
+
+
+def test_event_without_a_model_response_has_no_stop_reason(target: Path, tmp_path: Path):
+    run = go(target, tmp_path, [finish()])
+    assert [e.stop_reason for e in run.events] == ["tool_use", None]
+
+
 def test_control_tools_log_events_with_no_tool(target: Path, tmp_path: Path):
     run = go(target, tmp_path, [report(), finish()])
     assert [e.tool for e in run.events] == [None, None, None]

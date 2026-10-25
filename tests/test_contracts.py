@@ -126,6 +126,16 @@ def test_old_event_log_without_new_fields_still_loads():
     assert ev.trace_id is None
 
 
+def test_old_event_log_without_stop_reason_loads_with_none():
+    line = '{"task_id":"t","step":1,"ts":"2026-01-01T00:00:00Z","model_output":"[]"}'
+    assert Event.from_jsonl(line).stop_reason is None
+
+
+def test_event_stop_reason_round_trips():
+    ev = Event(task_id="t", step=1, ts=datetime(2026, 1, 1, tzinfo=UTC), stop_reason="tool_use")
+    assert Event.from_jsonl(ev.to_jsonl()).stop_reason == "tool_use"
+
+
 def test_tool_args_cover_every_tool_name():
     from src.contracts import TOOL_ARGS
 

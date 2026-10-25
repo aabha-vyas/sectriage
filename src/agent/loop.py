@@ -19,7 +19,7 @@ from pydantic import ValidationError
 
 from src.agent.events import EventLog
 from src.agent.memory import FindingStore, ScratchMemory, call_key, make_finding_id
-from src.agent.model import ModelClient, ModelError, ModelResponse
+from src.agent.model import ModelClient, ModelError, ModelResponse, Usage
 from src.agent.paths import PathError, relative_posix, resolve_root, safe_resolve_file
 from src.agent.prompts import (
     CONTROL_TOOLS,
@@ -67,6 +67,7 @@ class RunResult:
     steps: int = 0
     cost_usd: float = 0.0
     error: str | None = None
+    usage: Usage = field(default_factory=Usage)
 
     @property
     def clean(self) -> bool:
@@ -163,6 +164,7 @@ class _Run:
         self.messages: list[dict[str, Any]] = []
         self.steps = 0
         self.cost = 0.0
+        self.usage = Usage()
 
     def remaining_s(self) -> float:
         return self.task.timeout_s - (self.clock() - self.started)
@@ -175,6 +177,7 @@ class _Run:
             steps=self.steps,
             cost_usd=self.cost,
             error=error,
+            usage=self.usage,
         )
 
     # events -------------------------------------------------------------------------------
@@ -187,6 +190,7 @@ class _Run:
             ts=datetime.now(UTC),
             model=self.model.model,
             model_output=json.dumps(resp.content) if resp else None,
+            stop_reason=resp.stop_reason if resp else None,
             tokens_in=(usage.input_tokens + usage.cache_write_tokens + usage.cache_read_tokens)
             if usage
             else 0,
@@ -309,6 +313,7 @@ class _Run:
             except ModelError as e:
                 return self.stop(StopReason.MODEL_ERROR, error=str(e))
             self.cost += resp.cost_usd
+            self.usage += resp.usage
 
             if self.remaining_s() <= 0:  # the call ran past the deadline: log it, run no tool
                 return self.stop(StopReason.TIMEOUT, resp)

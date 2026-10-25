@@ -168,6 +168,7 @@ class Event(_Model):
     call_id: str | None = None
     model: str | None = None
     model_output: str | None = None
+    stop_reason: str | None = None
     tool: ToolName | None = None
     args: dict[str, Any] = Field(default_factory=dict)
     result: ToolResult | None = None

@@ -1,6 +1,7 @@
 import json
 import os
 import re
+from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
@@ -9,7 +10,7 @@ import pytest
 from evals import run as eval_run
 from src.agent import run as cli
 from src.agent.events import read_events
-from src.agent.model import ModelError
+from src.agent.model import ModelError, Usage
 from tests.agent.fakes import FakeClock, FakeModel, say, tool_call
 
 VULN_APP = cli.TARGETS_DIR / "vuln_app"
@@ -86,6 +87,31 @@ def test_meta_and_default_events_file(tmp_path: Path):
     events = read_events(tmp_path / "findings.events.jsonl")
     assert [e.step for e in events] == [1, 2, 3]
     assert {e.task_id for e in events} == {m["task_id"]}
+
+
+def test_meta_has_token_totals(tmp_path: Path):
+    usage = Usage(input_tokens=5, output_tokens=7, cache_write_tokens=11, cache_read_tokens=13)
+    script = [replace(report(SECRET), usage=usage), replace(finish(), usage=usage)]
+    assert main(tmp_path, FakeModel(script)) == 0
+    assert meta(tmp_path)["tokens"] == {
+        "input": 10,
+        "output": 14,
+        "cache_read": 26,
+        "cache_write": 22,
+    }
+
+
+def test_meta_tokens_default_to_zero_cache(tmp_path: Path):
+    assert main(tmp_path, FakeModel([finish()])) == 0
+    tokens = meta(tmp_path)["tokens"]
+    assert set(tokens) == {"input", "output", "cache_read", "cache_write"}
+    assert tokens == {"input": 100, "output": 10, "cache_read": 0, "cache_write": 0}
+
+
+def test_check_target_is_public():
+    assert cli.check_target(VULN_APP) == VULN_APP.resolve()
+    with pytest.raises(ValueError):
+        cli.check_target(cli.TARGETS_DIR)
 
 
 def test_explicit_events_path_and_fresh_log_each_run(tmp_path: Path):

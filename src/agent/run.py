@@ -31,7 +31,7 @@ def _fail(msg: str) -> int:
     return 2
 
 
-def _check_target(raw: Path) -> Path:
+def check_target(raw: Path) -> Path:
     """Resolve `raw` and require a directory strictly inside `evals/targets/`."""
     try:
         target = raw.resolve(strict=True)
@@ -78,6 +78,12 @@ def _write_outputs(out: Path, meta_path: Path, task: Task, result: RunResult, ma
         "steps": result.steps,
         "findings": len(findings),
         "cost_usd": round(result.cost_usd, 6),
+        "tokens": {
+            "input": result.usage.input_tokens,
+            "output": result.usage.output_tokens,
+            "cache_read": result.usage.cache_read_tokens,
+            "cache_write": result.usage.cache_write_tokens,
+        },
         "max_steps": task.max_steps,
         "timeout_s": task.timeout_s,
         "max_cost_usd": max_cost,
@@ -112,7 +118,7 @@ def main(
     logging.basicConfig(level=logging.WARNING, format="%(levelname)s: %(message)s")
 
     try:
-        target = _check_target(args.target)
+        target = check_target(args.target)
     except ValueError as e:
         return _fail(str(e))
     out = args.out
