@@ -12,3 +12,7 @@
 - Only the five classes (sqli, xss, path_traversal, command_injection, hardcoded_secret) are scored. Anything else (missing auth, CSRF, error handling, resource limits) is out of scope: `VulnClass` has no value for it, so it cannot be reported as a `Finding`, and the scorer never sees it or counts it for or against. Tools whose output is converted for scoring (see the static scanner) drop such results before scoring. A finding in a scored class that matches no ground-truth item is a false positive.
 - `fp_free_runs` counts runs with zero false positives. It is not `clean_runs`, which counts runs that stopped cleanly (finish or max_steps).
 - A target with no ground-truth bugs (`n_truth == 0`) has no recall; the gate checks mean false positives per run and `fp_free_runs`.
+
+## Frozen targets
+
+- `evals/targets/{ledger_api,notes_portal,static_builder}` are frozen (`evals/targets.lock.json`, checked by `tests/evals/test_targets_frozen.py`). Do not change a file there without telling the user first; after an approved change run `python -m evals.frozen --update` and say so in the commit. Scored runs on a changed target are not comparable with earlier ones.

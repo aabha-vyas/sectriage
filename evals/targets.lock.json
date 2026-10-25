@@ -1,0 +1,42 @@
+{
+  "frozen": [
+    "ledger_api",
+    "notes_portal",
+    "static_builder"
+  ],
+  "files": {
+    "evals/targets/ledger_api/app.py": "420694e64a6f6f9f73cc00d57782f23ff9ffe83e368396e4ca29745cac1ace72",
+    "evals/targets/ledger_api/archives/q1-summary.txt": "fb58d09d20ac7ee4e52d14c351d9ef120171e2dfff4a42a1a12cc2df88061324",
+    "evals/targets/ledger_api/attachments/1/receipt.txt": "51e5589f68473067bb0d0f7988921651227e58f1fd77249bfd4108afa74512f5",
+    "evals/targets/ledger_api/config.py": "4d28d9a4155ac0753b6e5983a2d9abad8b8cdd38c8d40a020b592b07984509e1",
+    "evals/targets/ledger_api/routes/archive.py": "202feb0da1d7c560d3682d6199ce2aa571d01a6c905275dc4accd653cd62d3d6",
+    "evals/targets/ledger_api/routes/attachments.py": "48002381a1d856d918ff8ace83be0c33c5a2c49ede92ae69c674fab2c94f2958",
+    "evals/targets/ledger_api/routes/invoices.py": "b603391de372d22f7de32150a894aaff13b31a3174ff9588d41b8fef82cbfc40",
+    "evals/targets/ledger_api/routes/reports.py": "517b6bf7858ee3738d5aec90cc944e9215dc2a95ca83d21fc406235f38620af8",
+    "evals/targets/ledger_api/routes/users.py": "e3f8aa074e5eab3283f3c1077f1777bec0617ba9cc34c306767256644818a48e",
+    "evals/targets/ledger_api/routes/webhooks.py": "369a2d0f5af846deb44ec7bad4b4db1ac917527de4655b8bc395d282bac41121",
+    "evals/targets/ledger_api/services/db.py": "454ca977bef41554b6028124ff10cf484bf5f6547548686bcbdcd951b25f9fdf",
+    "evals/targets/ledger_api/services/queries.py": "1fbce696b9513fbc7a3f348012ae907634be2b0f604ae83c90633c478ecafe00",
+    "evals/targets/ledger_api/services/shell.py": "0888afbe26827b6b2398ade13a1da07b27671919e72f5c2b3c6cdadcd4b4b053",
+    "evals/targets/ledger_api/services/storage.py": "4fd0d3eb936e3e564a7a2896ae67469231e9febcb871fa107949a81077287cdf",
+    "evals/targets/notes_portal/app.py": "426c4a4807bcef93e0cf8105494f999e6577ef0adc2edbb433a5a10ae5f85e66",
+    "evals/targets/notes_portal/exports/notes.csv": "94052efcc66236db03ef3de244c3ea8815f6979757475feb0253cdd6685c3564",
+    "evals/targets/notes_portal/integrations/mailer.py": "bd787a90932314498ff3d14d4914ede25a4e770d221eeacb424c69392e6bb48d",
+    "evals/targets/notes_portal/settings.py": "4882d1eba8e1c0ca7f0150116f3b3671c19a9198b3ff60ca0692884803e879d5",
+    "evals/targets/notes_portal/storage.py": "08d964a992bd5705be644a70123de866d7b6b746741c13d78638f677f7fbf73d",
+    "evals/targets/notes_portal/templates/comments.html": "dd3b475132493f1a1c64045379af3fd66f575c4e8a3f4bb025a4744ba1f039cf",
+    "evals/targets/notes_portal/templates/profile.html": "3f914bd005da436093e4b62221d4962c169facd0cf9dfc0827581997fb732343",
+    "evals/targets/notes_portal/templates/test_message.txt": "57ee8d04a4827c9e19a48e6c3e756809380950af140308006b0d99ded8b6f9d6",
+    "evals/targets/notes_portal/uploads/welcome.txt": "7be3bfbb6d3a2f04b7783e002294a72c02ea6d485b5d7faa352f058819fbd940",
+    "evals/targets/notes_portal/views/comments.py": "3478b888afe4962fde8a119cd083561015d8b2c0b34c39943e0d2c8e5d7b9753",
+    "evals/targets/notes_portal/views/errors.py": "23ebf30b73edc40cd5121eec2f1e27a85ffccc483df28afda5617fc4503bd30e",
+    "evals/targets/notes_portal/views/files.py": "17db77e9654e5d239bebf97f28a2870099c3a419c073ceb116e48f9b6213de07",
+    "evals/targets/notes_portal/views/profile.py": "7f201279ee125bed274472d2b40e98d795cf2a658d1a0d783bdb3573d6cdc59f",
+    "evals/targets/static_builder/build.py": "44258411b235908a52b415bcf06a5063370de174df07595ac77747dad36e9bff",
+    "evals/targets/static_builder/cache.py": "854bd0e78b2cc61abb4e7a8a4edecc2281fa0d3fa19b65186cf87ded29e1baf1",
+    "evals/targets/static_builder/config.py": "fe2bafe89f9fe626b3a2edbedb371c0383ebb7f09187739221ed7ba93a8098de",
+    "evals/targets/static_builder/content/index.txt": "2f36d7ced2cd20941b19fd6ab5dfb77db9686cb1965db290e7ef8ac5239bea6c",
+    "evals/targets/static_builder/plugins.py": "d6ffcb8aabd14062cf7bfbf37cae8a06cb1be8347cb13ba9452b6e7a290d3d8b",
+    "evals/targets/static_builder/render.py": "33dae348115718c7d62d70be00588cf13cd07f6048486a1f64eb42c07393ae7a"
+  }
+}
