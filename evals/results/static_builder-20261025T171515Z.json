@@ -1,0 +1,196 @@
+{
+  "schema_version": 2,
+  "created_at": "2026-10-25T17:15:15Z",
+  "git_sha": "33d5482",
+  "target": "static_builder",
+  "n_truth": 0,
+  "tuned": false,
+  "model": "claude-haiku-5-5",
+  "prompt_version": "v1",
+  "price_verified_on": "2026-10-24",
+  "sandbox": "none",
+  "tools": [
+    "read_file",
+    "search_code"
+  ],
+  "max_cost_usd": 0.5,
+  "n_runs": 5,
+  "runs": [
+    {
+      "task_id": "static_builder-e089c4f0",
+      "stop_reason": "finish",
+      "steps": 12,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "recall_by_class": {},
+      "cost_usd": 0.002002,
+      "cost_per_finding_usd": null,
+      "tokens": {
+        "input": null,
+        "output": 1781,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "latency_s": {
+        "wall": 14.410046,
+        "call_p50": 0.911,
+        "call_p95": 2.9909999999999988
+      },
+      "error": null
+    },
+    {
+      "task_id": "static_builder-2b65aa31",
+      "stop_reason": "finish",
+      "steps": 11,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "recall_by_class": {},
+      "cost_usd": 0.00158,
+      "cost_per_finding_usd": null,
+      "tokens": {
+        "input": null,
+        "output": 1307,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "latency_s": {
+        "wall": 11.981505,
+        "call_p50": 0.809,
+        "call_p95": 2.8735
+      },
+      "error": null
+    },
+    {
+      "task_id": "static_builder-32bf15ed",
+      "stop_reason": "finish",
+      "steps": 8,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "recall_by_class": {},
+      "cost_usd": 0.000992,
+      "cost_per_finding_usd": null,
+      "tokens": {
+        "input": null,
+        "output": 1179,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "latency_s": {
+        "wall": 8.532718,
+        "call_p50": 0.8029999999999999,
+        "call_p95": 3.1987500000000013
+      },
+      "error": null
+    },
+    {
+      "task_id": "static_builder-8889383e",
+      "stop_reason": "finish",
+      "steps": 12,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "recall_by_class": {},
+      "cost_usd": 0.001834,
+      "cost_per_finding_usd": null,
+      "tokens": {
+        "input": null,
+        "output": 1637,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "latency_s": {
+        "wall": 14.158817,
+        "call_p50": 0.8615,
+        "call_p95": 3.192849999999999
+      },
+      "error": null
+    },
+    {
+      "task_id": "static_builder-9b522f1f",
+      "stop_reason": "finish",
+      "steps": 9,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "recall_by_class": {},
+      "cost_usd": 0.001203,
+      "cost_per_finding_usd": null,
+      "tokens": {
+        "input": null,
+        "output": 1508,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "latency_s": {
+        "wall": 12.184138,
+        "call_p50": 0.922,
+        "call_p95": 4.262999999999998
+      },
+      "error": null
+    }
+  ],
+  "aggregate": {
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "fp": {
+      "mean": 0.0,
+      "stdev": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "cost_usd": {
+      "mean": 0.0015222,
+      "stdev": 0.0004224241943828501,
+      "min": 0.000992,
+      "max": 0.002002
+    },
+    "cost_per_finding_usd": null,
+    "latency_call_p50_s": {
+      "mean": 0.8613,
+      "stdev": 0.05542743003243072,
+      "min": 0.8029999999999999,
+      "max": 0.922
+    },
+    "latency_call_p95_s": {
+      "mean": 3.3038199999999995,
+      "stdev": 0.5537174308706556,
+      "min": 2.8735,
+      "max": 4.262999999999998
+    },
+    "latency_wall_s": {
+      "mean": 12.2534448,
+      "stdev": 2.3560525548023543,
+      "min": 8.532718,
+      "max": 14.410046
+    },
+    "steps": {
+      "mean": 10.4,
+      "stdev": 1.816590212458495,
+      "min": 8.0,
+      "max": 12.0
+    },
+    "recall_by_class": {},
+    "patch_pass_rate": null,
+    "clean_runs": 5,
+    "fp_free_runs": 5
+  }
+}

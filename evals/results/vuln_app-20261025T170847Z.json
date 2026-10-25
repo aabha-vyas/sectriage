@@ -1,0 +1,267 @@
+{
+  "schema_version": 2,
+  "created_at": "2026-10-25T17:08:47Z",
+  "git_sha": "33d5482",
+  "target": "vuln_app",
+  "n_truth": 5,
+  "tuned": true,
+  "model": "claude-haiku-5-5",
+  "prompt_version": "v1",
+  "price_verified_on": "2026-10-24",
+  "sandbox": "none",
+  "tools": [
+    "read_file",
+    "search_code"
+  ],
+  "max_cost_usd": 0.5,
+  "n_runs": 5,
+  "runs": [
+    {
+      "task_id": "vuln_app-b467a7af",
+      "stop_reason": "finish",
+      "steps": 9,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "sqli": 1.0,
+        "xss": 1.0
+      },
+      "cost_usd": 0.002609,
+      "cost_per_finding_usd": 0.0005218,
+      "tokens": {
+        "input": null,
+        "output": 2967,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "latency_s": {
+        "wall": 15.301564,
+        "call_p50": 1.672,
+        "call_p95": 3.085
+      },
+      "error": null
+    },
+    {
+      "task_id": "vuln_app-74966564",
+      "stop_reason": "finish",
+      "steps": 8,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "sqli": 1.0,
+        "xss": 1.0
+      },
+      "cost_usd": 0.002329,
+      "cost_per_finding_usd": 0.0004658,
+      "tokens": {
+        "input": null,
+        "output": 2996,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "latency_s": {
+        "wall": 15.805506,
+        "call_p50": 2.1975000000000002,
+        "call_p95": 3.1923000000000004
+      },
+      "error": null
+    },
+    {
+      "task_id": "vuln_app-64842f97",
+      "stop_reason": "finish",
+      "steps": 8,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "sqli": 1.0,
+        "xss": 1.0
+      },
+      "cost_usd": 0.001939,
+      "cost_per_finding_usd": 0.0003878,
+      "tokens": {
+        "input": null,
+        "output": 2636,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "latency_s": {
+        "wall": 12.798671,
+        "call_p50": 1.9175,
+        "call_p95": 2.5490000000000004
+      },
+      "error": null
+    },
+    {
+      "task_id": "vuln_app-feb850d6",
+      "stop_reason": "finish",
+      "steps": 8,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "sqli": 1.0,
+        "xss": 1.0
+      },
+      "cost_usd": 0.001947,
+      "cost_per_finding_usd": 0.0003894,
+      "tokens": {
+        "input": null,
+        "output": 2650,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "latency_s": {
+        "wall": 13.819901,
+        "call_p50": 1.813,
+        "call_p95": 2.9681500000000005
+      },
+      "error": null
+    },
+    {
+      "task_id": "vuln_app-ac907525",
+      "stop_reason": "finish",
+      "steps": 9,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "sqli": 1.0,
+        "xss": 1.0
+      },
+      "cost_usd": 0.002293,
+      "cost_per_finding_usd": 0.0004586,
+      "tokens": {
+        "input": null,
+        "output": 3174,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "latency_s": {
+        "wall": 15.339546,
+        "call_p50": 2.037,
+        "call_p95": 2.901
+      },
+      "error": null
+    }
+  ],
+  "aggregate": {
+    "precision": {
+      "mean": 1.0,
+      "stdev": 0.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "recall": {
+      "mean": 1.0,
+      "stdev": 0.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "f1": {
+      "mean": 1.0,
+      "stdev": 0.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "fp": {
+      "mean": 0.0,
+      "stdev": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "cost_usd": {
+      "mean": 0.0022234,
+      "stdev": 0.00028370900584930335,
+      "min": 0.001939,
+      "max": 0.002609
+    },
+    "cost_per_finding_usd": {
+      "mean": 0.00044468,
+      "stdev": 5.674180116986066e-05,
+      "min": 0.0003878,
+      "max": 0.0005218
+    },
+    "latency_call_p50_s": {
+      "mean": 1.9274,
+      "stdev": 0.2021018926185503,
+      "min": 1.672,
+      "max": 2.1975000000000002
+    },
+    "latency_call_p95_s": {
+      "mean": 2.93909,
+      "stdev": 0.24488291692153616,
+      "min": 2.5490000000000004,
+      "max": 3.1923000000000004
+    },
+    "latency_wall_s": {
+      "mean": 14.613037600000002,
+      "stdev": 1.2594498570031678,
+      "min": 12.798671,
+      "max": 15.805506
+    },
+    "steps": {
+      "mean": 8.4,
+      "stdev": 0.5477225575051661,
+      "min": 8.0,
+      "max": 9.0
+    },
+    "recall_by_class": {
+      "command_injection": {
+        "mean": 1.0,
+        "min": 1.0
+      },
+      "hardcoded_secret": {
+        "mean": 1.0,
+        "min": 1.0
+      },
+      "path_traversal": {
+        "mean": 1.0,
+        "min": 1.0
+      },
+      "sqli": {
+        "mean": 1.0,
+        "min": 1.0
+      },
+      "xss": {
+        "mean": 1.0,
+        "min": 1.0
+      }
+    },
+    "patch_pass_rate": null,
+    "clean_runs": 5,
+    "fp_free_runs": 5
+  }
+}
