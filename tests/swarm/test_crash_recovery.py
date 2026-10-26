@@ -17,6 +17,7 @@ import pytest
 from src.agent.events import read_events
 from src.agent.loop import REPO_ROOT
 from src.swarm.queue import QueueCounts, TaskState
+from src.swarm.replay import replay_task
 from src.swarm.sqlite_queue import SqliteQueue
 from src.swarm.worker import WorkerPool
 from tests.swarm.fakes import HANG_MARKER_ENV, expected_finding_ids, make_task
@@ -97,6 +98,12 @@ def assert_completed_once(queue: SqliteQueue, tmp_path: Path) -> None:
     # The killed attempt's partial log stays, apart, and has no terminal event.
     killed = read_events(tmp_path / "events" / f"{TASK_ID}.1.jsonl")
     assert killed and not any(e.result_summary.startswith("stop:") for e in killed)
+
+    # Replay uses the winning .2 log, never the killed attempt's partial .1 log.
+    report = replay_task(queue, TASK_ID)
+    assert report.identical and report.replayed_stop == "finish"
+    assert [e.step for e in read_events(report.log_path)] == [e.step for e in winning]
+    assert report.log_path == tmp_path / "events" / "replay" / f"{TASK_ID}.jsonl"
 
 
 def test_killing_the_only_worker_then_starting_another_completes_the_task_once(
