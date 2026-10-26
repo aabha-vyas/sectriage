@@ -9,6 +9,7 @@ Times come from an injected `clock` (default `time.time`: processes must agree, 
 """
 
 import json
+import random
 import sqlite3
 import threading
 import time
@@ -101,10 +102,28 @@ class SqliteQueue:
             conn = sqlite3.connect(self.path, isolation_level=None)
             conn.row_factory = sqlite3.Row
             conn.execute(f"PRAGMA busy_timeout = {BUSY_TIMEOUT_MS}")
-            conn.execute("PRAGMA journal_mode = WAL")
+            self._enable_wal(conn)
             conn.execute("PRAGMA synchronous = FULL")
             self._local.conn = conn
         return conn
+
+    @staticmethod
+    def _enable_wal(conn: sqlite3.Connection) -> None:
+        """Switch a fresh file to WAL, retrying while other openers hold it.
+
+        Converting a rollback-journal file needs an exclusive lock, and SQLite can fail that with
+        "database is locked" without running the busy handler. Once the file is WAL this is a
+        no-op, so only the first openers of a new file ever retry.
+        """
+        deadline = time.monotonic() + BUSY_TIMEOUT_MS / 1000
+        while True:
+            try:
+                conn.execute("PRAGMA journal_mode = WAL")
+                return
+            except sqlite3.OperationalError as e:
+                if "locked" not in str(e) or time.monotonic() >= deadline:
+                    raise
+                time.sleep(random.uniform(0.01, 0.05))
 
     def close(self) -> None:
         """Close the calling thread's connection."""

@@ -384,3 +384,31 @@ def test_threads_claim_each_task_exactly_once(tmp_path: Path):
     final = SqliteQueue(path)
     assert final.status() == QueueCounts(done=n_tasks)
     assert result_rows(final) == n_tasks
+
+
+def test_many_threads_opening_a_fresh_file_together_all_get_wal(tmp_path: Path):
+    """Regression: converting a new file to WAL can fail "database is locked" without waiting."""
+    n_threads, n_files = 8, 20
+    errors: list[BaseException] = []
+
+    def opener(path: Path, barrier: threading.Barrier) -> None:
+        try:
+            barrier.wait()
+            SqliteQueue(path).close()
+        except BaseException as e:  # noqa: BLE001 - surfaced by the assertion below
+            errors.append(e)
+
+    for n in range(n_files):
+        path = tmp_path / f"fresh{n}.db"
+        barrier = threading.Barrier(n_threads)
+        threads = [
+            threading.Thread(target=opener, args=(path, barrier), daemon=True)
+            for _ in range(n_threads)
+        ]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join(timeout=30)
+        with closing(sqlite3.connect(path)) as db:
+            assert db.execute("PRAGMA journal_mode").fetchone()[0] == "wal"
+    assert not errors
