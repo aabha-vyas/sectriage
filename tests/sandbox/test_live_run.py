@@ -259,3 +259,94 @@ def test_the_real_factory_runs_a_command_through_the_runner(
         now=NOW,
     )
     assert code == live_run.EXIT_OK
+
+
+# --- --confirm-in-sandbox: the goal override ------------------------------------------------
+
+
+class GoalSpy(FakeAgent):
+    """A FakeAgent that records `src.agent.run.GOAL` as it was when called."""
+
+    def __init__(self, *runs: list[Event], **kw: Any) -> None:
+        super().__init__(*runs, **kw)
+        self.goals: list[str] = []
+
+    def __call__(self, argv: list[str], **kwargs: Any) -> int:
+        from src.agent import run as agent_run
+
+        self.goals.append(agent_run.GOAL)
+        return super().__call__(argv, **kwargs)
+
+
+def test_confirm_in_sandbox_sets_the_goal_for_the_call_and_restores_it(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    from src.agent import run as agent_run
+
+    original = agent_run.GOAL
+    agent = GoalSpy([run_command_event()])
+    assert run(agent, tmp_path, "--confirm-in-sandbox", "--attempts", "1") == live_run.EXIT_OK
+    assert agent.goals == [live_run.CONFIRM_GOAL]
+    assert agent_run.GOAL == original
+    assert "attempt 1/1 [instructed to use run_command]:" in capsys.readouterr().out
+    goal_file = next((tmp_path / "evals").glob("*/run1/goal.txt"))
+    text = goal_file.read_text()
+    assert text.startswith("instructed to use run_command") and live_run.CONFIRM_GOAL in text
+
+
+def test_the_goal_is_restored_when_the_agent_raises(tmp_path: Path) -> None:
+    from src.agent import run as agent_run
+
+    original = agent_run.GOAL
+
+    def boom(argv: list[str], **_: Any) -> int:
+        assert agent_run.GOAL == live_run.CONFIRM_GOAL
+        raise ValueError("boom")
+
+    code = live_run.main(
+        ["--confirm-in-sandbox", "--attempts", "1"],
+        preflight_check=lambda: None,
+        agent_main=boom,
+        sandbox_factory=FakeFactory(),
+        runs_dir=tmp_path / "evals",
+        now=NOW,
+    )
+    assert code == live_run.EXIT_ERROR
+    assert agent_run.GOAL == original
+
+
+def test_without_the_flag_the_goal_and_the_label_are_untouched(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    from src.agent import run as agent_run
+
+    agent = GoalSpy([run_command_event()])
+    assert run(agent, tmp_path) == live_run.EXIT_OK
+    assert agent.goals == [agent_run.GOAL] and agent_run.GOAL != live_run.CONFIRM_GOAL
+    assert "instructed" not in capsys.readouterr().out
+    assert list((tmp_path / "evals").glob("*/run1/goal.txt")) == []
+
+
+def test_the_confirm_goal_asks_for_run_command_and_stays_inside_the_rules() -> None:
+    goal = live_run.CONFIRM_GOAL
+    assert "run_command" in goal and "report_finding" in goal and "finish" in goal
+    assert "read-only" in goal and "no network" in goal
+
+
+def test_agent_main_still_reads_the_module_goal_at_call_time() -> None:
+    """The override only works while `src.agent.run.main` uses the global `GOAL` in its body.
+
+    If lane/agent adds a `--goal` flag or a default argument, this fails and live_run should use it.
+    """
+    import ast
+    import inspect
+
+    from src.agent import run as agent_run
+
+    func = ast.parse(inspect.getsource(agent_run.main)).body[0]
+    assert isinstance(func, ast.FunctionDef)
+    assert "goal" not in {a.arg for a in func.args.args + func.args.kwonlyargs}
+    loaded = {
+        n.id for n in ast.walk(func) if isinstance(n, ast.Name) and isinstance(n.ctx, ast.Load)
+    }
+    assert "GOAL" in loaded
