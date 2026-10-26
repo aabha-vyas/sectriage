@@ -20,7 +20,7 @@ Status: agent lane merged. `run_task` accepts a `SandboxFactory`, but no CLI pas
 
 ## Done when
 - pytest, ruff check, ruff format --check and scripts/verify.sh are clean, and the docker tests pass locally.
-- A live agent run on ledger_api (vuln_app until lane/evals merges) with the sandbox on uses `run_command` successfully, via `src/sandbox/live_run.py`; `evals.run --summary` shows no regression. Targets usually have no `.git`, so `git` is checked by the docker tests only (`git --version`, `git init` in `/scratch`).
+- A live agent run on ledger_api with the sandbox on uses `run_command` successfully, via `src/sandbox/live_run.py`; `evals.run --summary` shows no regression. Targets usually have no `.git`, so `git` is checked by the docker tests only (`git --version`, `git init` in `/scratch`).
 
 ## Follow-ups (not this lane)
 1. After both lanes merge, a small commit: `evals/live.py` accepts `--sandbox docker` (passes `create_sandbox`) and its summary records `sandbox="docker"` instead of the hardcoded `"none"`. Then retire `live_run.py`.
@@ -31,7 +31,7 @@ Status: agent lane merged. `run_task` accepts a `SandboxFactory`, but no CLI pas
 `src/sandbox/{__init__,docker_sandbox,config,live_run}.py`, `src/sandbox/Dockerfile`, `tests/sandbox/{__init__,conftest,test_config,test_docker_sandbox}.py`.
 
 ## Decisions and open questions
-- Decided: keep `git` as specified but verify it in the docker tests only (targets usually have no `.git`, so a live run answers "not a repository"); no semgrep in the image; no image build on first use; limits as above; ledger_api falls back to vuln_app.
+- Decided: keep `git` as specified but verify it in the docker tests only (targets usually have no `.git`, so a live run answers "not a repository"); no semgrep in the image; no image build on first use; limits as above; the live run uses ledger_api (lane/evals has merged).
 - Open: none.
 
 ## Risks
