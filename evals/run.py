@@ -10,7 +10,7 @@ Exit codes:
   0  ok (per-class recall warnings do not change this)
   1  regression against the baseline
   2  usage or I/O error
-  3  not comparable (model, PROMPT_VERSION, sandbox, tools, target or schema differ)
+  3  not comparable (model, PROMPT_VERSION, sandbox, tools, max_steps, target or schema differ)
 """
 
 import argparse
@@ -22,7 +22,15 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from evals.baseline import compare
-from evals.results import RESULTS_DIR, Stat, Summary, load_baseline, load_summary, save
+from evals.results import (
+    DEFAULT_MAX_STEPS,
+    RESULTS_DIR,
+    Stat,
+    Summary,
+    load_baseline,
+    load_summary,
+    save,
+)
 from evals.scorer import Score, load_ground_truth, score
 from evals.summary import BASELINES_DIR, build_summary, default_save_path, to_baseline
 from src.contracts import Finding
@@ -70,6 +78,7 @@ def render_summary(summary: Summary) -> str:
         ("model", summary.model),
         ("prompt_version", summary.prompt_version),
         ("sandbox / tools", f"{summary.sandbox} / {','.join(summary.tools)}"),
+        ("max_steps", "n/a" if summary.max_steps is None else str(summary.max_steps)),
         ("runs (clean)", f"{summary.n_runs} ({a.clean_runs})"),
         ("precision", _fmt_stat(a.precision)),
         ("recall", _fmt_stat(a.recall)),
@@ -219,9 +228,9 @@ def main(
     parser.add_argument(
         "--max-steps",
         type=int,
-        default=30,
-        help="--repeat: step budget per run (default: 30); a setup field, so summaries with "
-        "different values are not comparable",
+        default=DEFAULT_MAX_STEPS,
+        help=f"--repeat: step budget per run (default: {DEFAULT_MAX_STEPS}); a setup field, so "
+        "summaries with different values are not comparable",
     )
     parser.add_argument(
         "--update-baseline",

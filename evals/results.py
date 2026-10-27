@@ -9,6 +9,7 @@ from pathlib import Path
 from pydantic import BaseModel, ConfigDict
 
 SCHEMA_VERSION = 2
+DEFAULT_MAX_STEPS = 30  # the agent CLI's own default; it is a setup field of every summary
 RESULTS_DIR = Path(__file__).parent / "results"
 
 

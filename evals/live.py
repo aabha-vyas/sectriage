@@ -22,6 +22,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from evals import frozen
+from evals.results import DEFAULT_MAX_STEPS
 from evals.run import DEFAULT_RUNS_DIR, Runner
 from src.agent.loop import DEFAULT_MAX_COST_USD, StopReason
 from src.agent.model import ModelClient
@@ -29,7 +30,6 @@ from src.agent.sandbox_protocol import SandboxFactory
 
 MODEL = "claude-haiku-5-5"  # pinned; not the CLI default, so a changed default cannot slip in
 PER_RUN_CAP_USD = DEFAULT_MAX_COST_USD
-DEFAULT_MAX_STEPS = 30  # the agent CLI's own default; it is a setup field of every summary
 DEFAULT_BUDGET_USD = 2.00
 SPEND_FILE = "spend.json"
 KEY_NAME = "ANTHROPIC_API_KEY"

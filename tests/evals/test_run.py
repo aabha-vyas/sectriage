@@ -2,8 +2,9 @@ import json
 
 import pytest
 
+from evals import live, results
 from evals.results import save
-from evals.run import main, render
+from evals.run import main, render, render_summary
 from evals.scorer import Score, load_ground_truth
 from tests.evals.builders import make_baseline, make_run, make_summary
 from tests.fixtures import oracle_findings
@@ -140,3 +141,27 @@ def test_summary_file_with_findings_exits_2(tmp_path, capsys):
     save(make_summary(), path)
     assert main(["--summary-file", str(path), "--findings", str(path)]) == 2
     assert capsys.readouterr().err.startswith("error:")
+
+
+@pytest.mark.parametrize(("max_steps", "shown"), [(30, "30"), (7, "7"), (None, "n/a")])
+def test_render_summary_shows_the_step_budget(max_steps, shown):
+    lines = render_summary(make_summary(max_steps=max_steps)).splitlines()
+    assert any(line.split() == ["max_steps", shown] for line in lines)
+
+
+def test_default_max_steps_has_one_home_and_reaches_the_live_runner(tmp_path, monkeypatch):
+    assert live.DEFAULT_MAX_STEPS is results.DEFAULT_MAX_STEPS == 30
+    made = {}
+
+    def fake_make_runner(**kw):
+        made.update(kw)
+
+        def runner(target, out):
+            raise RuntimeError("stop after capturing the flags")
+
+        return runner
+
+    monkeypatch.setattr(live, "make_runner", fake_make_runner)
+    dirs = {k: tmp_path / k for k in ("results_dir", "baselines_dir", "runs_dir")}
+    assert main(["--repeat", "1"], **dirs) == 2
+    assert made["max_steps"] == results.DEFAULT_MAX_STEPS
