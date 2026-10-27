@@ -16,7 +16,7 @@ SANDBOX = "none"
 TOOLS = ["read_file", "search_code"]
 CLEAN_STOPS = {"finish", "max_steps"}
 # The prompt was developed against these; their numbers never go on a resume.
-TUNED_TARGETS = {"vuln_app"}
+TUNED_TARGETS = {"vuln_app", "ledger_api"}  # ledger_api: prompt v2 was written from its v1 sweep
 BASELINES_DIR = Path(__file__).parent / "baselines"
 
 # Fields that must agree across the runs of one summary.

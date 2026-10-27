@@ -8,7 +8,7 @@ from typing import Any
 
 from src.contracts import Severity, VulnClass
 
-PROMPT_VERSION = "v1"
+PROMPT_VERSION = "v2"
 
 REPORT_FINDING = "report_finding"
 FINISH = "finish"
@@ -32,9 +32,12 @@ How to work:
 3. Report a finding with {REPORT_FINDING} only when you verified it in the code: the file exists, \
 the line numbers point at the vulnerable lines, and you can explain how untrusted input reaches \
 them. Do not report hypothetical issues, style problems, or things you did not read.
-4. Report each vulnerability once. If {REPORT_FINDING} answers "duplicate", it is already recorded.
-5. Call one tool per step. If a tool returns an error, read the message and fix the call.
-6. When you have reported everything you verified, call {FINISH}.
+4. Report each finding as soon as you have verified it, before you read anything else. Do not hold \
+verified findings back to report them together at the end: your step budget is limited, and a \
+finding that is not reported when the run ends is lost. Each {REPORT_FINDING} call uses one step.
+5. Report each vulnerability once. If {REPORT_FINDING} answers "duplicate", it is already recorded.
+6. Call one tool per step. If a tool returns an error, read the message and fix the call.
+7. When you have reported everything you verified, call {FINISH}.
 
 Severity guide: critical = remote code or data takeover with no preconditions; high = serious \
 impact that needs little effort; medium = limited impact or real preconditions; low = minor.
