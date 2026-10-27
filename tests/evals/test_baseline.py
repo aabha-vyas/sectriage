@@ -1,6 +1,8 @@
 import pytest
 
 from evals.baseline import compare
+from evals.results import load_baseline
+from evals.summary import BASELINES_DIR
 from tests.evals.builders import make_baseline, make_run, make_summary
 
 
@@ -139,3 +141,18 @@ def test_setup_mismatch_is_not_comparable_and_skips_metric_checks(field, value):
     c = compare(cur, base)
     assert len(c.not_comparable) == 1 and field in c.not_comparable[0]
     assert c.regressions == [] and c.warnings == []
+
+
+def test_committed_v1_baseline_is_not_comparable_with_a_v2_summary():
+    base = load_baseline(BASELINES_DIR / "ledger_api.json")
+    assert base.prompt_version == "v1"
+    summary = base.model_copy(update={"prompt_version": "v2"})
+    c = compare(summary, base)
+    assert len(c.not_comparable) == 1 and "prompt_version" in c.not_comparable[0]
+    assert not c.regressions and not c.warnings
+
+
+def test_tuned_flag_does_not_affect_comparability():
+    base = make_baseline(make_summary())
+    c = compare(make_summary(tuned=True), base)
+    assert not c.not_comparable and not c.regressions
