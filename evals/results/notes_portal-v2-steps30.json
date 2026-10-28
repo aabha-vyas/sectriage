@@ -1,0 +1,259 @@
+{
+  "schema_version": 2,
+  "created_at": "2026-10-27T22:35:13Z",
+  "git_sha": "cda8804",
+  "target": "notes_portal",
+  "n_truth": 5,
+  "tuned": false,
+  "model": "claude-haiku-5-5",
+  "prompt_version": "v2",
+  "price_verified_on": "2026-10-24",
+  "sandbox": "none",
+  "tools": [
+    "read_file",
+    "search_code"
+  ],
+  "max_cost_usd": 0.05,
+  "max_steps": 30,
+  "n_runs": 5,
+  "runs": [
+    {
+      "task_id": "notes_portal-514c1903",
+      "stop_reason": "finish",
+      "steps": 19,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "xss": 1.0
+      },
+      "cost_usd": 0.005008,
+      "cost_per_finding_usd": 0.0010016,
+      "tokens": {
+        "input": 40,
+        "output": 5479,
+        "cache_read": 117979,
+        "cache_write": 8674
+      },
+      "latency_s": {
+        "wall": 30.454527,
+        "call_p50": 1.472,
+        "call_p95": 3.6303000000000005
+      },
+      "error": null
+    },
+    {
+      "task_id": "notes_portal-c6d2f3af",
+      "stop_reason": "finish",
+      "steps": 16,
+      "tp": 4,
+      "fp": 0,
+      "fn": 1,
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1": 0.888888888888889,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "xss": 0.5
+      },
+      "cost_usd": 0.00348,
+      "cost_per_finding_usd": 0.00087,
+      "tokens": {
+        "input": 34,
+        "output": 3906,
+        "cache_read": 86258,
+        "cache_write": 5285
+      },
+      "latency_s": {
+        "wall": 22.625836,
+        "call_p50": 1.0755,
+        "call_p95": 3.6015
+      },
+      "error": null
+    },
+    {
+      "task_id": "notes_portal-7a96241e",
+      "stop_reason": "finish",
+      "steps": 14,
+      "tp": 4,
+      "fp": 0,
+      "fn": 1,
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1": 0.888888888888889,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "xss": 0.5
+      },
+      "cost_usd": 0.003451,
+      "cost_per_finding_usd": 0.00086275,
+      "tokens": {
+        "input": 30,
+        "output": 4133,
+        "cache_read": 70816,
+        "cache_write": 5384
+      },
+      "latency_s": {
+        "wall": 22.221924,
+        "call_p50": 1.0495,
+        "call_p95": 4.04465
+      },
+      "error": null
+    },
+    {
+      "task_id": "notes_portal-64b16904",
+      "stop_reason": "finish",
+      "steps": 18,
+      "tp": 4,
+      "fp": 0,
+      "fn": 1,
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1": 0.888888888888889,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 0.0,
+        "xss": 1.0
+      },
+      "cost_usd": 0.004229,
+      "cost_per_finding_usd": 0.00105725,
+      "tokens": {
+        "input": 38,
+        "output": 4755,
+        "cache_read": 107141,
+        "cache_write": 6209
+      },
+      "latency_s": {
+        "wall": 27.036154,
+        "call_p50": 0.8645,
+        "call_p95": 4.3108
+      },
+      "error": null
+    },
+    {
+      "task_id": "notes_portal-fc592ad9",
+      "stop_reason": "finish",
+      "steps": 16,
+      "tp": 4,
+      "fp": 0,
+      "fn": 1,
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1": 0.888888888888889,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 0.0,
+        "xss": 1.0
+      },
+      "cost_usd": 0.003585,
+      "cost_per_finding_usd": 0.00089625,
+      "tokens": {
+        "input": 34,
+        "output": 4064,
+        "cache_read": 85503,
+        "cache_write": 5557
+      },
+      "latency_s": {
+        "wall": 24.301354,
+        "call_p50": 1.0335,
+        "call_p95": 3.40825
+      },
+      "error": null
+    }
+  ],
+  "aggregate": {
+    "precision": {
+      "mean": 1.0,
+      "stdev": 0.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "recall": {
+      "mean": 0.8400000000000001,
+      "stdev": 0.08944271909999157,
+      "min": 0.8,
+      "max": 1.0
+    },
+    "f1": {
+      "mean": 0.9111111111111111,
+      "stdev": 0.0496903994999953,
+      "min": 0.888888888888889,
+      "max": 1.0
+    },
+    "fp": {
+      "mean": 0.0,
+      "stdev": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "cost_usd": {
+      "mean": 0.0039506,
+      "stdev": 0.0006708817332436471,
+      "min": 0.003451,
+      "max": 0.005008
+    },
+    "cost_per_finding_usd": {
+      "mean": 0.0009375700000000001,
+      "stdev": 8.702617853266913e-05,
+      "min": 0.00086275,
+      "max": 0.00105725
+    },
+    "latency_call_p50_s": {
+      "mean": 1.099,
+      "stdev": 0.22439474147136332,
+      "min": 0.8645,
+      "max": 1.472
+    },
+    "latency_call_p95_s": {
+      "mean": 3.7991,
+      "stdev": 0.3682508027825602,
+      "min": 3.40825,
+      "max": 4.3108
+    },
+    "latency_wall_s": {
+      "mean": 25.327959,
+      "stdev": 3.4352026712782164,
+      "min": 22.221924,
+      "max": 30.454527
+    },
+    "steps": {
+      "mean": 16.6,
+      "stdev": 1.949358868961793,
+      "min": 14.0,
+      "max": 19.0
+    },
+    "recall_by_class": {
+      "command_injection": {
+        "mean": 1.0,
+        "min": 1.0
+      },
+      "hardcoded_secret": {
+        "mean": 1.0,
+        "min": 1.0
+      },
+      "path_traversal": {
+        "mean": 0.6,
+        "min": 0.0
+      },
+      "xss": {
+        "mean": 0.8,
+        "min": 0.5
+      }
+    },
+    "patch_pass_rate": null,
+    "clean_runs": 5,
+    "fp_free_runs": 5
+  }
+}

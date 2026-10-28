@@ -252,3 +252,12 @@ def test_gate_says_not_comparable_for_a_different_step_budget(tmp_path, capsys):
     save(make_summary(target="vuln_app", max_steps=15), cur)
     assert main(["--summary-file", str(cur), "--baseline", str(base)]) == 3
     assert "max_steps" in capsys.readouterr().out
+
+
+def test_ledger_api_summaries_are_marked_tuned_but_held_out_targets_are_not(tmp_path):
+    for target, tuned in [("ledger_api", True), ("notes_portal", False), ("static_builder", False)]:
+        out = tmp_path / target / "f.json"
+        write_run(out, [])
+        dest = tmp_path / f"{target}.json"
+        assert main(["--findings", str(out), "--target", target, "--save", str(dest)]) == 0
+        assert load_summary(dest).tuned is tuned

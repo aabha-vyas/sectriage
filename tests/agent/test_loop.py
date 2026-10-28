@@ -433,6 +433,15 @@ def test_wrap_up_note_appears_only_when_two_steps_remain(target: Path, tmp_path:
     assert has_note == [False, False, True, False]
 
 
+def test_findings_reported_before_the_limit_survive_a_max_steps_stop(target: Path, tmp_path: Path):
+    second = {"file": "big.txt", "line_start": 10, "line_end": 10, "vuln_class": "sqli"}
+    run = go(target, tmp_path, [search(0), report(), search(1), report(**second)], max_steps=4)
+    assert run.result.stop_reason is StopReason.MAX_STEPS
+    assert len(run.result.findings) == 2
+    reported = [e.step for e in run.events if "vuln_class" in (e.args or {})]
+    assert reported == [2, 4]
+
+
 def test_nonzero_temperature_is_ignored_with_a_warning(
     target: Path, tmp_path: Path, caplog: pytest.LogCaptureFixture
 ):

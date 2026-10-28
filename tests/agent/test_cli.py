@@ -11,6 +11,7 @@ from evals import run as eval_run
 from src.agent import run as cli
 from src.agent.events import read_events
 from src.agent.model import ModelError, Usage
+from src.agent.prompts import PROMPT_VERSION
 from tests.agent.fakes import FakeClock, FakeModel, say, tool_call
 
 VULN_APP = cli.TARGETS_DIR / "vuln_app"
@@ -78,7 +79,7 @@ def test_meta_and_default_events_file(tmp_path: Path):
     assert m["stop_reason"] == "finish"
     assert m["steps"] == 2 and m["findings"] == 1
     assert m["model"] == "claude-haiku-5-5"
-    assert m["prompt_version"] == "v1"
+    assert m["prompt_version"] == PROMPT_VERSION
     assert m["price_verified_on"]
     assert m["max_steps"] == 30 and m["timeout_s"] == 600 and m["max_cost_usd"] == 0.5
     assert m["cost_usd"] == pytest.approx(0.01)

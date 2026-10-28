@@ -1,0 +1,259 @@
+{
+  "schema_version": 2,
+  "created_at": "2026-10-27T20:34:49Z",
+  "git_sha": "e9bd3e9",
+  "target": "ledger_api",
+  "n_truth": 5,
+  "tuned": true,
+  "model": "claude-haiku-5-5",
+  "prompt_version": "v2",
+  "price_verified_on": "2026-10-24",
+  "sandbox": "none",
+  "tools": [
+    "read_file",
+    "search_code"
+  ],
+  "max_cost_usd": 0.05,
+  "max_steps": 30,
+  "n_runs": 5,
+  "runs": [
+    {
+      "task_id": "ledger_api-9c3505ff",
+      "stop_reason": "finish",
+      "steps": 18,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "sqli": 1.0
+      },
+      "cost_usd": 0.004191,
+      "cost_per_finding_usd": 0.0008382000000000001,
+      "tokens": {
+        "input": 38,
+        "output": 4440,
+        "cache_read": 121397,
+        "cache_write": 6026
+      },
+      "latency_s": {
+        "wall": 26.525283,
+        "call_p50": 1.149,
+        "call_p95": 3.2065999999999995
+      },
+      "error": null
+    },
+    {
+      "task_id": "ledger_api-7c58fd7a",
+      "stop_reason": "finish",
+      "steps": 18,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "sqli": 1.0
+      },
+      "cost_usd": 0.004102,
+      "cost_per_finding_usd": 0.0008204,
+      "tokens": {
+        "input": 38,
+        "output": 4353,
+        "cache_read": 119273,
+        "cache_write": 5828
+      },
+      "latency_s": {
+        "wall": 26.222121,
+        "call_p50": 0.927,
+        "call_p95": 3.0922999999999985
+      },
+      "error": null
+    },
+    {
+      "task_id": "ledger_api-17b959e8",
+      "stop_reason": "finish",
+      "steps": 19,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "sqli": 1.0
+      },
+      "cost_usd": 0.004572,
+      "cost_per_finding_usd": 0.0009143999999999999,
+      "tokens": {
+        "input": 40,
+        "output": 4775,
+        "cache_read": 132951,
+        "cache_write": 6810
+      },
+      "latency_s": {
+        "wall": 28.372816,
+        "call_p50": 1.051,
+        "call_p95": 3.6078
+      },
+      "error": null
+    },
+    {
+      "task_id": "ledger_api-28ec33e6",
+      "stop_reason": "finish",
+      "steps": 19,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "sqli": 1.0
+      },
+      "cost_usd": 0.004004,
+      "cost_per_finding_usd": 0.0008008,
+      "tokens": {
+        "input": 40,
+        "output": 3993,
+        "cache_read": 127539,
+        "cache_write": 5825
+      },
+      "latency_s": {
+        "wall": 24.462222,
+        "call_p50": 0.918,
+        "call_p95": 2.8288
+      },
+      "error": null
+    },
+    {
+      "task_id": "ledger_api-f943e4a7",
+      "stop_reason": "finish",
+      "steps": 20,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "recall_by_class": {
+        "command_injection": 1.0,
+        "hardcoded_secret": 1.0,
+        "path_traversal": 1.0,
+        "sqli": 1.0
+      },
+      "cost_usd": 0.00436,
+      "cost_per_finding_usd": 0.000872,
+      "tokens": {
+        "input": 42,
+        "output": 4446,
+        "cache_read": 135299,
+        "cache_write": 6241
+      },
+      "latency_s": {
+        "wall": 26.785654,
+        "call_p50": 0.9035,
+        "call_p95": 3.0090000000000003
+      },
+      "error": null
+    }
+  ],
+  "aggregate": {
+    "precision": {
+      "mean": 1.0,
+      "stdev": 0.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "recall": {
+      "mean": 1.0,
+      "stdev": 0.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "f1": {
+      "mean": 1.0,
+      "stdev": 0.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "fp": {
+      "mean": 0.0,
+      "stdev": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "cost_usd": {
+      "mean": 0.004245799999999999,
+      "stdev": 0.00022449766145775328,
+      "min": 0.004004,
+      "max": 0.004572
+    },
+    "cost_per_finding_usd": {
+      "mean": 0.0008491600000000001,
+      "stdev": 4.489953229155063e-05,
+      "min": 0.0008008,
+      "max": 0.0009143999999999999
+    },
+    "latency_call_p50_s": {
+      "mean": 0.9897,
+      "stdev": 0.10681385677897788,
+      "min": 0.9035,
+      "max": 1.149
+    },
+    "latency_call_p95_s": {
+      "mean": 3.1489,
+      "stdev": 0.29118640078135516,
+      "min": 2.8288,
+      "max": 3.6078
+    },
+    "latency_wall_s": {
+      "mean": 26.4736192,
+      "stdev": 1.3978513324512374,
+      "min": 24.462222,
+      "max": 28.372816
+    },
+    "steps": {
+      "mean": 18.8,
+      "stdev": 0.8366600265340756,
+      "min": 18.0,
+      "max": 20.0
+    },
+    "recall_by_class": {
+      "command_injection": {
+        "mean": 1.0,
+        "min": 1.0
+      },
+      "hardcoded_secret": {
+        "mean": 1.0,
+        "min": 1.0
+      },
+      "path_traversal": {
+        "mean": 1.0,
+        "min": 1.0
+      },
+      "sqli": {
+        "mean": 1.0,
+        "min": 1.0
+      }
+    },
+    "patch_pass_rate": null,
+    "clean_runs": 5,
+    "fp_free_runs": 5
+  }
+}
