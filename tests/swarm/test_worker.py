@@ -407,3 +407,12 @@ def test_pool_of_three_drains_the_queue(
         result = queue.result(f"t{n}")
         assert result is not None and result.stop_reason == "finish"
         assert {f.finding_id for f in result.findings} == expected_finding_ids()
+
+
+def test_attempt_cost_skips_a_run_header(tmp_path: Path):
+    from src.agent.events import header_line
+    from tests.evals.builders import make_provenance
+
+    log = tmp_path / "t.1.jsonl"
+    log.write_text(header_line(make_provenance()) + "\n" + event_line(0.1) + "\n")
+    assert attempt_cost_usd(log) == pytest.approx(0.1)

@@ -21,6 +21,19 @@ _SETUP_FIELDS = (
     "tools",
     "max_steps",
 )
+# Inputs the model sees or the cost gate prices; compared only when both sides recorded them.
+_PROVENANCE_SETUP = (
+    "system_prompt_sha256",
+    "tool_schemas_sha256",
+    "target_sha256",
+    "price_table_version",
+    "effort",
+)
+# Recorded for context. A mismatch is a warning, never "not comparable". git_commit is left out
+# on purpose: it differs on every commit.
+_PROVENANCE_WATCH = ("anthropic_sdk_version", "max_tokens", "caching")
+# Schema 3 only adds provenance, so 2 and 3 are comparable; any other pair must match exactly.
+_SCHEMA_FAMILY = {2: 2, 3: 2}
 _EPS = 1e-9
 
 
@@ -57,12 +70,56 @@ def _clean_rate(s: Summary) -> float:
     return s.aggregate.clean_runs / max(s.n_runs, 1)
 
 
+def _short(v: object) -> object:
+    return v[:12] if isinstance(v, str) and len(v) == 64 else v  # sha256 hex
+
+
+def _minor(version: str) -> str:
+    return ".".join(version.split(".")[:2])
+
+
+def _compare_provenance(summary: Summary, baseline: Baseline, result: Comparison) -> None:
+    sp, bp = summary.provenance, baseline.provenance
+    if sp is None and bp is None:
+        return  # two legacy files: nothing to add to what the gate always did
+    if sp is None or bp is None:
+        absent = "summary" if sp is None else "baseline"
+        result.warnings.append(
+            f"provenance absent in {absent}: prompt, tool, target, price and effort "
+            "settings not compared"
+        )
+        return
+    for name in _PROVENANCE_SETUP:
+        a, b = getattr(sp, name), getattr(bp, name)
+        if a is not None and b is not None and a != b:
+            result.not_comparable.append(
+                f"provenance.{name}: {_short(a)!r} vs baseline {_short(b)!r}"
+            )
+    for name in _PROVENANCE_WATCH:
+        a, b = getattr(sp, name), getattr(bp, name)
+        if a is not None and b is not None and a != b:
+            result.warnings.append(f"provenance.{name}: {a!r} vs baseline {b!r}")
+    if _minor(sp.python_version) != _minor(bp.python_version):
+        result.warnings.append(
+            f"provenance.python_version: {sp.python_version} vs baseline {bp.python_version}"
+        )
+    if sp.git_dirty:
+        result.warnings.append("summary was recorded from a dirty working tree")
+    if bp.git_dirty:
+        result.warnings.append("baseline was recorded from a dirty working tree")
+
+
 def compare(summary: Summary, baseline: Baseline) -> Comparison:
     result = Comparison()
     for name in _SETUP_FIELDS:
         a, b = getattr(summary, name), getattr(baseline, name)
-        if a != b:
+        if name == "schema_version":
+            same = _SCHEMA_FAMILY.get(a, a) == _SCHEMA_FAMILY.get(b, b)
+        else:
+            same = a == b
+        if not same:
             result.not_comparable.append(f"{name}: {a!r} vs baseline {b!r}")
+    _compare_provenance(summary, baseline, result)
     if result.not_comparable:
         return result
 

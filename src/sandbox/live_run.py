@@ -39,6 +39,7 @@ from evals.live import (
     preflight,
 )
 from evals.run import DEFAULT_RUNS_DIR
+from src.agent.events import is_header
 from src.agent.sandbox_protocol import SandboxFactory, SandboxUnavailableError
 from src.contracts import Event, Task, ToolName
 from src.sandbox.docker_sandbox import create_sandbox
@@ -74,6 +75,8 @@ def command_stats(events_path: Path) -> CommandStats:
     try:
         lines = events_path.read_text().splitlines()
         for line in filter(None, lines):
+            if is_header(line):
+                continue
             event = Event.model_validate_json(line)
             if event.tool is not ToolName.RUN_COMMAND or event.result is None:
                 continue

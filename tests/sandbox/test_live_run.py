@@ -350,3 +350,15 @@ def test_agent_main_still_reads_the_module_goal_at_call_time() -> None:
         n.id for n in ast.walk(func) if isinstance(n, ast.Name) and isinstance(n.ctx, ast.Load)
     }
     assert "GOAL" in loaded
+
+
+def test_a_run_header_does_not_hide_the_run_command_steps(tmp_path: Path) -> None:
+    from src.agent.events import header_line
+    from tests.evals.builders import make_provenance
+
+    events = [run_command_event(ok=True)]
+    path = tmp_path / "events.jsonl"
+    path.write_text(
+        header_line(make_provenance()) + "\n" + "".join(e.model_dump_json() + "\n" for e in events)
+    )
+    assert live_run.command_stats(path) == live_run.CommandStats(total=1, ok=1, refused=0)

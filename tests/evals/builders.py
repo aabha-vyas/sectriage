@@ -3,9 +3,37 @@
 from datetime import UTC, datetime
 
 from evals.results import Baseline, Latency, RunSummary, Summary, Tokens, aggregate
+from src.agent.provenance import Provenance
 from src.contracts import Event
 
 CLEAN = {"finish", "max_steps"}
+
+
+def make_provenance(**overrides) -> Provenance:
+    fields = {
+        "model": "m",
+        "prompt_version": "p1",
+        "system_prompt_sha256": "a" * 64,
+        "tool_schemas_sha256": "b" * 64,
+        "tool_names": ["read_file", "search_code", "report_finding", "finish"],
+        "effort": "medium",
+        "max_tokens": 16000,
+        "caching": True,
+        "git_commit": "c" * 40,
+        "git_dirty": False,
+        "target_sha256": "d" * 64,
+        "target_lock_sha256": None,
+        "price_table_version": "e" * 64,
+        "price_verified_on": "2026-10-24",
+        "sandbox_mode": "none",
+        "max_steps": 30,
+        "python_version": "3.12.11",
+        "anthropic_sdk_version": "2.3.0",
+        "started_at": "2026-10-25T12:00:00Z",
+        "finished_at": "2026-10-25T12:00:10Z",
+    }
+    fields.update(overrides)
+    return Provenance(**fields)
 
 
 def make_run(
@@ -33,6 +61,7 @@ def make_run(
         cost_per_finding_usd=cost / 5,
         tokens=Tokens(),
         latency_s=Latency(wall=wall, call_p50=1.0, call_p95=2.0),
+        provenance=make_provenance(),
     )
 
 
@@ -50,6 +79,7 @@ def make_summary(runs: list[RunSummary] | None = None, **overrides) -> Summary:
         "n_runs": len(runs),
         "runs": runs,
         "aggregate": aggregate(runs, CLEAN),
+        "provenance": make_provenance(),
     }
     fields.update(overrides)
     return Summary(**fields)
@@ -81,6 +111,7 @@ def write_run(
     prompt_version: str = "p1",
     seconds: int = 10,
     max_steps: int = 30,
+    provenance: Provenance | None = None,
 ) -> None:
     """Write findings.json plus the .meta.json and .events.jsonl that src.agent.run writes."""
     import json
@@ -99,6 +130,10 @@ def write_run(
         "max_steps": max_steps,
         "max_cost_usd": 0.5,
         "error": None,
+        "provenance": (
+            provenance
+            or make_provenance(model=model, prompt_version=prompt_version, max_steps=max_steps)
+        ).model_dump(mode="json"),
     }
     out.with_name(f"{out.stem}.meta.json").write_text(json.dumps(meta))
     first = make_event(latency_ms=1000, tokens_out=50)

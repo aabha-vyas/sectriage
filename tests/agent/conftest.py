@@ -20,6 +20,17 @@ def _no_network_and_no_host_exec(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("os.popen", _forbidden)
 
 
+def clean_git(args: list[str], cwd: Path) -> str | None:
+    """A git that reports commit 40x`c` and a clean tree, without running a process."""
+    return "c" * 40 + "\n" if args[0] == "rev-parse" else ""
+
+
+@pytest.fixture(autouse=True)
+def _fake_git(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Run provenance asks git for the commit and dirty flag; the CLI default is replaced."""
+    monkeypatch.setattr("src.agent.run.run_git", clean_git)
+
+
 @pytest.fixture
 def outside(tmp_path: Path) -> Path:
     d = tmp_path / "outside"

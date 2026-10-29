@@ -34,7 +34,7 @@ from enum import StrEnum
 from pathlib import Path
 from typing import Any
 
-from src.agent.events import EventLog
+from src.agent.events import EventLog, is_header
 from src.agent.loop import DEFAULT_MAX_COST_USD, StopReason, run_task
 from src.agent.model import ModelClient
 from src.agent.paths import PathError
@@ -105,6 +105,8 @@ def attempt_cost_usd(path: Path) -> float:
     lines = [line for line in text.split("\n") if line.strip()]
     total = 0.0
     for i, line in enumerate(lines):
+        if is_header(line):
+            continue
         try:
             total += Event.from_jsonl(line).cost_usd
         except ValueError:

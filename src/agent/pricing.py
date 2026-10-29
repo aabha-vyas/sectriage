@@ -9,7 +9,9 @@ cache-hit prices has been read; add them from the same page.
 Cache-read ratios differ per model, so each model carries explicit rates instead of multipliers.
 """
 
-from dataclasses import dataclass
+import hashlib
+import json
+from dataclasses import asdict, dataclass
 
 VERIFIED_ON = "2026-10-24"
 
@@ -69,3 +71,16 @@ def cost_usd(
         + cache_read_tokens * rates.cache_read
         + output_tokens * rates.output
     ) / 1_000_000
+
+
+def price_table_version(model: str) -> str | None:
+    """SHA-256 of the rate row for `model`; None if the model has no price.
+
+    It changes when any rate or threshold changes, not when `VERIFIED_ON` is re-checked, so a
+    date refresh does not make cost numbers incomparable.
+    """
+    price = PRICES.get(model)
+    if price is None:
+        return None
+    blob = json.dumps(asdict(price), sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(blob.encode()).hexdigest()

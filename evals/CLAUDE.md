@@ -6,6 +6,14 @@
 - Save each run's summary under `evals/results/` so regressions can be diffed.
 - Targets are intentionally vulnerable and must stay local.
 
+## Run provenance (schema 3)
+
+- Every agent run records `Provenance` (`src/agent/provenance.py`) in its `.meta.json`, in the first line of its `.events.jsonl` (a `run_header` record, not an `Event`; use `read_events`/`is_header`, never parse the log line by line), and on each result row. Summaries carry the merged record; runs that disagree on anything but timing/dirty are refused.
+- Gate: when both sides recorded them, a different system prompt hash, tool-schema hash, target tree hash, price table version or `effort` is "not comparable" (exit 3). Commit, dirty flag, SDK/Python version, max_tokens, caching and timestamps are informational (warnings at most).
+- Schema 2 files are legacy: they load with provenance absent and are never backfilled. Gate treats schema 2 and 3 as the same family, so existing baselines keep working; a one-sided absence prints a warning.
+- Eval runs from a dirty tree warn and record `git_dirty=true`; `--update-baseline` refuses a dirty summary. Saved results and baselines are not counted as dirt.
+- Static scanner rows are not agent runs and stay schema 2.
+
 ## Scoring rules
 
 - Matching is one-to-one: each ground-truth bug is claimed by at most one report. A second report of the same bug (for example the entry point and the sink of one taint path) is a false positive.

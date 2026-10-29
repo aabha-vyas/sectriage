@@ -11,11 +11,20 @@ from collections.abc import Callable
 from pathlib import Path
 
 from src.agent.events import EventLog
-from src.agent.loop import DEFAULT_MAX_COST_USD, REPO_ROOT, RunResult, StopReason, run_task
+from src.agent.loop import (
+    DEFAULT_MAX_COST_USD,
+    REPO_ROOT,
+    RunResult,
+    StopReason,
+    offered_tools,
+    run_task,
+)
 from src.agent.model import DEFAULT_MODEL, AnthropicModelClient, ModelClient
 from src.agent.pricing import VERIFIED_ON, UnknownModelError
-from src.agent.prompts import PROMPT_VERSION
-from src.agent.sandbox_protocol import SandboxFactory
+from src.agent.prompts import PROMPT_VERSION, SYSTEM_PROMPT
+from src.agent.provenance import GitRunner, Provenance, collect, finished, run_git
+from src.agent.sandbox_protocol import SandboxFactory, UnavailableSandbox
+from src.agent.tools.registry import ToolRegistry
 from src.contracts import Task
 
 EXIT_INTERRUPTED = 130
@@ -66,7 +75,14 @@ def _atomic_write(path: Path, text: str) -> None:
         raise
 
 
-def _write_outputs(out: Path, meta_path: Path, task: Task, result: RunResult, max_cost: float):
+def _write_outputs(
+    out: Path,
+    meta_path: Path,
+    task: Task,
+    result: RunResult,
+    max_cost: float,
+    provenance: Provenance,
+):
     findings = [f.model_dump(mode="json") for f in result.findings]
     _atomic_write(out, json.dumps(findings, indent=2) + "\n")
     meta = {
@@ -88,6 +104,7 @@ def _write_outputs(out: Path, meta_path: Path, task: Task, result: RunResult, ma
         "timeout_s": task.timeout_s,
         "max_cost_usd": max_cost,
         "error": result.error,
+        "provenance": finished(provenance).model_dump(mode="json"),
     }
     _atomic_write(meta_path, json.dumps(meta, indent=2) + "\n")
 
@@ -98,8 +115,9 @@ def main(
     model: ModelClient | None = None,
     sandbox_factory: SandboxFactory | None = None,
     clock: Callable[[], float] | None = None,
+    git: GitRunner | None = None,
 ) -> int:
-    """`model`, `sandbox_factory` and `clock` are injection points for tests."""
+    """`model`, `sandbox_factory`, `clock` and `git` are injection points for tests."""
     parser = argparse.ArgumentParser(prog="python -m src.agent.run")
     parser.add_argument("--target", type=Path, required=True, help="a dir under evals/targets/")
     parser.add_argument("--out", type=Path, default=Path("findings.json"))
@@ -150,7 +168,19 @@ def main(
         temperature=args.temperature,
     )
     kwargs = {"clock": clock} if clock else {}
-    with EventLog(events_path) as events:
+    provenance = collect(
+        model=model,
+        system_prompt=SYSTEM_PROMPT,
+        tools=offered_tools(ToolRegistry(target, UnavailableSandbox())),
+        sandbox_mode="docker" if sandbox_factory else "none",
+        max_steps=task.max_steps,
+        target=target,
+        repo_root=REPO_ROOT,
+        git=git or run_git,
+    )
+    if provenance.git_dirty:
+        print("warning: working tree is dirty; recording git_dirty=true", file=sys.stderr)
+    with EventLog(events_path, header=provenance) as events:
         result = run_task(
             task,
             model,
@@ -159,7 +189,7 @@ def main(
             max_cost_usd=args.max_cost_usd,
             **kwargs,
         )
-    _write_outputs(out, meta_path, task, result, args.max_cost_usd)
+    _write_outputs(out, meta_path, task, result, args.max_cost_usd, provenance)
 
     print(
         f"stop={result.stop_reason.value} findings={len(result.findings)} steps={result.steps} "

@@ -135,6 +135,11 @@ def _tool_result_block(call_id: str, result: ToolResult) -> dict[str, Any]:
     return block
 
 
+def offered_tools(registry: ToolRegistry) -> list[dict[str, Any]]:
+    """The tool list sent to the model; run provenance hashes this same list."""
+    return [*registry.schemas(), *CONTROL_TOOLS]
+
+
 class _Run:
     """State for one task; `run_task` is the public entry point."""
 
@@ -160,7 +165,7 @@ class _Run:
         self.started = clock()
         self.store = FindingStore()
         self.memory = ScratchMemory()
-        self.tools = [*registry.schemas(), *CONTROL_TOOLS]
+        self.tools = offered_tools(registry)
         self.messages: list[dict[str, Any]] = []
         self.steps = 0
         self.cost = 0.0

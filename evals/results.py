@@ -6,9 +6,13 @@ import statistics
 import tempfile
 from pathlib import Path
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, model_validator
 
-SCHEMA_VERSION = 2
+from src.agent.provenance import Provenance
+
+# 3 added `provenance`. Version 2 files (written before it) still load, with provenance absent.
+SCHEMA_VERSION = 3
+LEGACY_SCHEMA_VERSION = 2
 DEFAULT_MAX_STEPS = 30  # the agent CLI's own default; it is a setup field of every summary
 RESULTS_DIR = Path(__file__).parent / "results"
 
@@ -58,6 +62,7 @@ class RunSummary(_Model):
     tokens: Tokens
     latency_s: Latency
     error: str | None = None
+    provenance: Provenance | None = None  # None only in schema 2
 
 
 class Aggregate(_Model):
@@ -102,6 +107,20 @@ class Summary(_Model):
     n_runs: int
     runs: list[RunSummary]
     aggregate: Aggregate
+    # Fields that agree across runs, plus dirty = any run, first start and last finish.
+    provenance: Provenance | None = None  # None only in schema 2: "absent", never backfilled
+
+    @model_validator(mode="after")
+    def _provenance_matches_schema(self) -> "Summary":
+        if self.schema_version == SCHEMA_VERSION:
+            if self.provenance is None or any(r.provenance is None for r in self.runs):
+                raise ValueError("schema 3 requires provenance on the summary and every run")
+        elif self.schema_version == LEGACY_SCHEMA_VERSION:
+            if self.provenance is not None or any(r.provenance is not None for r in self.runs):
+                raise ValueError("schema 2 predates provenance; it must not carry any")
+        else:
+            raise ValueError(f"unsupported schema_version {self.schema_version}")
+        return self
 
 
 class Baseline(Summary):

@@ -21,7 +21,7 @@ from pydantic import BaseModel, ConfigDict
 
 from evals.decoys import DecoyReport, classify_false_positives, load_decoys
 from evals.metrics import run_summary
-from evals.results import RESULTS_DIR, Summary, aggregate, save
+from evals.results import LEGACY_SCHEMA_VERSION, RESULTS_DIR, Summary, aggregate, save
 from evals.scorer import GroundTruth, TruthItem, load_ground_truth, score
 from evals.summary import CLEAN_STOPS, git_sha
 from src.agent.memory import make_finding_id
@@ -113,7 +113,9 @@ def build_row(
         "tokens": {},  # no model calls
     }
     run = run_summary(meta, [], score(findings, truth), wall_s)
+    # A scanner row is not an agent run (no model, prompt or tool list), so it has no provenance.
     return Summary(
+        schema_version=LEGACY_SCHEMA_VERSION,
         created_at=(now or datetime.now(UTC)).strftime("%Y-%m-%dT%H:%M:%SZ"),
         git_sha=git_sha(),
         target=ROW_TARGET,

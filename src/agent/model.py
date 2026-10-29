@@ -95,6 +95,8 @@ class AnthropicModelClient:
             )
         self.model = model
         self.max_tokens = max_tokens
+        self.effort = EFFORT
+        self.caching = True  # build_request always sets the cache breakpoints
         self._client = client if client is not None else anthropic.Anthropic()
 
     def build_request(
@@ -116,7 +118,7 @@ class AnthropicModelClient:
             "system": [{"type": "text", "text": system, "cache_control": dict(_EPHEMERAL)}],
             "tools": cached_tools,
             "tool_choice": {"type": "auto", "disable_parallel_tool_use": True},
-            "output_config": {"effort": EFFORT},
+            "output_config": {"effort": self.effort},
             "messages": _with_message_breakpoint(messages),
         }
 

@@ -10,7 +10,9 @@ Exit codes:
   0  ok (per-class recall warnings do not change this)
   1  regression against the baseline
   2  usage or I/O error
-  3  not comparable (model, PROMPT_VERSION, sandbox, tools, max_steps, target or schema differ)
+  3  not comparable (model, PROMPT_VERSION, sandbox, tools, max_steps, target or schema differ;
+     or, when both sides recorded provenance, the prompt, tool schemas, target tree, price table
+     or effort differ)
 """
 
 import argparse
@@ -71,6 +73,18 @@ def _fmt_stat(s: Stat | None, digits: int = 2) -> str:
     return "n/a" if s is None else f"{s.mean:.{digits}f} +/- {s.stdev:.{digits}f}"
 
 
+def _fmt_provenance(summary: Summary) -> str:
+    p = summary.provenance
+    if p is None:
+        return f"absent (legacy schema {summary.schema_version})"
+    commit = p.git_commit[:8] if p.git_commit else "no git"
+    dirty = {True: " dirty", False: "", None: " dirty?"}[p.git_dirty]
+    return (
+        f"{commit}{dirty} prompt {p.system_prompt_sha256[:8]} tools {p.tool_schemas_sha256[:8]} "
+        f"target {p.target_sha256[:8]}"
+    )
+
+
 def render_summary(summary: Summary) -> str:
     a = summary.aggregate
     rows = [
@@ -79,6 +93,7 @@ def render_summary(summary: Summary) -> str:
         ("prompt_version", summary.prompt_version),
         ("sandbox / tools", f"{summary.sandbox} / {','.join(summary.tools)}"),
         ("max_steps", "n/a" if summary.max_steps is None else str(summary.max_steps)),
+        ("provenance", _fmt_provenance(summary)),
         ("runs (clean)", f"{summary.n_runs} ({a.clean_runs})"),
         ("precision", _fmt_stat(a.precision)),
         ("recall", _fmt_stat(a.recall)),
