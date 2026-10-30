@@ -97,8 +97,7 @@ INVARIANTS = (
     "no_spend",
 )
 
-RESULTS_START = "<!-- results:start -->"
-RESULTS_END = "<!-- results:end -->"
+RESULTS_ID = "results"
 
 
 # statistics ---------------------------------------------------------------------------------
@@ -133,24 +132,49 @@ class TrialPlan:
     frac: float | None = None  # position in the offset range (random_time window)
 
 
-class Planner:
-    """Draws the whole plan from one seeded stream; `redraw` continues the same stream."""
+def parse_windows(spec: str) -> dict[str, str | None]:
+    """`window[:point]` items, comma separated, as {window: fixed point or None}. One per window."""
+    chosen: dict[str, str | None] = {}
+    for item in spec.split(","):
+        window, _, sub = item.strip().partition(":")
+        if window not in SUBPOINTS:
+            raise ValueError(f"unknown window {window!r}; choose from {', '.join(WINDOWS)}")
+        if sub and sub not in SUBPOINTS[window]:
+            raise ValueError(f"unknown point {sub!r} for {window}; choose from {SUBPOINTS[window]}")
+        if window in chosen:
+            raise ValueError(f"window {window!r} given twice")
+        chosen[window] = sub or None
+    return chosen
 
-    def __init__(self, trials: int, seed: int):
+
+class Planner:
+    """Draws the whole plan from one seeded stream; `redraw` continues the same stream.
+
+    By default 20 trials are 8 random_time, 4 each of the other windows. With `windows` (see
+    `parse_windows`) only those windows are used, split evenly (the first ones take the
+    remainder), and a window given as `window:sub` always uses that point.
+    """
+
+    def __init__(self, trials: int, seed: int, windows: dict[str, str | None] | None = None):
         if trials < 1:
             raise ValueError("trials must be at least 1")
         self._rng = random.Random(seed)
         self._next = 0
-        each = trials // 5  # three deliberate windows get a fifth each, random_time the rest
-        windows = [RANDOM_TIME] * (trials - 3 * each)
-        for window in (TOOL_CALL, HEARTBEAT, PRE_ACK):
-            windows += [window] * each
-        self._rng.shuffle(windows)
-        self.drawn = [self.draw(w) for w in windows]
+        self._fixed = {w: sub for w, sub in (windows or {}).items() if sub}
+        if windows:
+            names = list(windows)
+            order = [names[i % len(names)] for i in range(trials)]
+        else:
+            each = trials // 5  # three deliberate windows get a fifth each, random_time the rest
+            order = [RANDOM_TIME] * (trials - 3 * each)
+            for window in (TOOL_CALL, HEARTBEAT, PRE_ACK):
+                order += [window] * each
+        self._rng.shuffle(order)
+        self.drawn = [self.draw(w) for w in order]
 
     def draw(self, window: str) -> TrialPlan:
         index, self._next = self._next, self._next + 1
-        sub = self._rng.choice(SUBPOINTS[window])
+        sub = self._fixed.get(window) or self._rng.choice(SUBPOINTS[window])
         k = self._rng.choice(HEARTBEAT_INDEXES) if window == HEARTBEAT else None
         frac = self._rng.random() if window == RANDOM_TIME else None
         return TrialPlan(index, window, sub, k, frac)
@@ -686,12 +710,14 @@ def run_experiment(
     max_runtime_s: float = DEFAULT_MAX_RUNTIME_S,
     cleanup: Callable[[dict[str, Any]], None] | None = None,
     clock: Callable[[], float] = time.monotonic,
+    windows: dict[str, str | None] | None = None,
 ) -> dict[str, Any]:
     """Controls, then trials until `trials` of them are counted. Stops at the first violation."""
     started = clock()
-    planner = Planner(trials, seed)
+    planner = Planner(trials, seed, windows)
     report: dict[str, Any] = {
         "seed": seed,
+        "windows": windows,
         "trials_requested": trials,
         "plan_drawn": [asdict(p) for p in planner.drawn],
         "controls": [],
@@ -769,9 +795,11 @@ def render_results(report: dict[str, Any], command: str) -> str:
     """The generated part of the doc: headline, invariants, per-window counts, kill points."""
     agg = report["aggregates"]
     counted = [r for r in report["trials"] if classify(r) == "counted"]
+    shown = [w for w in WINDOWS if agg["by_window"][w]["n"]]
+    state = "dirty tree" if report.get("git_dirty") else "clean tree"
     lines = [
         f"Command: `{command}`. Seed {report['seed']}, "
-        f"git `{report.get('git_sha', 'unknown')[:9]}`.",
+        f"git `{report.get('git_sha', 'unknown')[:9]}` ({state} when the run started).",
         "",
         f"**Verdict: {report['verdict']}** ({report['counted']} of {report['trials_requested']} "
         f"trials counted; not fired {report['excluded']['not_fired']}, "
@@ -788,18 +816,18 @@ def render_results(report: dict[str, Any], command: str) -> str:
         "",
         "Trials that met each invariant, with a Wilson 95% interval:",
         "",
-        "| invariant | overall | " + " | ".join(WINDOWS) + " |",
-        "|---|---|" + "---|" * len(WINDOWS),
+        "| invariant | overall | " + " | ".join(shown) + " |",
+        "|---|---|" + "---|" * len(shown),
     ]
     for name in INVARIANTS:
         cells = [_interval(agg["overall"][name])] + [
-            _interval(agg["by_window"][w][name]) for w in WINDOWS
+            _interval(agg["by_window"][w][name]) for w in shown
         ]
         lines.append(f"| `{name}` | " + " | ".join(cells) + " |")
     lines += ["", "Kill points (counted trials):", ""]
     lines += [
-        "| trial | window | point | attempts | rows | kill to result s | takeover gap s |",
-        "|---|---|---|---|---|---|---|",
+        "| trial | window | point | attempts | rows | kill to result s | takeover gap s | result |",
+        "|---|---|---|---|---|---|---|---|",
     ]
     for r in counted:
         kill, t = r["kill"] or {}, r["takeover"]
@@ -810,9 +838,12 @@ def render_results(report: dict[str, Any], command: str) -> str:
         elif plan["k"] is not None:
             point = f"{point} #{plan['k']}"
         gap = f"{t['gap_s']:.2f}" if t.get("gap_s") is not None else "n/a"
+        took = r["kill_to_result_s"]
+        failed = ", ".join(f"FAIL {v['invariant']} ({v['kind']})" for v in r["violations"])
         lines.append(
             f"| {plan['index']} | {plan['window']} | {point} | {r['attempts']} | "
-            f"{r['result_rows']} | {r['kill_to_result_s']:.2f} | {gap} |"
+            f"{r['result_rows']} | {'n/a' if took is None else f'{took:.2f}'} | {gap} | "
+            f"{failed or 'ok'} |"
         )
     times = [r["kill_to_result_s"] for r in counted if r["kill_to_result_s"] is not None]
     if times:
@@ -824,12 +855,13 @@ def render_results(report: dict[str, Any], command: str) -> str:
     return "\n".join(lines)
 
 
-def splice_results(doc: str, block: str) -> str:
-    """Replace what is between the result markers; everything else in `doc` stays as written."""
-    start, end = doc.find(RESULTS_START), doc.find(RESULTS_END)
+def splice_results(doc: str, block: str, results_id: str = RESULTS_ID) -> str:
+    """Replace what is between `<!-- ID:start -->` and `<!-- ID:end -->`; the rest stays as is."""
+    open_, close = f"<!-- {results_id}:start -->", f"<!-- {results_id}:end -->"
+    start, end = doc.find(open_), doc.find(close)
     if start < 0 or end < start:
-        raise ValueError(f"the doc needs {RESULTS_START} and {RESULTS_END} markers")
-    return doc[: start + len(RESULTS_START)] + "\n\n" + block + "\n\n" + doc[end:]
+        raise ValueError(f"the doc needs {open_} and {close} markers")
+    return doc[: start + len(open_)] + "\n\n" + block + "\n\n" + doc[end:]
 
 
 def compact(report: dict[str, Any]) -> dict[str, Any]:
@@ -858,6 +890,15 @@ def _git(*args: str) -> str | None:
     return out.stdout.strip()
 
 
+def _publish(report: dict[str, Any], args: argparse.Namespace) -> None:
+    """Write the compact JSON and fill the doc's result markers, as asked."""
+    if args.runs_json:
+        _write_json(args.runs_json, compact(report))
+    if args.markdown:
+        block = render_results(report, report.get("command", "uv run python -m src.swarm.chaos"))
+        args.markdown.write_text(splice_results(args.markdown.read_text(), block, args.results_id))
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python -m src.swarm.chaos", description=__doc__)
     parser.add_argument("--trials", type=int, default=20)
@@ -869,15 +910,36 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", type=Path, help="full JSON (default logs/chaos/...-seed<N>.json)")
     parser.add_argument("--runs-json", type=Path, help="compact JSON, for committing")
     parser.add_argument("--markdown", type=Path, help="doc whose result markers are filled in")
+    parser.add_argument("--results-id", default=RESULTS_ID, help="marker name in the doc")
+    parser.add_argument(
+        "--windows",
+        help="only these windows, e.g. pre_ack:in_tx (window[:point], comma separated)",
+    )
+    parser.add_argument(
+        "--from-json", type=Path, help="do not run: write --runs-json/--markdown from this JSON"
+    )
     parser.add_argument("--keep", action="store_true", help="keep every trial's temp directory")
     args = parser.parse_args(argv)
     if args.lease_s <= 0 or args.step_delay_s < 0 or args.trials < 1:
         parser.error("--lease-s must be positive, --step-delay-s not negative, --trials at least 1")
 
+    if args.from_json:
+        report = json.loads(args.from_json.read_text())
+        _publish(report, args)
+        return report["exit_code"]
+    try:
+        windows = parse_windows(args.windows) if args.windows else None
+    except ValueError as e:
+        parser.error(str(e))
+
     os.environ.pop("ANTHROPIC_API_KEY", None)  # nothing below may reach a live model
+    git_sha = _git("rev-parse", "HEAD") or "unknown"
+    git_dirty = bool(_git("status", "--porcelain"))  # before the run: outputs must not count
     root = Path(tempfile.mkdtemp(prefix="swarm-chaos-"))
     cfg = Config(root, args.lease_s, args.step_delay_s, args.trial_timeout_s)
     command = f"uv run python -m src.swarm.chaos --trials {args.trials} --seed {args.seed}"
+    if args.windows:
+        command += f" --windows {args.windows}"
 
     def control_fn() -> tuple[dict[str, Any], bytes]:
         record, data = run_trial(None, cfg)
@@ -898,9 +960,11 @@ def main(argv: list[str] | None = None) -> int:
         trial_fn=trial_fn,
         max_runtime_s=args.max_runtime_s,
         cleanup=cleanup,
+        windows=windows,
     )
-    report["git_sha"] = _git("rev-parse", "HEAD") or "unknown"
-    report["git_dirty"] = bool(_git("status", "--porcelain"))
+    report["command"] = command
+    report["git_sha"] = git_sha
+    report["git_dirty"] = git_dirty
     report["config"] = {
         "workers": 2,
         "lease_s": cfg.lease_s,
@@ -911,12 +975,7 @@ def main(argv: list[str] | None = None) -> int:
     }
     out = args.out or REPO_ROOT / "logs" / "chaos" / f"failure-injection-seed{args.seed}.json"
     _write_json(out, report)
-    if args.runs_json:
-        _write_json(args.runs_json, compact(report))
-    if args.markdown:
-        args.markdown.write_text(
-            splice_results(args.markdown.read_text(), render_results(report, command))
-        )
+    _publish(report, args)
 
     print(
         f"{report['verdict']}: {report['counted']} of {args.trials} trials counted, "

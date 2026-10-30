@@ -85,7 +85,44 @@ Written before the first full run.
 Per trial the JSON also records the kill point, attempts, result rows, and kill to result time
 (`results.finished_at` minus the kill time, one host and clock).
 
+## Second run (pre-registered before it is run)
+
+The seed-1 run above is exploratory: it was made on an uncommitted tree and drew thin coverage of
+the sub-points (see Limits). The confirmatory run is three further runs, planned here and
+committed before any of them is started.
+
+| run | command | what it covers |
+|---|---|---|
+| A | `uv run python -m src.swarm.chaos --trials 20 --seed 2` | the standard mix (8 `random_time`, 4 each of the other windows) with a new seed |
+| B | `uv run python -m src.swarm.chaos --trials 20 --seed 3` | the standard mix with another seed |
+| C | `uv run python -m src.swarm.chaos --trials 20 --seed 4 --windows pre_ack:in_tx` | every kill inside the ack transaction, at the `INSERT OR IGNORE INTO results` statement, after the `done` update and before the commit. The plan has no random part, so the seed changes nothing; the 20 trials are repeats of one kill point under timing noise |
+
+- **Same rule.** The invariants, the counted/`not_fired`/`late_kill` definitions, the takeover
+  bounds and the 25% stop rule above apply unchanged to each run, with 20 counted trials as the
+  target. `not_fired` and `late_kill` are reported separately in the results and added together for
+  the 25% stop rule.
+- **Clean tree.** Each run starts with `git status --porcelain` empty at a recorded commit. The
+  harness records that commit and whether the tree was dirty before the run began (`git_sha`,
+  `git_dirty` in the JSON). A run that reports a dirty tree is exploratory, like seed 1. To keep the
+  tree clean, all three runs write only to `logs/` (ignored), and the doc and `runs-*.json` files
+  are written afterwards from those JSON files with `--from-json`.
+- **Order.** A, then B, then C. If a run exits non-zero (a violation, too many excluded kills, or an
+  abort), the remaining runs are not started until the person who asked for this decides what to do
+  with it.
+- **Publishing rule.** Every run that is started is published, passing or not, in the same table
+  format and with the same prominence. A failed trial appears in the kill-point table of its run
+  (marked `FAIL`, with the invariant and whether it is `bug` or `timing`) and in the run's verdict
+  line, and the kept trial directory is named. A failing run is not re-run to replace it, a trial
+  is not dropped or redrawn because it failed, and a run that stops early is published as stopped.
+- **No pooling.** Each run's intervals are its own. Runs A and B share a mix and could be pooled
+  (40 of 40 would give a lower bound of 0.91), but run C repeats one point and seed 1 is
+  exploratory, so no pooled figure is claimed from this document.
+- **Still out of scope.** Everything under Limits applies to these runs too, including the
+  scripted-model-only claim about identical findings.
+
 ## Results
+
+Seed 1 (exploratory, uncommitted tree):
 
 <!-- results:start -->
 
@@ -135,6 +172,26 @@ Kill points (counted trials):
 Kill to result: min 2.02 s, median 2.18 s, max 2.39 s.
 
 <!-- results:end -->
+
+### Second run results
+
+Run A (seed 2):
+
+<!-- run-seed2:start -->
+Not run yet.
+<!-- run-seed2:end -->
+
+Run B (seed 3):
+
+<!-- run-seed3:start -->
+Not run yet.
+<!-- run-seed3:end -->
+
+Run C (every kill inside the ack transaction):
+
+<!-- run-ack:start -->
+Not run yet.
+<!-- run-ack:end -->
 
 ## Limits
 

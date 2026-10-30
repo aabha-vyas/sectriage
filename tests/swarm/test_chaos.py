@@ -385,7 +385,7 @@ def test_takeover_analysis_reads_the_polled_rows() -> None:
 
 
 def test_splice_is_idempotent_and_leaves_the_prose_alone() -> None:
-    doc = f"before\n\n{chaos.RESULTS_START}\nold\n{chaos.RESULTS_END}\n\nafter\n"
+    doc = "before\n\n<!-- results:start -->\nold\n<!-- results:end -->\n\nafter\n"
     once = chaos.splice_results(doc, "new table")
     assert once.startswith("before\n\n") and once.endswith("\n\nafter\n")
     assert "old" not in once and "new table" in once
@@ -394,12 +394,85 @@ def test_splice_is_idempotent_and_leaves_the_prose_alone() -> None:
         chaos.splice_results("no markers", "x")
 
 
+def test_splice_fills_only_the_named_section() -> None:
+    doc = "<!-- a:start -->\nA\n<!-- a:end -->\n<!-- b:start -->\nB\n<!-- b:end -->\n"
+    out = chaos.splice_results(doc, "new", "b")
+    assert "\nA\n" in out and "\nB\n" not in out and "new" in out
+    with pytest.raises(ValueError):
+        chaos.splice_results(doc, "x", "c")
+
+
+# --windows ----------------------------------------------------------------------------------
+
+
+def test_parse_windows() -> None:
+    assert chaos.parse_windows("pre_ack:in_tx") == {PRE_ACK: "in_tx"}
+    assert chaos.parse_windows("heartbeat, tool_call:entry") == {
+        HEARTBEAT: None,
+        TOOL_CALL: "entry",
+    }
+    for bad in ("nope", "pre_ack:nope", "pre_ack,pre_ack:in_tx", "random_time:x"):
+        with pytest.raises(ValueError):
+            chaos.parse_windows(bad)
+
+
+def test_windows_option_pins_every_kill_inside_the_ack_transaction() -> None:
+    planner = chaos.Planner(20, 4, chaos.parse_windows("pre_ack:in_tx"))
+    assert {(p.window, p.sub, p.k, p.frac) for p in planner.drawn} == {
+        (PRE_ACK, "in_tx", None, None)
+    }
+    assert len(planner.drawn) == 20
+    again = planner.redraw(PRE_ACK)  # a redraw keeps the pinned point
+    assert (again.window, again.sub, again.index) == (PRE_ACK, "in_tx", 20)
+
+
+def test_windows_option_splits_trials_evenly_and_keeps_free_points_seeded() -> None:
+    planner = chaos.Planner(7, 3, chaos.parse_windows("heartbeat,tool_call:entry"))
+    assert Counter(p.window for p in planner.drawn) == {HEARTBEAT: 4, TOOL_CALL: 3}
+    assert {p.sub for p in planner.drawn if p.window == TOOL_CALL} == {"entry"}
+    assert {p.sub for p in planner.drawn if p.window == HEARTBEAT} <= set(
+        chaos.SUBPOINTS[HEARTBEAT]
+    )
+    assert (
+        planner.drawn == chaos.Planner(7, 3, chaos.parse_windows("heartbeat,tool_call:entry")).drawn
+    )
+
+
+def test_default_plan_is_unchanged_by_the_windows_option() -> None:
+    """Seed 1's plan is what the exploratory run used; adding --windows must not move it."""
+    plan = chaos.Planner(20, 1).drawn
+    assert [(p.window, p.sub) for p in plan[:3]] == [
+        (TOOL_CALL, "after_tool"),
+        (RANDOM_TIME, None),
+        (PRE_ACK, "before_ack"),
+    ]
+    assert plan == chaos.Planner(20, 1, None).drawn
+
+
+def test_runner_records_the_windows_it_was_given() -> None:
+    windows = chaos.parse_windows("pre_ack:in_tx")
+    report = chaos.run_experiment(
+        20,
+        4,
+        control_fn=lambda: (good_control(), b"x"),
+        trial_fn=lambda plan, s, b: good_record(plan.window, plan.index),
+        windows=windows,
+    )
+    assert report["windows"] == windows
+    assert {p["window"] for p in report["plan_drawn"]} == {PRE_ACK}
+    assert report["counted"] == 20
+    report["git_sha"] = "0123456789abcdef"
+    header = chaos.render_results(report, "cmd").split("| invariant |")[1].split("\n")[0]
+    assert "pre_ack" in header and "heartbeat" not in header  # windows with no trials are omitted
+
+
 def test_render_and_compact_on_a_passing_report() -> None:
     report = run(lambda p: good_record(p.window, p.index))
     report["git_sha"] = "0123456789abcdef"
     text = chaos.render_results(report, "cmd")
     assert "**Verdict: pass**" in text and "`one_result_row`" in text
     assert "20/20 (0.84 to 1.00)" in text
+    assert "| `one_result_row` | 20/20 (0.84 to 1.00) | 8/8" in text
     slim = chaos.compact(
         deepcopy({**report, "trials": [{**t, "samples": [1]} for t in report["trials"]]})
     )
@@ -621,3 +694,42 @@ def test_kill_inside_the_ack_transaction(cfg: chaos.Config, control: tuple[float
 def test_kill_at_a_random_time(cfg: chaos.Config, control: tuple[float, bytes]) -> None:
     record = _run_fixed(TrialPlan(0, RANDOM_TIME, frac=0.5), cfg, control)
     assert record["kill"]["point"] == "harness"
+
+
+def test_a_failed_trial_is_published_in_the_table_like_the_others() -> None:
+    def trial(plan: TrialPlan) -> dict[str, Any]:
+        record = good_record(plan.window, plan.index)
+        if plan.index == 1:
+            record.update(result_rows=2, kill_to_result_s=None)
+        return record
+
+    report = run(trial)
+    report["git_sha"], report["git_dirty"] = "0123456789abcdef", False
+    text = chaos.render_results(report, "cmd")
+    assert "**Verdict: fail**" in text and "First violation: trial 1, `one_result_row`" in text
+    assert "FAIL one_result_row (bug)" in text
+    assert "clean tree" in text
+    assert "`one_result_row` | 1/2" in text  # the failed trial is in the denominator
+
+
+def test_from_json_republishes_without_running(tmp_path: Path) -> None:
+    report = run(lambda p: good_record(p.window, p.index))
+    report.update(git_sha="0123456789abcdef", git_dirty=False, command="cmd --x")
+    src, doc, runs = tmp_path / "r.json", tmp_path / "doc.md", tmp_path / "runs.json"
+    src.write_text(chaos.json.dumps(report))
+    doc.write_text("t\n<!-- run2:start -->\n<!-- run2:end -->\nend\n")
+    code = chaos.main(
+        [
+            "--from-json",
+            str(src),
+            "--markdown",
+            str(doc),
+            "--results-id",
+            "run2",
+            "--runs-json",
+            str(runs),
+        ]
+    )
+    assert code == 0
+    assert "Command: `cmd --x`" in doc.read_text() and doc.read_text().endswith("end\n")
+    assert "samples" not in runs.read_text()
