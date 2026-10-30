@@ -178,42 +178,191 @@ Kill to result: min 2.02 s, median 2.18 s, max 2.39 s.
 Run A (seed 2):
 
 <!-- run-seed2:start -->
-Not run yet.
+
+Command: `uv run python -m src.swarm.chaos --trials 20 --seed 2`. Seed 2, git `811372c7b` (clean tree when the run started).
+
+**Verdict: pass** (20 of 20 trials counted; not fired 0, late kill 0; wall time 102.7 s).
+
+Trials that met each invariant, with a Wilson 95% interval:
+
+| invariant | overall | random_time | tool_call | heartbeat | pre_ack |
+|---|---|---|---|---|---|
+| `completed` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+| `attempts` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+| `one_result_row` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+| `exit_codes` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+| `findings_match_control` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+| `replay_exact` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+| `attempt_logs` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+| `lease_takeover` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+| `no_spend` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+
+Kill points (counted trials):
+
+| trial | window | point | attempts | rows | kill to result s | takeover gap s | result |
+|---|---|---|---|---|---|---|---|
+| 0 | random_time | harness +0.55 s | 2 | 1 | 2.17 | 0.12 | ok |
+| 1 | random_time | harness +0.51 s | 2 | 1 | 2.20 | 0.12 | ok |
+| 2 | pre_ack | before_ack | 2 | 1 | 2.25 | 0.13 | ok |
+| 3 | tool_call | tool_entry | 2 | 1 | 2.14 | 0.01 | ok |
+| 4 | pre_ack | ack_in_tx | 2 | 1 | 2.27 | 0.13 | ok |
+| 5 | heartbeat | heartbeat_in_tx #2 | 2 | 1 | 2.12 | 0.13 | ok |
+| 6 | heartbeat | heartbeat_in_tx #2 | 2 | 1 | 2.14 | 0.15 | ok |
+| 7 | random_time | harness +0.57 s | 2 | 1 | 2.14 | 0.12 | ok |
+| 8 | random_time | harness +0.26 s | 2 | 1 | 2.05 | 0.02 | ok |
+| 9 | tool_call | tool_entry | 2 | 1 | 2.17 | 0.03 | ok |
+| 10 | heartbeat | heartbeat_in_tx #1 | 2 | 1 | 2.01 | 0.02 | ok |
+| 11 | random_time | harness +0.52 s | 2 | 1 | 2.20 | 0.11 | ok |
+| 12 | tool_call | tool_done | 2 | 1 | 2.16 | 0.02 | ok |
+| 13 | heartbeat | heartbeat_before_tx #2 | 2 | 1 | 2.12 | 0.13 | ok |
+| 14 | pre_ack | ack_in_tx | 2 | 1 | 2.23 | 0.13 | ok |
+| 15 | random_time | harness +0.78 s | 2 | 1 | 2.14 | 0.03 | ok |
+| 16 | tool_call | tool_done | 2 | 1 | 2.15 | 0.03 | ok |
+| 17 | pre_ack | ack_in_tx | 2 | 1 | 2.25 | 0.13 | ok |
+| 18 | random_time | harness +0.20 s | 2 | 1 | 2.11 | 0.02 | ok |
+| 19 | random_time | harness +0.71 s | 2 | 1 | 2.21 | 0.02 | ok |
+
+Kill to result: min 2.01 s, median 2.15 s, max 2.27 s.
+
 <!-- run-seed2:end -->
 
 Run B (seed 3):
 
 <!-- run-seed3:start -->
-Not run yet.
+
+Command: `uv run python -m src.swarm.chaos --trials 20 --seed 3`. Seed 3, git `811372c7b` (clean tree when the run started).
+
+**Verdict: pass** (20 of 20 trials counted; not fired 0, late kill 0; wall time 109.9 s).
+
+Trials that met each invariant, with a Wilson 95% interval:
+
+| invariant | overall | random_time | tool_call | heartbeat | pre_ack |
+|---|---|---|---|---|---|
+| `completed` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+| `attempts` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+| `one_result_row` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+| `exit_codes` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+| `findings_match_control` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+| `replay_exact` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+| `attempt_logs` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+| `lease_takeover` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+| `no_spend` | 20/20 (0.84 to 1.00) | 8/8 (0.68 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) | 4/4 (0.51 to 1.00) |
+
+Kill points (counted trials):
+
+| trial | window | point | attempts | rows | kill to result s | takeover gap s | result |
+|---|---|---|---|---|---|---|---|
+| 0 | tool_call | tool_done | 2 | 1 | 2.17 | 0.03 | ok |
+| 1 | random_time | harness +0.64 s | 2 | 1 | 2.61 | 0.03 | ok |
+| 2 | random_time | harness +0.27 s | 2 | 1 | 2.05 | 0.03 | ok |
+| 3 | random_time | harness +0.86 s | 2 | 1 | 2.06 | 0.02 | ok |
+| 4 | heartbeat | heartbeat_in_tx #1 | 2 | 1 | 2.00 | 0.02 | ok |
+| 5 | pre_ack | before_ack | 2 | 1 | 2.24 | 0.13 | ok |
+| 6 | random_time | harness +0.75 s | 2 | 1 | 2.17 | 0.02 | ok |
+| 7 | heartbeat | heartbeat_before_tx #2 | 2 | 1 | 2.12 | 0.13 | ok |
+| 8 | random_time | harness +0.81 s | 2 | 1 | 2.13 | 0.03 | ok |
+| 9 | random_time | harness +0.49 s | 2 | 1 | 2.28 | 0.09 | ok |
+| 10 | heartbeat | heartbeat_in_tx #2 | 2 | 1 | 2.10 | 0.12 | ok |
+| 11 | tool_call | tool_done | 2 | 1 | 2.16 | 0.03 | ok |
+| 12 | pre_ack | ack_in_tx | 2 | 1 | 2.24 | 0.13 | ok |
+| 13 | tool_call | tool_entry | 2 | 1 | 2.16 | 0.03 | ok |
+| 14 | heartbeat | heartbeat_in_tx #1 | 2 | 1 | 2.02 | 0.03 | ok |
+| 15 | tool_call | tool_entry | 2 | 1 | 2.18 | 0.03 | ok |
+| 16 | random_time | harness +0.51 s | 2 | 1 | 2.20 | 0.12 | ok |
+| 17 | pre_ack | ack_in_tx | 2 | 1 | 2.23 | 0.12 | ok |
+| 18 | pre_ack | ack_in_tx | 2 | 1 | 2.24 | 0.12 | ok |
+| 19 | random_time | harness +0.44 s | 2 | 1 | 2.28 | 0.13 | ok |
+
+Kill to result: min 2.00 s, median 2.17 s, max 2.61 s.
+
 <!-- run-seed3:end -->
 
 Run C (every kill inside the ack transaction):
 
 <!-- run-ack:start -->
-Not run yet.
+
+Command: `uv run python -m src.swarm.chaos --trials 20 --seed 4 --windows pre_ack:in_tx`. Seed 4, git `811372c7b` (clean tree when the run started).
+
+**Verdict: pass** (20 of 20 trials counted; not fired 0, late kill 0; wall time 123.7 s).
+
+Trials that met each invariant, with a Wilson 95% interval:
+
+| invariant | overall | pre_ack |
+|---|---|---|
+| `completed` | 20/20 (0.84 to 1.00) | 20/20 (0.84 to 1.00) |
+| `attempts` | 20/20 (0.84 to 1.00) | 20/20 (0.84 to 1.00) |
+| `one_result_row` | 20/20 (0.84 to 1.00) | 20/20 (0.84 to 1.00) |
+| `exit_codes` | 20/20 (0.84 to 1.00) | 20/20 (0.84 to 1.00) |
+| `findings_match_control` | 20/20 (0.84 to 1.00) | 20/20 (0.84 to 1.00) |
+| `replay_exact` | 20/20 (0.84 to 1.00) | 20/20 (0.84 to 1.00) |
+| `attempt_logs` | 20/20 (0.84 to 1.00) | 20/20 (0.84 to 1.00) |
+| `lease_takeover` | 20/20 (0.84 to 1.00) | 20/20 (0.84 to 1.00) |
+| `no_spend` | 20/20 (0.84 to 1.00) | 20/20 (0.84 to 1.00) |
+
+Kill points (counted trials):
+
+| trial | window | point | attempts | rows | kill to result s | takeover gap s | result |
+|---|---|---|---|---|---|---|---|
+| 0 | pre_ack | ack_in_tx | 2 | 1 | 2.27 | 0.13 | ok |
+| 1 | pre_ack | ack_in_tx | 2 | 1 | 2.25 | 0.13 | ok |
+| 2 | pre_ack | ack_in_tx | 2 | 1 | 2.26 | 0.14 | ok |
+| 3 | pre_ack | ack_in_tx | 2 | 1 | 2.24 | 0.13 | ok |
+| 4 | pre_ack | ack_in_tx | 2 | 1 | 2.24 | 0.12 | ok |
+| 5 | pre_ack | ack_in_tx | 2 | 1 | 2.25 | 0.12 | ok |
+| 6 | pre_ack | ack_in_tx | 2 | 1 | 2.29 | 0.13 | ok |
+| 7 | pre_ack | ack_in_tx | 2 | 1 | 2.26 | 0.13 | ok |
+| 8 | pre_ack | ack_in_tx | 2 | 1 | 2.26 | 0.13 | ok |
+| 9 | pre_ack | ack_in_tx | 2 | 1 | 2.24 | 0.13 | ok |
+| 10 | pre_ack | ack_in_tx | 2 | 1 | 2.24 | 0.13 | ok |
+| 11 | pre_ack | ack_in_tx | 2 | 1 | 2.39 | 0.14 | ok |
+| 12 | pre_ack | ack_in_tx | 2 | 1 | 2.25 | 0.12 | ok |
+| 13 | pre_ack | ack_in_tx | 2 | 1 | 2.23 | 0.12 | ok |
+| 14 | pre_ack | ack_in_tx | 2 | 1 | 2.24 | 0.13 | ok |
+| 15 | pre_ack | ack_in_tx | 2 | 1 | 2.24 | 0.13 | ok |
+| 16 | pre_ack | ack_in_tx | 2 | 1 | 2.24 | 0.12 | ok |
+| 17 | pre_ack | ack_in_tx | 2 | 1 | 2.25 | 0.14 | ok |
+| 18 | pre_ack | ack_in_tx | 2 | 1 | 2.27 | 0.12 | ok |
+| 19 | pre_ack | ack_in_tx | 2 | 1 | 2.26 | 0.13 | ok |
+
+Kill to result: min 2.23 s, median 2.25 s, max 2.39 s.
+
 <!-- run-ack:end -->
 
 ## Limits
 
+**What counts as the result.**
+- Seed 1 was exploratory. It was run on an uncommitted tree and is not part of the pre-registered
+  result. Its table is kept above for the record only.
+- The pre-registered result is three runs on a clean tree: seeds 2 and 3 with the standard mix, and
+  the ack-transaction run (run C). They are reported separately and are not pooled.
+- Run C is 20 repeats of one kill point (the `INSERT OR IGNORE INTO results` statement, inside the
+  ack transaction), not 20 different kill points. Its seed changes nothing.
+
+**What the numbers support.**
+- Each run has 20 counted trials, so a run with no failures has a Wilson 95% lower bound of about
+  0.84. That supports "at least about 84% at 95% confidence" for that run's kill-point set, not
+  "always", and not crashes in general: the kill points are a stratified, hand-chosen set.
+- Per-window counts are 4 or 8 per run, too few to give a rate. The lower bound for 4 of 4 is
+  0.51, and no per-window rate is claimed.
+- Sub-point coverage varies by seed. Which of a window's points each run drew was left to its
+  seed, so the runs do not cover the same points (seed 1 drew `tool_call` only at `after_tool` and
+  `pre_ack` inside the ack transaction once; seeds 2 and 3 drew both `tool_call` points and the
+  ack transaction three times each). Run C exists to cover the ack transaction on its own.
+
+**What was not tested.**
+- `tool_call` kills are at step 1 only. Only `read_file` goes through `ToolRegistry.execute` in the
+  scripted run; `report_finding` and `finish` do not, and the window was not extended to
+  `EventLog.append`.
 - **Identical findings are claimed only for the scripted model.** With a live model a retry is a
   fresh attempt (`_execute` builds a new model and a new log), so its findings may differ from the
   first attempt's. For a live model the claims are recovery, exactly one result row, and exact
-  replay of the winning attempt's log. They were not measured with a live model here.
-- The scripted findings are copied from the answer key. This tests the queue, lease and replay
-  machinery, not detection quality.
-- `tool_call` kills cover step 1 only. Only `read_file` goes through `ToolRegistry.execute` in the
-  scripted run; `report_finding` and `finish` do not, and the window was not extended to
-  `EventLog.append`.
-- SIGKILL of one process, not power loss or a kernel crash. WAL with `synchronous=FULL` durability
-  is not tested.
-- One host and one clock; one task and two workers, so no queue contention; lease 1.2 s against the
-  60 s default; host read-only tools, so no container to leak.
-- The Wilson intervals describe this stratified, hand-chosen set of kill points, not crashes in
-  general. 20 of 20 supports "at least about 84% at 95% confidence", not "always". Per window
-  (n = 4) the lower bound is 0.51.
-- **Sub-point coverage is thin.** Seed 1 drew `tool_call` at `after_tool` four times and never at
-  `entry`, `pre_ack` at `before_ack` three times and at `ack_in_tx` once, and `heartbeat` twice
-  before the transaction and twice inside it. The only mid-ack-transaction kill is one trial. The
-  per-window intervals say little; `tests/swarm/test_chaos.py` (`-m chaos`) runs each of the
-  window's key points once more, but a different seed is needed to cover the rest.
+  replay of the winning attempt's log. They were not measured with a live model here. The scripted
+  findings are copied from the answer key, so this tests the queue, lease and replay machinery, not
+  detection quality.
+- SIGKILL of one process is not power loss or a kernel crash. WAL with `synchronous=FULL`
+  durability is not tested.
+- One host and one clock; one task and two workers, so no queue contention; host read-only tools,
+  so no container to leak.
+- A short lease (1.2 s) against the 60 s default. Recovery has to wait out the lease, so the
+  roughly 2 s from kill to result is this configuration's, not the default's (not measured at 60 s).
 - Times are one machine's, and the 1.0 s takeover bound is a choice made before the run.
