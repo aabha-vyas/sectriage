@@ -1,0 +1,104 @@
+# Merge gate: lint, tests, Docker sandbox tests, and the offline baseline gate.
+#
+# Nothing secret is used or referenced here. Pull requests (including from forks) run with a
+# read-only token and no repository secrets (do not switch to the target-style PR trigger).
+#
+# Actions are pinned to full commit SHAs; the tag is in the trailing comment.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  UV_VERSION: "0.13.5"
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
+          enable-cache: false
+      - run: uv sync --locked
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      # Docker tests run in the `docker` job; together the two jobs run every test once.
+      - run: uv run pytest -q -m "not docker"
+
+  docker:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
+          enable-cache: false
+      - run: uv sync --locked
+      - name: Build the sandbox image
+        run: docker build -t sectriage-sandbox:1 src/sandbox
+      - name: Docker tests
+        run: uv run pytest -q -m docker -rs --junitxml="$RUNNER_TEMP/docker-junit.xml"
+      # The sandbox fixtures skip (not fail) when the image or daemon is missing.
+      - name: Fail if any docker test was skipped
+        run: python3 -I .github/scripts/check_junit.py "$RUNNER_TEMP/docker-junit.xml"
+
+  # Offline gate: no API key, no model call, no spend. This checks SAVED summary files against the
+  # baselines and the gate logic. It is not a fresh agent run and says nothing about whether the
+  # agent, prompt or model got better or worse. Each summary below is the run set its baseline
+  # was promoted from (timestamps match the baseline's created_at), so PASS is expected by
+  # construction; it catches edited or corrupted files and a gate or loader that stopped working.
+  # Edit this list when a baseline is re-promoted.
+  offline-gate:
+    name: offline-gate (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: ledger_api
+            summary: ledger_api-20261025T171009Z
+          - target: notes_portal
+            summary: notes_portal-20261025T171245Z
+          - target: static_builder
+            summary: static_builder-20261025T171515Z
+          - target: vuln_app
+            summary: vuln_app-20261025T170847Z
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
+          enable-cache: false
+      - run: uv sync --locked
+      - name: Gate saved summary against baseline
+        env:
+          TARGET: ${{ matrix.target }}
+          SUMMARY: ${{ matrix.summary }}
+        run: >-
+          uv run python -m evals.run
+          --summary-file "evals/results/${SUMMARY}.json"
+          --baseline "evals/baselines/${TARGET}.json"

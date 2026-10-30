@@ -1,5 +1,7 @@
 # SecTriage
 
+[![CI](https://github.com/aabha-vyas/sectriage/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/aabha-vyas/sectriage/actions/workflows/ci.yml)
+
 SecTriage is an agent that triages code for security findings and an eval harness that scores it. The agent reads a local, intentionally vulnerable codebase with `read_file` and `search_code`, reports findings in five classes (sqli, xss, path_traversal, command_injection, hardcoded_secret), and every report is checked against a ground-truth file. Triage is the task because a finding list is only useful if each item is a real bug at a known location. That makes precision, recall and cost per run measurable, which is what the harness reports. Targets are seeded apps under `evals/targets/`; only intentionally vulnerable local targets may be scanned.
 
 ## Architecture
