@@ -5,15 +5,37 @@
   "autoCompactEnabled": true,
   "precomputeCompactionEnabled": true,
   "autoCompactWindow": 200000,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|NotebookEdit|Read|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR}/scripts/hooks/guard_protected_paths.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": [
       "Bash(git status)",
+      "Bash(git status *)",
       "Bash(git diff *)",
       "Bash(git log *)",
       "Bash(uv run pytest *)",
-      "Bash(uv run ruff *)",
+      "Bash(uv run ruff check *)",
+      "Bash(uv run ruff format --check *)",
+      "Bash(uv run python -m evals.run --summary)",
+      "Bash(uv run python -m evals.run --summary-file *)",
       "Bash(scripts/verify.sh *)",
       "Bash(scripts/verify.sh)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(uv run python -m evals.run *--update-baseline*)"
     ],
     "deny": [
       "Read(./.env)",
