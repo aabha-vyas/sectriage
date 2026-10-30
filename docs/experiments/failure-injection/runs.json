@@ -1,0 +1,1707 @@
+{
+  "aggregates": {
+    "by_window": {
+      "heartbeat": {
+        "attempt_logs": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "attempts": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "completed": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "exit_codes": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "findings_match_control": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "lease_takeover": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "n": 4,
+        "no_spend": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "one_result_row": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "replay_exact": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        }
+      },
+      "pre_ack": {
+        "attempt_logs": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "attempts": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "completed": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "exit_codes": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "findings_match_control": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "lease_takeover": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "n": 4,
+        "no_spend": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "one_result_row": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "replay_exact": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        }
+      },
+      "random_time": {
+        "attempt_logs": {
+          "n": 8,
+          "ok": 8,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.6756
+        },
+        "attempts": {
+          "n": 8,
+          "ok": 8,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.6756
+        },
+        "completed": {
+          "n": 8,
+          "ok": 8,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.6756
+        },
+        "exit_codes": {
+          "n": 8,
+          "ok": 8,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.6756
+        },
+        "findings_match_control": {
+          "n": 8,
+          "ok": 8,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.6756
+        },
+        "lease_takeover": {
+          "n": 8,
+          "ok": 8,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.6756
+        },
+        "n": 8,
+        "no_spend": {
+          "n": 8,
+          "ok": 8,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.6756
+        },
+        "one_result_row": {
+          "n": 8,
+          "ok": 8,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.6756
+        },
+        "replay_exact": {
+          "n": 8,
+          "ok": 8,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.6756
+        }
+      },
+      "tool_call": {
+        "attempt_logs": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "attempts": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "completed": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "exit_codes": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "findings_match_control": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "lease_takeover": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "n": 4,
+        "no_spend": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "one_result_row": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        },
+        "replay_exact": {
+          "n": 4,
+          "ok": 4,
+          "wilson_hi": 1.0,
+          "wilson_lo": 0.5101
+        }
+      }
+    },
+    "overall": {
+      "attempt_logs": {
+        "n": 20,
+        "ok": 20,
+        "wilson_hi": 1.0,
+        "wilson_lo": 0.8389
+      },
+      "attempts": {
+        "n": 20,
+        "ok": 20,
+        "wilson_hi": 1.0,
+        "wilson_lo": 0.8389
+      },
+      "completed": {
+        "n": 20,
+        "ok": 20,
+        "wilson_hi": 1.0,
+        "wilson_lo": 0.8389
+      },
+      "exit_codes": {
+        "n": 20,
+        "ok": 20,
+        "wilson_hi": 1.0,
+        "wilson_lo": 0.8389
+      },
+      "findings_match_control": {
+        "n": 20,
+        "ok": 20,
+        "wilson_hi": 1.0,
+        "wilson_lo": 0.8389
+      },
+      "lease_takeover": {
+        "n": 20,
+        "ok": 20,
+        "wilson_hi": 1.0,
+        "wilson_lo": 0.8389
+      },
+      "n": 20,
+      "no_spend": {
+        "n": 20,
+        "ok": 20,
+        "wilson_hi": 1.0,
+        "wilson_lo": 0.8389
+      },
+      "one_result_row": {
+        "n": 20,
+        "ok": 20,
+        "wilson_hi": 1.0,
+        "wilson_lo": 0.8389
+      },
+      "replay_exact": {
+        "n": 20,
+        "ok": 20,
+        "wilson_hi": 1.0,
+        "wilson_lo": 0.8389
+      }
+    }
+  },
+  "config": {
+    "lease_s": 1.2,
+    "model_factory": "src.swarm.chaos:chaos_factory",
+    "step_delay_s": 0.15,
+    "target": "vuln_app",
+    "trial_timeout_s": 45.0,
+    "workers": 2
+  },
+  "controls": [
+    {
+      "attempts": 1,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 1.091372013092041,
+      "exit_codes": [
+        0,
+        0
+      ],
+      "findings_equal_control": null,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323042.275879,
+      "fired": false,
+      "kill": null,
+      "kill_to_result_s": null,
+      "killed_log": {
+        "events": 8,
+        "has_terminal": true,
+        "unchanged_by_replay": true
+      },
+      "last_error": null,
+      "log_name": "vuln_app-chaos-1.1.jsonl",
+      "plan": null,
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323041.184507,
+        "observed": false
+      },
+      "violations": [],
+      "wall_s": 3.6214847564697266,
+      "window": "control",
+      "winning_attempt": 1
+    },
+    {
+      "attempts": 1,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 1.094763994216919,
+      "exit_codes": [
+        0,
+        0
+      ],
+      "findings_equal_control": null,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323045.815288,
+      "fired": false,
+      "kill": null,
+      "kill_to_result_s": null,
+      "killed_log": {
+        "events": 8,
+        "has_terminal": true,
+        "unchanged_by_replay": true
+      },
+      "last_error": null,
+      "log_name": "vuln_app-chaos-1.1.jsonl",
+      "plan": null,
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323044.720524,
+        "observed": false
+      },
+      "violations": [],
+      "wall_s": 3.5420937538146973,
+      "window": "control",
+      "winning_attempt": 1
+    }
+  ],
+  "counted": 20,
+  "excluded": {
+    "late_kill": 0,
+    "not_fired": 0
+  },
+  "exit_code": 0,
+  "first_violation": null,
+  "git_dirty": true,
+  "git_sha": "cafde591ee98490a4bc4de8854a6da3fe76a0f9c",
+  "plan_drawn": [
+    {
+      "frac": null,
+      "index": 0,
+      "k": null,
+      "sub": "after_tool",
+      "window": "tool_call"
+    },
+    {
+      "frac": 0.7215400323407826,
+      "index": 1,
+      "k": null,
+      "sub": null,
+      "window": "random_time"
+    },
+    {
+      "frac": null,
+      "index": 2,
+      "k": null,
+      "sub": "before_ack",
+      "window": "pre_ack"
+    },
+    {
+      "frac": null,
+      "index": 3,
+      "k": null,
+      "sub": "before_ack",
+      "window": "pre_ack"
+    },
+    {
+      "frac": null,
+      "index": 4,
+      "k": null,
+      "sub": "after_tool",
+      "window": "tool_call"
+    },
+    {
+      "frac": 0.022322111021323865,
+      "index": 5,
+      "k": null,
+      "sub": null,
+      "window": "random_time"
+    },
+    {
+      "frac": null,
+      "index": 6,
+      "k": null,
+      "sub": "before_ack",
+      "window": "pre_ack"
+    },
+    {
+      "frac": 0.6864838541790798,
+      "index": 7,
+      "k": null,
+      "sub": null,
+      "window": "random_time"
+    },
+    {
+      "frac": null,
+      "index": 8,
+      "k": 1,
+      "sub": "in_tx",
+      "window": "heartbeat"
+    },
+    {
+      "frac": 0.7637009951314895,
+      "index": 9,
+      "k": null,
+      "sub": null,
+      "window": "random_time"
+    },
+    {
+      "frac": null,
+      "index": 10,
+      "k": null,
+      "sub": "after_tool",
+      "window": "tool_call"
+    },
+    {
+      "frac": null,
+      "index": 11,
+      "k": 2,
+      "sub": "before_tx",
+      "window": "heartbeat"
+    },
+    {
+      "frac": null,
+      "index": 12,
+      "k": 1,
+      "sub": "before_tx",
+      "window": "heartbeat"
+    },
+    {
+      "frac": null,
+      "index": 13,
+      "k": 2,
+      "sub": "in_tx",
+      "window": "heartbeat"
+    },
+    {
+      "frac": 0.4161799388943461,
+      "index": 14,
+      "k": null,
+      "sub": null,
+      "window": "random_time"
+    },
+    {
+      "frac": 0.1859062658947177,
+      "index": 15,
+      "k": null,
+      "sub": null,
+      "window": "random_time"
+    },
+    {
+      "frac": null,
+      "index": 16,
+      "k": null,
+      "sub": "after_tool",
+      "window": "tool_call"
+    },
+    {
+      "frac": 0.7431466604224978,
+      "index": 17,
+      "k": null,
+      "sub": null,
+      "window": "random_time"
+    },
+    {
+      "frac": null,
+      "index": 18,
+      "k": null,
+      "sub": "in_tx",
+      "window": "pre_ack"
+    },
+    {
+      "frac": 0.3033685109329176,
+      "index": 19,
+      "k": null,
+      "sub": null,
+      "window": "random_time"
+    }
+  ],
+  "reason": null,
+  "seed": 1,
+  "trials": [
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 2.3125829696655273,
+      "exit_codes": [
+        0,
+        -9
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323050.929256,
+      "fired": true,
+      "kill": {
+        "k": null,
+        "pid": 53690,
+        "point": "tool_done",
+        "sub": "after_tool",
+        "t_kill": 1793323048.7794728,
+        "window": "tool_call"
+      },
+      "kill_to_result_s": 2.149783134460449,
+      "killed_log": {
+        "events": 0,
+        "has_terminal": false,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": null,
+        "index": 0,
+        "k": null,
+        "sub": "after_tool",
+        "window": "tool_call"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323048.616673,
+        "gap_s": 0.018724918365478516,
+        "last_lease_before": 1793323049.816673,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323049.835398
+      },
+      "violations": [],
+      "wall_s": 4.940407991409302,
+      "window": "tool_call",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 2.9371471405029297,
+      "exit_codes": [
+        -9,
+        0
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323056.403696,
+      "fired": true,
+      "kill": {
+        "offset_s": 0.7226447362429915,
+        "pid": 53698,
+        "point": "harness",
+        "t_kill": 1793323054.190818
+      },
+      "kill_to_result_s": 2.2128779888153076,
+      "killed_log": {
+        "events": 4,
+        "has_terminal": false,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": 0.7215400323407826,
+        "index": 1,
+        "k": null,
+        "sub": null,
+        "window": "random_time"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323053.466549,
+        "gap_s": 0.03339385986328125,
+        "last_lease_before": 1793323055.275286,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323055.3086798
+      },
+      "violations": [],
+      "wall_s": 5.489527702331543,
+      "window": "random_time",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 3.336134910583496,
+      "exit_codes": [
+        0,
+        -9
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323061.789641,
+      "fired": true,
+      "kill": {
+        "k": null,
+        "pid": 53711,
+        "point": "before_ack",
+        "sub": "before_ack",
+        "t_kill": 1793323059.540822,
+        "window": "pre_ack"
+      },
+      "kill_to_result_s": 2.248818874359131,
+      "killed_log": {
+        "events": 8,
+        "has_terminal": true,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": null,
+        "index": 2,
+        "k": null,
+        "sub": "before_ack",
+        "window": "pre_ack"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323058.453506,
+        "gap_s": 0.1320638656616211,
+        "last_lease_before": 1793323060.568659,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323060.700723
+      },
+      "violations": [],
+      "wall_s": 5.36029314994812,
+      "window": "pre_ack",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 3.340654134750366,
+      "exit_codes": [
+        0,
+        -9
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323067.2045681,
+      "fired": true,
+      "kill": {
+        "k": null,
+        "pid": 53714,
+        "point": "before_ack",
+        "sub": "before_ack",
+        "t_kill": 1793323064.952687,
+        "window": "pre_ack"
+      },
+      "kill_to_result_s": 2.2518811225891113,
+      "killed_log": {
+        "events": 8,
+        "has_terminal": true,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": null,
+        "index": 3,
+        "k": null,
+        "sub": "before_ack",
+        "window": "pre_ack"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323063.863914,
+        "gap_s": 0.1284480094909668,
+        "last_lease_before": 1793323065.9783869,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323066.106835
+      },
+      "violations": [],
+      "wall_s": 5.412676811218262,
+      "window": "pre_ack",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 2.323241949081421,
+      "exit_codes": [
+        0,
+        -9
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323071.6851368,
+      "fired": true,
+      "kill": {
+        "k": null,
+        "pid": 53723,
+        "point": "tool_done",
+        "sub": "after_tool",
+        "t_kill": 1793323069.524468,
+        "window": "tool_call"
+      },
+      "kill_to_result_s": 2.1606688499450684,
+      "killed_log": {
+        "events": 0,
+        "has_terminal": false,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": null,
+        "index": 4,
+        "k": null,
+        "sub": "after_tool",
+        "window": "tool_call"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323069.3618948,
+        "gap_s": 0.026294946670532227,
+        "last_lease_before": 1793323070.561895,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323070.5881898
+      },
+      "violations": [],
+      "wall_s": 4.501359939575195,
+      "window": "tool_call",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 2.3087358474731445,
+      "exit_codes": [
+        0,
+        -9
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323076.7246459,
+      "fired": true,
+      "kill": {
+        "offset_s": 0.07080944896655944,
+        "pid": 53728,
+        "point": "harness",
+        "t_kill": 1793323074.4877062
+      },
+      "kill_to_result_s": 2.2369396686553955,
+      "killed_log": {
+        "events": 0,
+        "has_terminal": false,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": 0.022322111021323865,
+        "index": 5,
+        "k": null,
+        "sub": null,
+        "window": "random_time"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323074.41591,
+        "gap_s": 0.018186092376708984,
+        "last_lease_before": 1793323075.61591,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323075.6340961
+      },
+      "violations": [],
+      "wall_s": 5.032371759414673,
+      "window": "random_time",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 3.334354877471924,
+      "exit_codes": [
+        0,
+        -9
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323082.4732149,
+      "fired": true,
+      "kill": {
+        "k": null,
+        "pid": 53734,
+        "point": "before_ack",
+        "sub": "before_ack",
+        "t_kill": 1793323080.226461,
+        "window": "pre_ack"
+      },
+      "kill_to_result_s": 2.2467539310455322,
+      "killed_log": {
+        "events": 8,
+        "has_terminal": true,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": null,
+        "index": 6,
+        "k": null,
+        "sub": "before_ack",
+        "window": "pre_ack"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323079.13886,
+        "gap_s": 0.12109994888305664,
+        "last_lease_before": 1793323081.2548182,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323081.3759181
+      },
+      "violations": [],
+      "wall_s": 5.819604158401489,
+      "window": "pre_ack",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 2.9455690383911133,
+      "exit_codes": [
+        -9,
+        0
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323087.918228,
+      "fired": true,
+      "kill": {
+        "offset_s": 0.6899641465925909,
+        "pid": 53746,
+        "point": "harness",
+        "t_kill": 1793323085.6649878
+      },
+      "kill_to_result_s": 2.2532401084899902,
+      "killed_log": {
+        "events": 4,
+        "has_terminal": false,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": 0.6864838541790798,
+        "index": 7,
+        "k": null,
+        "sub": null,
+        "window": "random_time"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323084.9726589,
+        "gap_s": 0.03264880180358887,
+        "last_lease_before": 1793323086.78396,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323086.816609
+      },
+      "violations": [],
+      "wall_s": 5.362367868423462,
+      "window": "random_time",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 2.367185354232788,
+      "exit_codes": [
+        -9,
+        0
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323092.5918841,
+      "fired": true,
+      "kill": {
+        "k": 1,
+        "pid": 53750,
+        "point": "heartbeat_in_tx",
+        "sub": "in_tx",
+        "t_kill": 1793323090.530227,
+        "window": "heartbeat"
+      },
+      "kill_to_result_s": 2.061657190322876,
+      "killed_log": {
+        "events": 1,
+        "has_terminal": false,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": null,
+        "index": 8,
+        "k": 1,
+        "sub": "in_tx",
+        "window": "heartbeat"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323090.2246988,
+        "gap_s": 0.04988431930541992,
+        "last_lease_before": 1793323091.4246988,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323091.4745831
+      },
+      "violations": [],
+      "wall_s": 4.644212007522583,
+      "window": "heartbeat",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 2.934262990951538,
+      "exit_codes": [
+        0,
+        -9
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323097.713038,
+      "fired": true,
+      "kill": {
+        "offset_s": 0.7619486534547694,
+        "pid": 53756,
+        "point": "harness",
+        "t_kill": 1793323095.5437398
+      },
+      "kill_to_result_s": 2.1692981719970703,
+      "killed_log": {
+        "events": 4,
+        "has_terminal": false,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": 0.7637009951314895,
+        "index": 9,
+        "k": null,
+        "sub": null,
+        "window": "random_time"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323094.778775,
+        "gap_s": 0.02457904815673828,
+        "last_lease_before": 1793323096.590715,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323096.615294
+      },
+      "violations": [],
+      "wall_s": 5.098130941390991,
+      "window": "random_time",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 2.327894926071167,
+      "exit_codes": [
+        0,
+        -9
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323102.244412,
+      "fired": true,
+      "kill": {
+        "k": null,
+        "pid": 53768,
+        "point": "tool_done",
+        "sub": "after_tool",
+        "t_kill": 1793323100.075653,
+        "window": "tool_call"
+      },
+      "kill_to_result_s": 2.1687588691711426,
+      "killed_log": {
+        "events": 0,
+        "has_terminal": false,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": null,
+        "index": 10,
+        "k": null,
+        "sub": "after_tool",
+        "window": "tool_call"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323099.916517,
+        "gap_s": 0.02550196647644043,
+        "last_lease_before": 1793323101.116517,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323101.142019
+      },
+      "violations": [],
+      "wall_s": 4.536009073257446,
+      "window": "tool_call",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 2.7354869842529297,
+      "exit_codes": [
+        -9,
+        0
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323107.150593,
+      "fired": true,
+      "kill": {
+        "k": 2,
+        "pid": 53774,
+        "point": "heartbeat_before_tx",
+        "sub": "before_tx",
+        "t_kill": 1793323105.025192,
+        "window": "heartbeat"
+      },
+      "kill_to_result_s": 2.125401020050049,
+      "killed_log": {
+        "events": 3,
+        "has_terminal": false,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": null,
+        "index": 11,
+        "k": 2,
+        "sub": "before_tx",
+        "window": "heartbeat"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323104.415106,
+        "gap_s": 0.12955188751220703,
+        "last_lease_before": 1793323105.9195461,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323106.049098
+      },
+      "violations": [],
+      "wall_s": 4.909607172012329,
+      "window": "heartbeat",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 2.3239388465881348,
+      "exit_codes": [
+        -9,
+        0
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323111.659143,
+      "fired": true,
+      "kill": {
+        "k": 1,
+        "pid": 53781,
+        "point": "heartbeat_before_tx",
+        "sub": "before_tx",
+        "t_kill": 1793323109.640189,
+        "window": "heartbeat"
+      },
+      "kill_to_result_s": 2.018954038619995,
+      "killed_log": {
+        "events": 1,
+        "has_terminal": false,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": null,
+        "index": 12,
+        "k": 1,
+        "sub": "before_tx",
+        "window": "heartbeat"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323109.3352041,
+        "gap_s": 0.022616863250732422,
+        "last_lease_before": 1793323110.5352042,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323110.557821
+      },
+      "violations": [],
+      "wall_s": 4.480684757232666,
+      "window": "heartbeat",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 2.7401459217071533,
+      "exit_codes": [
+        0,
+        -9
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323116.621269,
+      "fired": true,
+      "kill": {
+        "k": 2,
+        "pid": 53790,
+        "point": "heartbeat_in_tx",
+        "sub": "in_tx",
+        "t_kill": 1793323114.487287,
+        "window": "heartbeat"
+      },
+      "kill_to_result_s": 2.133981943130493,
+      "killed_log": {
+        "events": 3,
+        "has_terminal": false,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": null,
+        "index": 13,
+        "k": 2,
+        "sub": "in_tx",
+        "window": "heartbeat"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323113.881123,
+        "gap_s": 0.1291639804840088,
+        "last_lease_before": 1793323115.385292,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323115.514456
+      },
+      "violations": [],
+      "wall_s": 4.993842124938965,
+      "window": "heartbeat",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 2.729140043258667,
+      "exit_codes": [
+        -9,
+        0
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323121.903744,
+      "fired": true,
+      "kill": {
+        "offset_s": 0.43797742700296327,
+        "pid": 53797,
+        "point": "harness",
+        "t_kill": 1793323119.614353
+      },
+      "kill_to_result_s": 2.289391040802002,
+      "killed_log": {
+        "events": 2,
+        "has_terminal": false,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": 0.4161799388943461,
+        "index": 14,
+        "k": null,
+        "sub": null,
+        "window": "random_time"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323119.174604,
+        "gap_s": 0.13324379920959473,
+        "last_lease_before": 1793323120.6761642,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323120.809408
+      },
+      "violations": [],
+      "wall_s": 5.265213966369629,
+      "window": "random_time",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 2.3699610233306885,
+      "exit_codes": [
+        0,
+        -9
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323126.494302,
+      "fired": true,
+      "kill": {
+        "offset_s": 0.2233082927956122,
+        "pid": 53810,
+        "point": "harness",
+        "t_kill": 1793323124.350332
+      },
+      "kill_to_result_s": 2.143970012664795,
+      "killed_log": {
+        "events": 1,
+        "has_terminal": false,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": 0.1859062658947177,
+        "index": 15,
+        "k": null,
+        "sub": null,
+        "window": "random_time"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323124.124341,
+        "gap_s": 0.02182793617248535,
+        "last_lease_before": 1793323125.324341,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323125.346169
+      },
+      "violations": [],
+      "wall_s": 4.551841974258423,
+      "window": "random_time",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 2.307238817214966,
+      "exit_codes": [
+        -9,
+        0
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323130.8293388,
+      "fired": true,
+      "kill": {
+        "k": null,
+        "pid": 53841,
+        "point": "tool_done",
+        "sub": "after_tool",
+        "t_kill": 1793323128.6821592,
+        "window": "tool_call"
+      },
+      "kill_to_result_s": 2.14717960357666,
+      "killed_log": {
+        "events": 0,
+        "has_terminal": false,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": null,
+        "index": 16,
+        "k": null,
+        "sub": "after_tool",
+        "window": "tool_call"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323128.5221,
+        "gap_s": 0.01794600486755371,
+        "last_lease_before": 1793323129.7221,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323129.740046
+      },
+      "violations": [],
+      "wall_s": 4.311331033706665,
+      "window": "tool_call",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 2.9325287342071533,
+      "exit_codes": [
+        -9,
+        0
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323135.7825038,
+      "fired": true,
+      "kill": {
+        "offset_s": 0.742787187106011,
+        "pid": 53849,
+        "point": "harness",
+        "t_kill": 1793323133.594861
+      },
+      "kill_to_result_s": 2.187642812728882,
+      "killed_log": {
+        "events": 4,
+        "has_terminal": false,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": 0.7431466604224978,
+        "index": 17,
+        "k": null,
+        "sub": null,
+        "window": "random_time"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323132.849975,
+        "gap_s": 0.0249330997467041,
+        "last_lease_before": 1793323134.66005,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323134.684983
+      },
+      "violations": [],
+      "wall_s": 4.969955921173096,
+      "window": "random_time",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 3.3425350189208984,
+      "exit_codes": [
+        0,
+        -9
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323141.154583,
+      "fired": true,
+      "kill": {
+        "k": null,
+        "pid": 53874,
+        "point": "ack_in_tx",
+        "sub": "in_tx",
+        "t_kill": 1793323138.908563,
+        "window": "pre_ack"
+      },
+      "kill_to_result_s": 2.2460200786590576,
+      "killed_log": {
+        "events": 8,
+        "has_terminal": true,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": null,
+        "index": 18,
+        "k": null,
+        "sub": "in_tx",
+        "window": "pre_ack"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323137.812048,
+        "gap_s": 0.12365317344665527,
+        "last_lease_before": 1793323139.929545,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323140.053198
+      },
+      "violations": [],
+      "wall_s": 5.359648942947388,
+      "window": "pre_ack",
+      "winning_attempt": 2
+    },
+    {
+      "attempts": 2,
+      "completed": true,
+      "cost_usd": 0.0,
+      "duration_s": 2.727761745452881,
+      "exit_codes": [
+        -9,
+        0
+      ],
+      "findings_equal_control": true,
+      "findings_sha256": "bbbc1809f58fa228ecf236fba8e7efe8545656633d38030c5b40d2365d195621",
+      "finished_at": 1793323145.877451,
+      "fired": true,
+      "kill": {
+        "offset_s": 0.33281068669038794,
+        "pid": 53884,
+        "point": "harness",
+        "t_kill": 1793323143.485496
+      },
+      "kill_to_result_s": 2.3919548988342285,
+      "killed_log": {
+        "events": 2,
+        "has_terminal": false,
+        "unchanged_by_replay": true
+      },
+      "last_error": "lease expired",
+      "log_name": "vuln_app-chaos-1.2.jsonl",
+      "plan": {
+        "frac": 0.3033685109329176,
+        "index": 19,
+        "k": null,
+        "sub": null,
+        "window": "random_time"
+      },
+      "replay": {
+        "error": null,
+        "identical": true,
+        "stop_equal": true
+      },
+      "result_rows": 1,
+      "result_rows_total": 1,
+      "state": "done",
+      "steps": 7,
+      "stop_reason": "finish",
+      "takeover": {
+        "claim_at": 1793323143.1496892,
+        "gap_s": 0.13073396682739258,
+        "last_lease_before": 1793323144.651526,
+        "observed": true,
+        "stayed_running": true,
+        "takeover_at": 1793323144.78226
+      },
+      "violations": [],
+      "wall_s": 4.705976963043213,
+      "window": "random_time",
+      "winning_attempt": 2
+    }
+  ],
+  "trials_requested": 20,
+  "verdict": "pass",
+  "wall_s": 107.1
+}

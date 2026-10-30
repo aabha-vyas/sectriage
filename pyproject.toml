@@ -26,7 +26,10 @@ default-groups = ["dev", "targets"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
-markers = ["docker: needs a running Docker daemon"]
+markers = [
+    "docker: needs a running Docker daemon",
+    "chaos: real-spawn failure-injection tests; skipped unless selected with -m chaos",
+]
 
 [tool.ruff]
 line-length = 100
